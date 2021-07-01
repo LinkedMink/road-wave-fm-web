@@ -1,0 +1,100 @@
+import { connect, MapStateToProps } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import LockOpenIcon from '@material-ui/icons/LockOpen';
+import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
+import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
+import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
+
+import NavigationMenu, {
+  NavigationMenuLink,
+  NavigationMenuOwnProps,
+  NavigationMenuStateProps,
+} from '../components/NavigationMenu';
+import { RootState } from '../reducers/RootReducer';
+
+const getGuestLinks = () => {
+  return [
+    {
+      path: '/home',
+      name: 'Home',
+      icon: HomeOutlinedIcon,
+      active: false,
+      tooltip: 'Discover the dangers of traveling by auto',
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      icon: LockOpenIcon,
+      active: false,
+      tooltip: 'Sign into your account',
+    },
+    {
+      path: '/register',
+      name: 'Register',
+      icon: PersonAddOutlinedIcon,
+      active: false,
+      tooltip: 'Create a new account',
+    },
+    {},
+    {
+      path: '/about',
+      name: 'About',
+      icon: InfoOutlinedIcon,
+      active: false,
+      tooltip: 'Find out more about this app',
+    },
+  ] as NavigationMenuLink[];
+};
+
+const getAuthenticatedLinks = () => {
+  return [
+    {
+      path: '/home',
+      name: 'Home',
+      icon: HomeOutlinedIcon,
+      active: false,
+      tooltip: 'Discover the dangers of traveling by auto',
+    },
+    {},
+    {
+      path: '/about',
+      name: 'About',
+      icon: InfoOutlinedIcon,
+      active: false,
+      tooltip: 'Find out more about this app',
+    },
+  ] as NavigationMenuLink[];
+};
+
+const mapStateToProps: MapStateToProps<
+  NavigationMenuStateProps,
+  NavigationMenuOwnProps,
+  RootState
+> = (state: RootState, ownProps: NavigationMenuOwnProps) => {
+  let links;
+  if (state.account.jwtToken) {
+    links = getAuthenticatedLinks();
+  } else {
+    links = getGuestLinks();
+  }
+
+  const location = ownProps.location;
+  if (location) {
+    links.forEach((link) => {
+      if (link.path && location.pathname.startsWith(link.path)) {
+        link.active = true;
+      } else {
+        link.active = false;
+      }
+    });
+  }
+
+  return {
+    links: links,
+  };
+};
+
+const container = connect(mapStateToProps, null, null, { pure: false })(NavigationMenu);
+const NavigationMenuContainer = withRouter(container);
+
+export default NavigationMenuContainer;
