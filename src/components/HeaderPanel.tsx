@@ -28,7 +28,7 @@ type StyleClass =
   | 'title'
   | 'menuIcon';
 
-const styles: StyleRulesCallback<Theme, {}, StyleClass> = (theme: Theme) => ({
+const styles: StyleRulesCallback<Theme, HeaderPanelOwnProps, StyleClass> = (theme: Theme) => ({
   toolbar: {
     paddingRight: 24, // keep right padding when drawer closed
   },

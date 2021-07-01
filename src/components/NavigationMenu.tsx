@@ -20,7 +20,7 @@ import { RouteComponentProps } from 'react-router-dom';
 
 type StyleClass = 'toolbarIcon' | 'drawerPaper' | 'drawerPaperClose';
 
-const styles: StyleRulesCallback<Theme, {}, StyleClass> = (theme: Theme) => ({
+const styles: StyleRulesCallback<Theme, NavigationMenuOwnProps, StyleClass> = (theme: Theme) => ({
   toolbarIcon: {
     display: 'flex',
     alignItems: 'center',

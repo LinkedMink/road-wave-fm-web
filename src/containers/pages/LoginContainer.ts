@@ -1,11 +1,13 @@
-
 import { connect, MapDispatchToPropsFunction, MapStateToProps } from 'react-redux';
 import { Dispatch } from 'redux';
 import { RootState } from '../../reducers/RootReducer';
 import { StorageKey } from '../../types/Storage';
 import { Routes, Services } from '../../types/Service';
 import { HttpMethods, getJsonResponse } from '../../shared/RequestFactory';
-import LoginScreen, { LoginPageDispatchProps, LoginPageStateProps } from '../../components/pages/LoginPage';
+import LoginScreen, {
+  LoginPageDispatchProps,
+  LoginPageStateProps,
+} from '../../components/pages/LoginPage';
 import { saveSession } from '../../actions/AccountAction';
 import { decodeToken } from '../../shared/Token';
 import { alertError } from '../../actions/AlertAction';
@@ -20,10 +22,9 @@ const mapStateToProps: MapStateToProps<LoginPageStateProps, unknown, RootState> 
   };
 };
 
-const mapDispatchToProps: MapDispatchToPropsFunction<
-  LoginPageDispatchProps,
-  unknown
-> = (dispatch: Dispatch) => {
+const mapDispatchToProps: MapDispatchToPropsFunction<LoginPageDispatchProps, unknown> = (
+  dispatch: Dispatch,
+) => {
   return {
     login: (email: string, password: string, rememberMe: boolean) => {
       const requestData = {

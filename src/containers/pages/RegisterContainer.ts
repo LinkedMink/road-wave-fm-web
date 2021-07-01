@@ -1,10 +1,12 @@
-
 import { connect, MapDispatchToPropsFunction, MapStateToProps } from 'react-redux';
 import { Dispatch } from 'redux';
 import { RootState } from '../../reducers/RootReducer';
 import { Routes, Services } from '../../types/Service';
 import { HttpMethods, getJsonResponse } from '../../shared/RequestFactory';
-import RegisterScreen, { RegisterPageDispatchProps, RegisterPageStateProps } from '../../components/pages/RegisterPage';
+import RegisterScreen, {
+  RegisterPageDispatchProps,
+  RegisterPageStateProps,
+} from '../../components/pages/RegisterPage';
 import { alertRedirect } from '../../actions/AlertAction';
 
 const SUCCESS_MESSAGE = 'Your account has been created. Verify your email address to login.';

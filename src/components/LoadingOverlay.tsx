@@ -18,7 +18,7 @@ type StyleClass =
   | 'animationSurface'
   | 'loadingText';
 
-const styles: StyleRulesCallback<Theme, {}, StyleClass> = (theme: Theme) => ({
+const styles: StyleRulesCallback<Theme, Record<string, never>, StyleClass> = (theme: Theme) => ({
   overlay: {
     position: 'absolute',
     width: '100%',

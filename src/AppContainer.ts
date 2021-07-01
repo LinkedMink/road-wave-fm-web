@@ -4,7 +4,7 @@ import { Dispatch } from 'redux';
 
 import App, { AppDispatchProps, AppStateProps } from './App';
 import { StorageKey } from './types/Storage';
-import { getJsonResponse } from './Shared/RequestFactory';
+import { getJsonResponse } from './shared/RequestFactory';
 import { ConfigData, saveConfig } from './actions/ConfigAction';
 import { saveSession } from './actions/AccountAction';
 import { Routes, Services } from './types/Service';

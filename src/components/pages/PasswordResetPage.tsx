@@ -1,5 +1,5 @@
-import React, { ChangeEvent, FormEvent } from 'react';
-import { Redirect, Link as RouterLink } from 'react-router-dom';
+import React from 'react';
+import { Redirect } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
@@ -8,29 +8,37 @@ import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 
-import { FormComponentState, ValidationRules, ValidationRuleType, Validator } from '../../shared/Validator';
+import {
+  FormComponentState,
+  ValidationRules,
+  ValidationRuleType,
+  Validator,
+} from '../../shared/Validator';
 import { SharedStyleProps, withSharedStyles } from '../../shared/Style';
 import { getLinkReference } from '../../shared/Element';
 import { handleDefaultFormSubmit, handleFieldChange } from '../../shared/Form';
 
 export interface PasswordResetPageStateProps {
-  isLoggedIn: boolean
+  isLoggedIn: boolean;
 }
 
 export interface PasswordResetPageDispatchProps {
-  getResetLink: (email: string) => void
+  getResetLink: (email: string) => void;
 }
 
-type PasswordResetPageProps = PasswordResetPageStateProps & PasswordResetPageDispatchProps & SharedStyleProps
+type PasswordResetPageProps = PasswordResetPageStateProps &
+  PasswordResetPageDispatchProps &
+  SharedStyleProps;
 
 interface PasswordResetPageFields {
-  email: string
+  email: string;
 }
+type PasswordResetPageField = keyof PasswordResetPageFields;
 
-type PasswordResetPageState = FormComponentState<PasswordResetPageFields>
+type PasswordResetPageState = FormComponentState<PasswordResetPageField>;
 
 class PasswordResetPage extends React.Component<PasswordResetPageProps, PasswordResetPageState> {
-  private readonly rules: ValidationRules<PasswordResetPageFields> = {
+  private readonly rules: ValidationRules<PasswordResetPageField> = {
     email: {
       label: 'Email Address',
       rules: [[ValidationRuleType.Required], [ValidationRuleType.Email]],
@@ -41,17 +49,16 @@ class PasswordResetPage extends React.Component<PasswordResetPageProps, Password
 
   state = {
     fields: {
-      email: ''
+      email: '',
     },
     errors: this.validator.getDefaultErrorState(),
   };
 
   handleChange = handleFieldChange.bind(this);
 
-  handleSubmit = handleDefaultFormSubmit(
-    this,
-    this.validator,
-    () => this.props.getResetLink(this.state.fields.email));
+  handleSubmit = handleDefaultFormSubmit(this, this.validator, () =>
+    this.props.getResetLink(this.state.fields.email),
+  );
 
   render() {
     if (this.props.isLoggedIn) {

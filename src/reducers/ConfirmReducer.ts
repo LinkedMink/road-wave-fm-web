@@ -17,7 +17,7 @@ const confirmReducer = (
   action: ConfirmAction,
 ): ConfirmState => {
   if (action.type === ConfirmActionType.ClearKey) {
-    const { [action.payload.key as string]: tempKey, ...inactive } = state.inactive;
+    const { [action.payload.key as string]: _, ...inactive } = state.inactive;
     return Object.assign({}, state, { inactive });
   } else if (action.type === ConfirmActionType.OpenDialog) {
     return Object.assign({}, state, {

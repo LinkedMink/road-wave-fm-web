@@ -1,10 +1,12 @@
-
 import { connect, MapDispatchToPropsFunction, MapStateToProps } from 'react-redux';
 import { Dispatch } from 'redux';
 import { RootState } from '../../reducers/RootReducer';
 import { Routes, Services } from '../../types/Service';
 import { HttpMethods, getJsonResponse } from '../../shared/RequestFactory';
-import AccountScreen, { AccountPageDispatchProps, AccountPageStateProps } from '../../components/pages/AccountPage';
+import AccountScreen, {
+  AccountPageDispatchProps,
+  AccountPageStateProps,
+} from '../../components/pages/AccountPage';
 import { saveAccount } from '../../actions/AccountAction';
 import { alertInfo, alertRedirect } from '../../actions/AlertAction';
 import { confirmClearKey, confirmOpenDialog } from '../../actions/ConfirmAction';
@@ -23,7 +25,7 @@ const mapStateToProps: MapStateToProps<AccountPageStateProps, Record<string, nev
   return {
     profile: state.account.profile,
     deleteConfirmResult: state.confirm.inactive
-      ? state.confirm.inactive[CONFIRM_DELETE_KEY] as boolean
+      ? (state.confirm.inactive[CONFIRM_DELETE_KEY] as boolean)
       : undefined,
   };
 };

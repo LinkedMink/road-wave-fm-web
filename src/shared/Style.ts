@@ -1,9 +1,20 @@
-import { StyledComponentProps, StyleRulesCallback, Theme, withStyles } from "@material-ui/core";
+import {
+  StyledComponentProps,
+  StyleRulesCallback,
+  Theme,
+  WithStyles,
+  withStyles,
+} from '@material-ui/core';
+import { PropInjector } from '@material-ui/types';
 
 export type SharedStyleClass = 'paper' | 'form' | 'submit';
-export type SharedStyleProps = StyledComponentProps<SharedStyleClass>
+export type SharedStyleProps = StyledComponentProps<SharedStyleClass>;
 
-export const sharedStyleCallback: StyleRulesCallback<Theme, {}, SharedStyleClass> = (theme: Theme) => ({
+export const sharedStyleCallback: StyleRulesCallback<
+  Theme,
+  Record<string, never>,
+  SharedStyleClass
+> = (theme: Theme) => ({
   paper: {
     padding: theme.spacing(2),
     display: 'flex',
@@ -20,18 +31,20 @@ export const sharedStyleCallback: StyleRulesCallback<Theme, {}, SharedStyleClass
 });
 
 export const withSharedStyles = <
-  TProps extends object = Record<string, never>,
-  TStyleClass extends string = SharedStyleClass
+  TProps extends Record<string, never> = Record<string, never>,
+  TStyleClass extends string = SharedStyleClass,
 >(
-  styleCallback?: StyleRulesCallback<Theme, TProps, TStyleClass>
-) => {
-  const combinedCallback = (theme: Theme) => (
+  styleCallback?: StyleRulesCallback<Theme, TProps, TStyleClass>,
+): PropInjector<
+  WithStyles<TStyleClass & SharedStyleClass, false>,
+  StyledComponentProps<TStyleClass & SharedStyleClass> & TProps
+> => {
+  const combinedCallback = (theme: Theme) =>
     styleCallback
       ? {
-        ...sharedStyleCallback(theme),
-        ...styleCallback(theme)
-      }
-      : sharedStyleCallback(theme)
-  )
+          ...sharedStyleCallback(theme),
+          ...styleCallback(theme),
+        }
+      : sharedStyleCallback(theme);
   return withStyles(combinedCallback);
-}
+};

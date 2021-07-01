@@ -6,34 +6,40 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
 import { AccountModel, MIN_PASSWORD_LENGTH } from '../../types/Account';
-import { FormComponentState, ValidationRules, ValidationRuleType, Validator } from '../../shared/Validator';
+import {
+  FormComponentState,
+  ValidationRules,
+  ValidationRuleType,
+  Validator,
+} from '../../shared/Validator';
 import { SharedStyleProps, withSharedStyles } from '../../shared/Style';
 import { handleFieldChange } from '../../shared/Form';
 
 export interface AccountPageStateProps {
-  profile?: AccountModel
-  deleteConfirmResult?: boolean
+  profile?: AccountModel;
+  deleteConfirmResult?: boolean;
 }
 
 export interface AccountPageDispatchProps {
-  getAccountData: () => void
-  deleteConfirm: () => void
-  deleteAccountData: () => void
-  saveAccountData: (data: Partial<AccountPageFields>) => void
+  getAccountData: () => void;
+  deleteConfirm: () => void;
+  deleteAccountData: () => void;
+  saveAccountData: (data: Partial<AccountPageFields>) => void;
 }
 
-type AccountPageProps = AccountPageStateProps & AccountPageDispatchProps & SharedStyleProps
+type AccountPageProps = AccountPageStateProps & AccountPageDispatchProps & SharedStyleProps;
 
 interface AccountPageFields {
-  email: string
-  password: string
-  confirmPassword: string
+  email: string;
+  password: string;
+  confirmPassword: string;
 }
+type AccountPageField = keyof AccountPageFields;
 
-type AccountPageState = FormComponentState<AccountPageFields>
+type AccountPageState = FormComponentState<AccountPageField>;
 
 class AccountPage extends React.Component<AccountPageProps, AccountPageState> {
-  private readonly rules: ValidationRules<AccountPageFields> = {
+  private readonly rules: ValidationRules<AccountPageField> = {
     email: {
       label: 'Email Address',
       rules: [[ValidationRuleType.Email]],
@@ -48,7 +54,7 @@ class AccountPage extends React.Component<AccountPageProps, AccountPageState> {
     },
   };
 
-  private readonly validator = new Validator(this.rules)
+  private readonly validator = new Validator(this.rules);
 
   state = {
     fields: {
@@ -108,12 +114,18 @@ class AccountPage extends React.Component<AccountPageProps, AccountPageState> {
     return this.props.profile;
   };
 
-  componentDidUpdate = (prevProps: Readonly<AccountPageProps>, prevState: Readonly<AccountPageState>, snapshot: {}) => {
+  componentDidUpdate = (
+    prevProps: Readonly<AccountPageProps>,
+    _prevState: Readonly<AccountPageState>,
+    _snapshot: Record<string, never>,
+  ) => {
     if (!prevProps.profile && this.props.profile) {
-      this.setState({ fields: {
-        ...this.state.fields,
-        email: this.props.profile.email
-      }});
+      this.setState({
+        fields: {
+          ...this.state.fields,
+          email: this.props.profile.email,
+        },
+      });
     }
 
     if (this.props.deleteConfirmResult !== undefined) {

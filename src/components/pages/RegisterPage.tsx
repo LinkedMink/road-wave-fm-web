@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent } from 'react';
+import React from 'react';
 import { Redirect } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
@@ -9,31 +9,37 @@ import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 
 import { MIN_PASSWORD_LENGTH } from '../../types/Account';
-import { FormComponentState, ValidationRules, ValidationRuleType, Validator } from '../../shared/Validator';
+import {
+  FormComponentState,
+  ValidationRules,
+  ValidationRuleType,
+  Validator,
+} from '../../shared/Validator';
 import { SharedStyleProps, withSharedStyles } from '../../shared/Style';
 import { getLinkReference } from '../../shared/Element';
 import { handleDefaultFormSubmit, handleFieldChange } from '../../shared/Form';
 
 export interface RegisterPageStateProps {
-  isLoggedIn: boolean
+  isLoggedIn: boolean;
 }
 
 export interface RegisterPageDispatchProps {
-  register: (email: string, password: string) => void
+  register: (email: string, password: string) => void;
 }
 
-type RegisterPageProps = RegisterPageStateProps & RegisterPageDispatchProps & SharedStyleProps
+type RegisterPageProps = RegisterPageStateProps & RegisterPageDispatchProps & SharedStyleProps;
 
 interface RegisterPageFields {
-  email: string
-  password: string
-  confirmPassword: string
+  email: string;
+  password: string;
+  confirmPassword: string;
 }
+type RegisterPageField = keyof RegisterPageFields;
 
-type RegisterPageState = FormComponentState<RegisterPageFields>
+type RegisterPageState = FormComponentState<RegisterPageField>;
 
 class RegisterPage extends React.Component<RegisterPageProps, RegisterPageState> {
-  private readonly rules: ValidationRules<RegisterPageFields> = {
+  private readonly rules: ValidationRules<RegisterPageField> = {
     email: {
       label: 'Email Address',
       rules: [[ValidationRuleType.Required], [ValidationRuleType.Email]],
@@ -47,7 +53,7 @@ class RegisterPage extends React.Component<RegisterPageProps, RegisterPageState>
       rules: [[ValidationRuleType.Required], [ValidationRuleType.Compare, 'password']],
     },
   };
-  
+
   private readonly validator = new Validator(this.rules);
 
   state = {
@@ -61,10 +67,9 @@ class RegisterPage extends React.Component<RegisterPageProps, RegisterPageState>
 
   handleChange = handleFieldChange.bind(this);
 
-  handleSubmit = handleDefaultFormSubmit(
-    this,
-    this.validator,
-    () => this.props.register(this.state.fields.email, this.state.fields.password));
+  handleSubmit = handleDefaultFormSubmit(this, this.validator, () =>
+    this.props.register(this.state.fields.email, this.state.fields.password),
+  );
 
   render() {
     if (this.props.isLoggedIn) {

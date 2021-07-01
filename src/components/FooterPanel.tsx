@@ -11,7 +11,7 @@ import Typography from '@material-ui/core/Typography';
 
 type StyleClass = 'footerBox';
 
-const styles: StyleRulesCallback<Theme, {}, StyleClass> = (theme: Theme) => ({
+const styles: StyleRulesCallback<Theme, Record<string, never>, StyleClass> = (_theme: Theme) => ({
   footerBox: {
     padding: 0,
   },

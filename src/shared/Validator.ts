@@ -1,4 +1,3 @@
-import React from 'react';
 import { LogService } from './LogService';
 import { isArray, isString } from './TypeCheck';
 
@@ -26,16 +25,16 @@ export interface FieldResult {
   message: string;
 }
 
-export type ValidationRules<T> = Record<keyof T, FieldRules | never>;
+export type ValidationRules<TField extends string = string> = Record<TField, FieldRules | never>;
 
-export interface ValidationResult<T> {
+export interface ValidationResult<TField extends string = string> {
   isValid: boolean;
-  errors: Record<keyof T, FieldResult>;
+  errors: Record<TField, FieldResult>;
 }
 
-export interface FormComponentState<T extends object> {
-  fields: Record<keyof T, unknown>;
-  errors: Record<keyof T, FieldResult>;
+export interface FormComponentState<TField extends string = string> {
+  fields: Record<TField, unknown>;
+  errors: Record<TField, FieldResult>;
 }
 
 export enum Comparison {
@@ -48,17 +47,17 @@ export enum Comparison {
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export const hasValidationErrors = <T extends object>(
-  errors: Record<keyof T, FieldResult | never>,
-): boolean => Object.keys(errors).some((e) => errors[e as keyof T].isInvalid);
+export const hasValidationErrors = <TField extends string = string>(
+  errors: Record<TField, FieldResult | never>,
+): boolean => Object.keys(errors).some((e) => errors[e as TField].isInvalid);
 
-export class Validator<T extends object> {
-  constructor(private readonly rules: ValidationRules<T>) {}
+export class Validator<TField extends string = string> {
+  constructor(private readonly rules: ValidationRules<TField>) {}
 
-  getDefaultErrorState = (): Record<keyof T, FieldResult> => {
-    const errorState = {} as Record<keyof T, FieldResult>;
+  getDefaultErrorState = (): Record<TField, FieldResult> => {
+    const errorState = {} as Record<TField, FieldResult>;
     for (const key of Object.keys(this.rules)) {
-      errorState[key as keyof T] = {
+      errorState[key as TField] = {
         isInvalid: false,
         message: '',
       };
@@ -66,30 +65,34 @@ export class Validator<T extends object> {
     return errorState;
   };
 
-  validate = (fields: Record<keyof T, unknown>): ValidationResult<T> => {
+  validate = (fields: Record<TField, unknown>): ValidationResult<TField> => {
     let isValid = true;
-    const errors = {} as Record<keyof T, FieldResult>;
+    const errors = {} as Record<TField, FieldResult>;
 
     for (const [property, fieldRules] of Object.entries(this.rules)) {
       const field = fieldRules as FieldRules;
-      const invalidRule = field.rules.find(rule => {
-        const error = this.validateRule(property as keyof T, rule, fields);
+      const invalidRule = field.rules.find((rule) => {
+        const error = this.validateRule(property as TField, rule, fields);
         if (error) {
-          errors[property as keyof T] = { isInvalid: true, message: error };
+          errors[property as TField] = { isInvalid: true, message: error };
           isValid = false;
           return true;
         }
-      })
+      });
 
       if (!invalidRule) {
-        errors[property as keyof T] = { isInvalid: false, message: '' };
+        errors[property as TField] = { isInvalid: false, message: '' };
       }
     }
 
     return { isValid, errors };
   };
 
-  validateRule = (property: keyof T, rule: ValidationRule, fields: Record<keyof T, unknown>): string | void => {
+  validateRule = (
+    property: TField,
+    rule: ValidationRule,
+    fields: Record<TField, unknown>,
+  ): string | void => {
     const label = this.rules[property].label;
     const value = fields[property];
     const ruleType = isArray(rule) ? rule[0] : rule;
@@ -133,7 +136,7 @@ export class Validator<T extends object> {
         return;
       }
       case ValidationRuleType.Compare: {
-        const compareProperty = rule[1] as keyof T;
+        const compareProperty = rule[1] as TField;
         const order = rule[2] ? (rule[2] as Comparison) : Comparison.Equal;
         const compareTo = fields[compareProperty];
 

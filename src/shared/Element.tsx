@@ -1,8 +1,19 @@
-import React from 'react';
+import React, {
+  ForwardedRef,
+  ForwardRefExoticComponent,
+  ForwardRefRenderFunction,
+  PropsWithChildren,
+  RefAttributes,
+} from 'react';
 import { Link } from 'react-router-dom';
 
-export const getLinkReference = (path: string) => {
-  return React.forwardRef<HTMLAnchorElement>((props, ref) => (
-    <Link innerRef={ref} to={path} {...props} />
-  ));
+export const getLinkReference = (
+  path: string,
+): ForwardRefExoticComponent<RefAttributes<HTMLAnchorElement>> => {
+  const ref: ForwardRefRenderFunction<HTMLAnchorElement, Record<string, never>> = (
+    props: PropsWithChildren<Record<string, never>>,
+    ref: ForwardedRef<HTMLAnchorElement>,
+  ) => <Link innerRef={ref} to={path} {...props} />;
+
+  return React.forwardRef<HTMLAnchorElement>(ref);
 };

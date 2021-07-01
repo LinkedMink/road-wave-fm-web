@@ -25,7 +25,7 @@ type ConfirmDialogProps = ConfirmDialogOwnProps &
   ConfirmDialogDispatchProps;
 
 class ConfirmDialog extends React.Component<ConfirmDialogProps> {
-  render = () => {
+  render = (): JSX.Element => {
     return (
       <Dialog
         open={this.props.isActive}

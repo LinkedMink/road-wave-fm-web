@@ -1,18 +1,22 @@
-
 import { connect, MapDispatchToPropsFunction, MapStateToProps } from 'react-redux';
 import { Dispatch } from 'redux';
 import urlJoin from 'url-join';
 import { RootState } from '../../reducers/RootReducer';
 import { Routes, Services } from '../../types/Service';
 import { getJsonResponse } from '../../shared/RequestFactory';
-import PasswordResetScreen, { PasswordResetPageDispatchProps, PasswordResetPageStateProps } from '../../components/pages/PasswordResetPage';
+import PasswordResetScreen, {
+  PasswordResetPageDispatchProps,
+  PasswordResetPageStateProps,
+} from '../../components/pages/PasswordResetPage';
 import { alertRedirect } from '../../actions/AlertAction';
 
 const SUCCESS_MESSAGE = 'A reset link has been sent. Check your email.';
 
-const mapStateToProps: MapStateToProps<PasswordResetPageStateProps, Record<string, never>, RootState> = (
-  state: RootState,
-) => {
+const mapStateToProps: MapStateToProps<
+  PasswordResetPageStateProps,
+  Record<string, never>,
+  RootState
+> = (state: RootState) => {
   return {
     isLoggedIn: state.account.jwtToken ? true : false,
   };

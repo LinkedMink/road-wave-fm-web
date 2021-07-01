@@ -33,5 +33,5 @@ export interface AccountModel extends TrackedEntityModel {
 }
 
 export interface AuthenticateResponse {
-  token: string
+  token: string;
 }

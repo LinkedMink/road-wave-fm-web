@@ -9,7 +9,7 @@ interface ClaimsParams {
   claims: string;
 }
 
-type UnauthorizedPageProps = RouteComponentProps<ClaimsParams> & SharedStyleProps
+type UnauthorizedPageProps = RouteComponentProps<ClaimsParams> & SharedStyleProps;
 
 class UnauthorizedPage extends React.Component<UnauthorizedPageProps> {
   render() {

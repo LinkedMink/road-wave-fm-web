@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect} from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
@@ -10,31 +10,37 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 
-import { FormComponentState, ValidationRules, ValidationRuleType, Validator } from '../../shared/Validator';
+import {
+  FormComponentState,
+  ValidationRules,
+  ValidationRuleType,
+  Validator,
+} from '../../shared/Validator';
 import { SharedStyleProps, withSharedStyles } from '../../shared/Style';
 import { getLinkReference } from '../../shared/Element';
 import { handleDefaultFormSubmit, handleFieldChange } from '../../shared/Form';
 
 export interface LoginPageStateProps {
-  isLoggedIn: boolean
+  isLoggedIn: boolean;
 }
 
 export interface LoginPageDispatchProps {
-  login: (email: string, password: string, rememberMe: boolean) => void
+  login: (email: string, password: string, rememberMe: boolean) => void;
 }
 
-type LoginPageProps = LoginPageStateProps & LoginPageDispatchProps & SharedStyleProps
+type LoginPageProps = LoginPageStateProps & LoginPageDispatchProps & SharedStyleProps;
 
 interface LoginPageFields {
-  email: string
-  password: string
-  rememberMe: boolean
+  email: string;
+  password: string;
+  rememberMe: boolean;
 }
+type LoginPageField = keyof LoginPageFields;
 
-type LoginPageState = FormComponentState<LoginPageFields>
+type LoginPageState = FormComponentState<LoginPageField>;
 
 class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
-  private readonly rules: ValidationRules<LoginPageFields> = {
+  private readonly rules: ValidationRules<LoginPageField> = {
     email: {
       label: 'Email Address',
       rules: [[ValidationRuleType.Required]],
@@ -45,8 +51,8 @@ class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
     },
     rememberMe: {
       label: 'Remember Me',
-      rules: []
-    }
+      rules: [],
+    },
   };
 
   private readonly validator = new Validator(this.rules);
@@ -62,11 +68,14 @@ class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
 
   handleChange = handleFieldChange.bind(this);
 
-  handleSubmit = handleDefaultFormSubmit(
-    this,
-    this.validator,
-    () => this.props.login(this.state.fields.email, this.state.fields.password, this.state.fields.rememberMe));
-  
+  handleSubmit = handleDefaultFormSubmit(this, this.validator, () =>
+    this.props.login(
+      this.state.fields.email,
+      this.state.fields.password,
+      this.state.fields.rememberMe,
+    ),
+  );
+
   render = () => {
     if (this.props.isLoggedIn) {
       return <Redirect to="/" />;

@@ -21,7 +21,7 @@ export interface AlertDialogDispatchProps {
 type AlertDialogProps = RouteComponentProps & AlertDialogStateProps & AlertDialogDispatchProps;
 
 class AlertDialog extends React.Component<AlertDialogProps> {
-  handleClose = () => {
+  handleClose = (): void => {
     if (this.props.redirect && this.props.history) {
       this.props.history.push(this.props.redirect);
     }
@@ -31,7 +31,7 @@ class AlertDialog extends React.Component<AlertDialogProps> {
     }
   };
 
-  render = () => {
+  render = (): JSX.Element => {
     return (
       <Dialog
         open={this.props.isActive}

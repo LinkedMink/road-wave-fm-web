@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { FunctionComponent, useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import {

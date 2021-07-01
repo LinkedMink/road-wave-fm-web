@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent } from 'react';
+import React from 'react';
 import { Redirect, RouteComponentProps } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
@@ -8,17 +8,22 @@ import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 
-import { FormComponentState, ValidationRules, ValidationRuleType, Validator } from '../../shared/Validator';
+import {
+  FormComponentState,
+  ValidationRules,
+  ValidationRuleType,
+  Validator,
+} from '../../shared/Validator';
 import { SharedStyleProps, withSharedStyles } from '../../shared/Style';
 import { getLinkReference } from '../../shared/Element';
 import { handleDefaultFormSubmit, handleFieldChange } from '../../shared/Form';
 
 export interface SetPasswordPageStateProps {
-  isLoggedIn: boolean
+  isLoggedIn: boolean;
 }
 
 export interface SetPasswordPageDispatchProps {
-  resetPassword: (email: string, resetToken: string, password: string) => void
+  resetPassword: (email: string, resetToken: string, password: string) => void;
 }
 
 interface SetPasswordParams {
@@ -26,17 +31,21 @@ interface SetPasswordParams {
   resetToken: string;
 }
 
-type SetPasswordPageProps = SetPasswordPageStateProps & SetPasswordPageDispatchProps & RouteComponentProps<SetPasswordParams> & SharedStyleProps
+type SetPasswordPageProps = SetPasswordPageStateProps &
+  SetPasswordPageDispatchProps &
+  RouteComponentProps<SetPasswordParams> &
+  SharedStyleProps;
 
 interface SetPasswordPageFields {
-  password: string
-  confirmPassword: string
+  password: string;
+  confirmPassword: string;
 }
+type SetPasswordPageField = keyof SetPasswordPageFields;
 
-type SetPasswordPageState = FormComponentState<SetPasswordPageFields>
+type SetPasswordPageState = FormComponentState<SetPasswordPageField>;
 
 class SetPasswordPage extends React.Component<SetPasswordPageProps, SetPasswordPageState> {
-  private readonly rules: ValidationRules<SetPasswordPageFields> = {
+  private readonly rules: ValidationRules<SetPasswordPageField> = {
     password: {
       label: 'Password',
       rules: [[ValidationRuleType.Required], [ValidationRuleType.Length, 8]],
@@ -59,13 +68,10 @@ class SetPasswordPage extends React.Component<SetPasswordPageProps, SetPasswordP
 
   handleChange = handleFieldChange.bind(this);
 
-  handleSubmit = handleDefaultFormSubmit(
-    this,
-    this.validator,
-    () => {
-      const { email, resetToken } = this.props.match.params;
-      this.props.resetPassword(email, resetToken, this.state.fields.password);
-    });
+  handleSubmit = handleDefaultFormSubmit(this, this.validator, () => {
+    const { email, resetToken } = this.props.match.params;
+    this.props.resetPassword(email, resetToken, this.state.fields.password);
+  });
 
   render() {
     if (this.props.isLoggedIn) {

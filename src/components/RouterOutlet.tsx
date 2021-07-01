@@ -1,15 +1,15 @@
 import React from 'react';
 import { Route, Redirect, Switch } from 'react-router-dom';
 
-import { Claim } from '../types/Account';
-import RouteAuthContainer from '../containers/RouteAuthContainer';
+// import { Claim } from '../types/Account';
+// import RouteAuthContainer from '../containers/RouteAuthContainer';
 import LoginContainer from '../containers/pages/LoginContainer';
 import LogoutContainer from '../containers/LogoutContainer';
 import PasswordResetContainer from '../containers/pages/PasswordResetContainer';
 import SetPasswordContainer from '../containers/pages/SetPasswordContainer';
 import RegisterContainer from '../containers/pages/RegisterContainer';
 import HomeContainer from '../containers/pages/HomeContainer';
-import SettingsContainer from '../containers/pages/SettingsContainer';
+// import SettingsContainer from '../containers/pages/SettingsContainer';
 import AboutScreen from './pages/AboutPage';
 import UnauthorizedScreen from './pages/UnauthorizedPage';
 
@@ -18,7 +18,7 @@ export interface RouterOutletOwnProps {
 }
 
 class RouterOutlet extends React.Component<RouterOutletOwnProps> {
-  render = () => (
+  render = (): JSX.Element => (
     <Switch>
       <Route exact path="/login" component={LoginContainer} />
       <Route exact path="/logout" component={LogoutContainer} />
@@ -28,12 +28,12 @@ class RouterOutlet extends React.Component<RouterOutletOwnProps> {
       <Route exact path="/about" component={AboutScreen} />
       <Route exact path="/unauthorized/:claims" component={UnauthorizedScreen} />
       <Route exact path="/home" component={HomeContainer} />
-      <RouteAuthContainer
+      {/* <RouteAuthContainer
         requiredClaim={Claim.Settings}
         exact
         path="/account"
         component={SettingsContainer}
-      />
+      /> */}
       <Redirect from="/" to={this.props.defaultRedirect} />
     </Switch>
   );
