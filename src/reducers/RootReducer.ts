@@ -4,6 +4,7 @@ import alert from './AlertReducer';
 import config from './ConfigReducer';
 import confirm from './ConfirmReducer';
 import loading from './LoadingReducer';
+import location from './LocationReducer';
 
 const rootMap = {
   account,
@@ -11,6 +12,7 @@ const rootMap = {
   config,
   confirm,
   loading,
+  location,
 };
 
 const rootReducer = combineReducers(rootMap);

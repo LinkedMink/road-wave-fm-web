@@ -16,6 +16,7 @@ const mapStateToProps: MapStateToProps<ConfirmDialogStateProps, ConfirmDialogOwn
       text: state.confirm.active ? state.confirm.active.message : undefined,
     };
   };
+
 const mapDispatchToProps: MapDispatchToPropsFunction<
   ConfirmDialogDispatchProps,
   ConfirmDialogOwnProps

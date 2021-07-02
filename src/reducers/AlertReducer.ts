@@ -24,7 +24,7 @@ const accountReducer: Reducer<AlertState, AlertAction> = (
 ): AlertState => {
   if (action.type === AlertActionType.Clear) {
     return Object.assign({}, state, {
-      severity: undefined,
+      severity: AlertSeverity.None,
       message: undefined,
       redirect: undefined,
     });

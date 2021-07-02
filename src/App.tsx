@@ -68,7 +68,7 @@ const App: FunctionComponent<AppProps> = (props) => {
         <main className={props.classes?.content}>
           <div className={props.classes?.appBarSpacer} />
           <div className={props.classes?.container}>
-            <RouterOutlet defaultRedirect={props.isLoggedIn ? '/home' : '/login'} />
+            <RouterOutlet defaultRedirect={'/home'} />
           </div>
           <FooterPanel />
         </main>
