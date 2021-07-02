@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: road-wave-fm-web
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: road-wave-fm-web
+  template:
+    metadata:
+      labels:
+        app: road-wave-fm-web
+    spec:
+      nodeSelector:
+        "kubernetes.io/os": linux
+      containers:
+      - name: road-wave-fm-web
+        image: linkedmink/road-wave-fm-web
+        ports:
+        - containerPort: 80
+        env:
+        - name: USER_SERVICE_URL
+          value: "https://[Your Host]"
+        - name: JWT_PUBLIC_KEY_FILE
+          value: "[File Name]"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: road-wave-fm-web
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: road-wave-fm-web
