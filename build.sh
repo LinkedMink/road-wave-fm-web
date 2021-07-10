@@ -1,7 +1,7 @@
 #/bin/sh
 
 IMAGE_NAME="road-wave-fm-web"
-ARCHITECTURES="linux/amd64,linux/arm/v7"
+ARCHITECTURES="linux/amd64,linux/arm64"
 DOCKER_ARGS=""
 
 if [ -z "$DOCKER_SCOPE" ]; then
@@ -16,13 +16,16 @@ if [ -z "$KUBERNETES_NAMESPACE" ]; then
   KUBERNETES_NAMESPACE="road-wave-fm" 
 fi
 
+startTime=$(date +"%s")
+echo "---------- Build Started: $startTime ----------"
+
 if [ "$2" = "prod" ]; then
-  npm run build:prod
-  npm run build:serve:prod
+  yarn run build:prod
+  yarn run build:serve:prod
   DOCKER_ARGS="--build-arg ENVIRONMENT=production"
 else
-  npm run build
-  npm run build:serve
+  yarn run build
+  yarn run build:serve
 fi
 
 if [ "$1" = "deploy" ]; then
@@ -50,3 +53,7 @@ if [ "$1" = "deploy" ]; then
     "deployment/${IMAGE_NAME}" \
     --namespace="${KUBERNETES_NAMESPACE}"
 fi
+
+endTime=$(date +"%s")
+elapsed="$((endTime - startTime))"
+echo "---------- Build Finished: ${elapsed} seconds ----------"

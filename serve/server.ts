@@ -21,7 +21,7 @@ const logLevelPersist = process.env.LOG_LEVEL_PERSIST
 const config = {
   urls: {
     user: process.env.USER_SERVICE_URL,
-  },
+  } as Record<string, string>,
   jwtPublicKey,
   logLevelConsole,
   logLevelPersist,
@@ -36,15 +36,15 @@ Object.keys(config.urls).forEach((key) => {
 
 const app = express();
 
-app.use(express.static('public'));
+app.use(express.static('build'));
 
-app.get('/config', function (req, res) {
+app.get('/config', function (_req, res) {
   res.send(config);
   res.status(200);
 });
 
-app.get('/*', function (req, res) {
-  res.sendFile(path.join('public', 'index.html'));
+app.get('/*', function (_req, res) {
+  res.sendFile(path.join('build', 'index.html'));
   res.status(200);
 });
 
