@@ -3,13 +3,11 @@ import { LocationAction, LocationActionType } from '../actions/LocationAction';
 import { Coordinates } from '../types/Location';
 
 export interface LocationState {
-  hasPermission: boolean;
-  location?: Coordinates;
+  watchId?: number;
+  current?: Coordinates;
 }
 
-const defaultState: LocationState = {
-  hasPermission: false,
-};
+const defaultState: LocationState = {};
 
 const locationReducer: Reducer<LocationState, LocationAction> = (
   state: LocationState = defaultState,
@@ -17,7 +15,19 @@ const locationReducer: Reducer<LocationState, LocationAction> = (
 ): LocationState => {
   if (action.type === LocationActionType.LocationSet) {
     return Object.assign({}, state, {
-      location: action.payload,
+      current: action.payload,
+    });
+  } else if (action.type === LocationActionType.LocationClear) {
+    return Object.assign({}, state, {
+      current: undefined,
+    });
+  } else if (action.type === LocationActionType.LocationWatchIdSet) {
+    return Object.assign({}, state, {
+      watchId: action.payload,
+    });
+  } else if (action.type === LocationActionType.LocationWatchIdClear) {
+    return Object.assign({}, state, {
+      watchId: undefined,
     });
   } else {
     return state;

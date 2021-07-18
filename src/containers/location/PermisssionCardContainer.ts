@@ -21,7 +21,7 @@ const mapStateToProps: MapStateToProps<
   RootState
 > = (state: RootState) => {
   return {
-    hasPermission: state.location.hasPermission,
+    hasPermission: !!(state.location.watchId && state.location.current),
   };
 };
 
@@ -41,6 +41,7 @@ const mapDispatchToProps: MapDispatchToPropsFunction<
           );
         },
         (positionError: GeolocationPositionError) => {
+          dispatch(clearLocationWatchId());
           dispatch(clearLocation());
           console.log(positionError);
         },

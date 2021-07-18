@@ -1,3 +1,5 @@
+import { TrackedEntityModel } from './Entity';
+
 export enum Claim {
   Settings = 'UserSettings',
 }
@@ -12,14 +14,6 @@ export interface JwtPayload {
   iat: number;
   iss: string;
   sub: string;
-}
-
-export interface TrackedEntityModel {
-  id?: string;
-  createdDate?: Date;
-  createdBy?: string;
-  modifiedDate?: Date;
-  modifiedBy?: string;
 }
 
 export interface AccountModel extends TrackedEntityModel {

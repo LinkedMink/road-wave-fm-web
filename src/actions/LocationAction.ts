@@ -29,14 +29,14 @@ export function clearLocation(): LocationAction {
 
 export function setLocationWatchId(id: number): LocationAction {
   return {
-    type: LocationActionType.LocationSet,
+    type: LocationActionType.LocationWatchIdSet,
     payload: id,
   };
 }
 
 export function clearLocationWatchId(): LocationAction {
   return {
-    type: LocationActionType.LocationClear,
+    type: LocationActionType.LocationWatchIdClear,
     payload: null,
   };
 }

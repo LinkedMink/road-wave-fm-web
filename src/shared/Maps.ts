@@ -1,183 +1,218 @@
-// const GOOGLE_MAPS_BASE_URL = 'https://maps.googleapis.com/maps/api/js?';
-// const TEMP_ON_LOAD_FUNCTION = 'onGoogleMapsApiLoaded';
-// const INITIAL_MAP_CENTER = { lat: 39.8283, lng: -98.5795 }; // Center of US
-// const INITIAL_ZOOM = 4;
-// const FOCUS_ZOOM = 11;
+import { Coordinates } from '../types/Location';
+import { isArray, isString } from './TypeCheck';
 
-// declare global {
-//   interface Window {
-//     [TEMP_ON_LOAD_FUNCTION]?: () => void;
-//   }
-// }
+const GOOGLE_MAPS_BASE_URL = 'https://maps.googleapis.com/maps/api/js?';
+const TEMP_ON_LOAD_FUNCTION = 'onGoogleMapsApiLoaded';
+const INITIAL_MAP_CENTER = { lat: 39.8283, lng: -98.5795 }; // Center of US
+const INITIAL_ZOOM = 4;
+const FOCUS_ZOOM = 11;
 
-// class Maps {
-//   private initPromise: Promise<void> | null = null;
-//   private mapElements: Record<string, unknown> = {};
-//   private map: google.maps.Map | null = null;
+declare global {
+  interface Window {
+    [TEMP_ON_LOAD_FUNCTION]?: () => void;
+  }
+}
 
-//   constructor(private readonly apiKey: string) {}
+interface MapElements {
+  markers: google.maps.Marker[];
+}
 
-//   loadApiScript = (options: Record<string, string> = {}): Promise<void> => {
-//     if (!this.initPromise && !window.google.maps) {
-//       this.initPromise = new Promise<void>((resolve, reject) => {
-//         try {
-//           window[TEMP_ON_LOAD_FUNCTION] = resolve;
+export interface MarkerDescription {
+  label: string;
+  description: string;
+  coordinates: number[];
+}
 
-//           options.key = this.apiKey;
-//           options.callback = TEMP_ON_LOAD_FUNCTION;
-//           const optionsQuery = Object.keys(options)
-//             .map((k) => `${encodeURIComponent(k)}=${encodeURIComponent(options[k])}`)
-//             .join('&');
+export type MarkerHandler = (marker: google.maps.Marker) => () => void;
+export type AutoCompleteHandler = (marker: google.maps.places.Autocomplete) => () => void;
 
-//           const url = GOOGLE_MAPS_BASE_URL + optionsQuery;
+class Maps {
+  private initPromise: Promise<void> | null = null;
+  private mapElements: MapElements = {
+    markers: [],
+  };
+  private map: google.maps.Map | null = null;
 
-//           const script = document.createElement('script');
+  constructor(private readonly apiKey: string) {}
 
-//           script.setAttribute('src', url);
-//           script.setAttribute('async', '');
-//           script.setAttribute('defer', '');
+  loadApiScript = (options: Record<string, string> = {}): Promise<void> => {
+    if (!this.initPromise && !window.google.maps) {
+      this.initPromise = new Promise<void>((resolve, reject) => {
+        try {
+          window[TEMP_ON_LOAD_FUNCTION] = resolve;
 
-//           document.head.appendChild(script);
-//         } catch (error) {
-//           reject(error);
-//         }
-//       }).then(() => {
-//         window[TEMP_ON_LOAD_FUNCTION] = undefined;
-//       });
-//     }
+          options.key = this.apiKey;
+          options.callback = TEMP_ON_LOAD_FUNCTION;
+          const optionsQuery = Object.keys(options)
+            .map((k) => `${encodeURIComponent(k)}=${encodeURIComponent(options[k])}`)
+            .join('&');
 
-//     return this.initPromise as Promise<void>;
-//   };
+          const url = GOOGLE_MAPS_BASE_URL + optionsQuery;
 
-//   initMap = (mapElement): void => {
-//     let initElement = mapElement;
-//     if (typeof mapElement === 'string') {
-//       initElement = document.getElementById(mapElement);
-//     }
+          const script = document.createElement('script');
 
-//     this.map = new google.maps.Map(initElement, {
-//       center: INITIAL_MAP_CENTER,
-//       zoom: INITIAL_ZOOM,
-//     });
-//   };
+          script.setAttribute('src', url);
+          script.setAttribute('async', '');
+          script.setAttribute('defer', '');
 
-//   initAutocomplete = (inputElement, onPlaceChanged): google.maps.places.Autocomplete => {
-//     let initElement = inputElement;
-//     if (typeof inputElement === 'string') {
-//       initElement = document.getElementById(inputElement);
-//     }
+          document.head.appendChild(script);
+        } catch (error) {
+          reject(error);
+        }
+      }).then(() => {
+        window[TEMP_ON_LOAD_FUNCTION] = undefined;
+      });
+    }
 
-//     const autocomplete = new google.maps.places.Autocomplete(initElement, {
-//       componentRestrictions: { country: 'us' },
-//       types: ['geocode'],
-//     });
+    return this.initPromise as Promise<void>;
+  };
 
-//     //autocomplete.bindTo(this.map);
-//     //this.boundElements[inputElementId] = autocomplete
+  initMap = (mapElement: string | HTMLElement): void => {
+    let element: HTMLElement;
+    if (isString(mapElement)) {
+      const foundElement = document.getElementById(mapElement);
+      if (!foundElement) {
+        throw new Error(`ID not found: ${mapElement}`);
+      }
+      element = foundElement;
+    } else {
+      element = mapElement;
+    }
 
-//     if (onPlaceChanged) {
-//       const handler = onPlaceChanged(autocomplete);
-//       autocomplete.addListener('place_changed', handler);
-//     }
+    this.map = new google.maps.Map(element, {
+      center: INITIAL_MAP_CENTER,
+      zoom: INITIAL_ZOOM,
+    });
+  };
 
-//     return autocomplete;
-//   };
+  initAutocomplete = (
+    inputElement: string | HTMLInputElement,
+    onPlaceChanged: AutoCompleteHandler,
+  ): google.maps.places.Autocomplete => {
+    let element: HTMLInputElement;
+    if (isString(inputElement)) {
+      const foundElement = document.getElementById(inputElement);
+      if (!foundElement) {
+        throw new Error(`ID not found: ${inputElement}`);
+      }
+      element = foundElement as HTMLInputElement;
+    } else {
+      element = inputElement;
+    }
 
-//   focus = (coordinates, zoom = false) => {
-//     if (!this.map) {
-//       return;
-//     }
+    const autocomplete = new google.maps.places.Autocomplete(element, {
+      componentRestrictions: { country: 'us' },
+      types: ['geocode'],
+    });
 
-//     const centerPoint = coordinates.length
-//       ? { lat: coordinates[1], lng: coordinates[0] }
-//       : coordinates;
+    //autocomplete.bindTo(this.map);
+    //this.boundElements[inputElementId] = autocomplete
 
-//     this.map.setCenter(centerPoint);
-//     if (zoom) {
-//       this.map.setZoom(FOCUS_ZOOM);
-//     }
-//   };
+    if (onPlaceChanged) {
+      const handler = onPlaceChanged(autocomplete);
+      autocomplete.addListener('place_changed', handler);
+    }
 
-//   addMarkers = (markerDescriptions, onClick) => {
-//     if (!this.map) {
-//       return;
-//     }
+    return autocomplete;
+  };
 
-//     if (!this.mapElements.markers) {
-//       this.mapElements.markers = [];
-//     }
+  focus = (coordinates: number[] | Coordinates, zoom = false): void => {
+    if (!this.map) {
+      return;
+    }
 
-//     markerDescriptions.forEach((element) => {
-//       const markerOptions = {
-//         map: this.map,
-//         animation: google.maps.Animation.DROP,
-//         position: { lat: element.coordinates[1], lng: element.coordinates[0] },
-//       };
-//       if (element.label) {
-//         markerOptions.label = element.label;
-//       }
+    const centerPoint = isArray(coordinates)
+      ? { lat: coordinates[1], lng: coordinates[0] }
+      : coordinates;
 
-//       const marker = new google.maps.Marker(markerOptions);
-//       marker.data = element.data;
+    this.map.setCenter(centerPoint);
+    if (zoom) {
+      this.map.setZoom(FOCUS_ZOOM);
+    }
+  };
 
-//       if (element.description) {
-//         const info = new google.maps.InfoWindow({
-//           content: `<div>${element.description}</div>`,
-//         });
+  addMarkers = (markerDescriptions: MarkerDescription[], onClick: MarkerHandler): void => {
+    if (!this.map) {
+      return;
+    }
 
-//         marker.addListener('mouseover', () => {
-//           info.open(this.map, marker);
-//         });
+    markerDescriptions.forEach((element) => {
+      const markerOptions: google.maps.MarkerOptions = {
+        map: this.map,
+        animation: google.maps.Animation.DROP,
+        position: { lat: element.coordinates[1], lng: element.coordinates[0] },
+      };
+      if (element.label) {
+        markerOptions.label = element.label;
+      }
 
-//         marker.addListener('mouseout', () => {
-//           info.close();
-//         });
-//       }
+      const marker = new google.maps.Marker(markerOptions);
 
-//       if (onClick) {
-//         marker.addListener('click', onClick(marker));
-//       }
+      if (element.description) {
+        const info = new google.maps.InfoWindow({
+          content: `<div>${element.description}</div>`,
+        });
 
-//       this.mapElements.markers.push(marker);
-//     });
-//   };
+        marker.addListener('mouseover', () => {
+          info.open(this.map, marker);
+        });
 
-//   clearMarkers = (): void => {
-//     if (!this.mapElements || !this.mapElements.markers) {
-//       return;
-//     }
+        marker.addListener('mouseout', () => {
+          info.close();
+        });
+      }
 
-//     this.mapElements.markers.forEach((element) => {
-//       element.setMap(null);
-//     });
+      if (onClick) {
+        marker.addListener('click', onClick(marker));
+      }
 
-//     this.mapElements.markers = [];
-//   };
+      this.mapElements.markers.push(marker);
+    });
+  };
 
-//   getMarkerBounds = (): void => {
-//     if (!this.mapElements || !this.mapElements.markers) {
-//       return;
-//     }
+  clearMarkers = (): void => {
+    if (!this.mapElements || !this.mapElements.markers) {
+      return;
+    }
 
-//     const bounds = new google.maps.LatLngBounds();
-//     this.mapElements.markers.forEach((element) => {
-//       bounds.extend(element.position);
-//     });
+    this.mapElements.markers.forEach((element) => {
+      element.setMap(null);
+    });
 
-//     return bounds;
-//   };
+    this.mapElements.markers = [];
+  };
 
-//   setMarkers = (markerDescriptions, onClick, center = true): void => {
-//     this.clearMarkers();
-//     this.addMarkers(markerDescriptions, onClick);
+  getMarkerBounds = (): google.maps.LatLngBounds | void => {
+    if (!this.mapElements || !this.mapElements.markers) {
+      return;
+    }
 
-//     if (this.map && center) {
-//       const bounds = this.getMarkerBounds();
-//       this.map.fitBounds(bounds);
-//     }
-//   };
-// }
+    const bounds = new google.maps.LatLngBounds();
+    this.mapElements.markers.forEach((element) => {
+      const position = element.getPosition();
+      if (position) {
+        bounds.extend(position);
+      }
+    });
 
-// export default Maps;
+    return bounds;
+  };
 
-export {};
+  setMarkers = (
+    markerDescriptions: MarkerDescription[],
+    onClick: MarkerHandler,
+    center = true,
+  ): void => {
+    this.clearMarkers();
+    this.addMarkers(markerDescriptions, onClick);
+
+    if (this.map && center) {
+      const bounds = this.getMarkerBounds();
+      if (bounds) {
+        this.map.fitBounds(bounds);
+      }
+    }
+  };
+}
+
+export default Maps;

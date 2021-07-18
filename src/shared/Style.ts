@@ -7,7 +7,7 @@ import {
 } from '@material-ui/core';
 import { PropInjector } from '@material-ui/types';
 
-export type SharedStyleClass = 'paper' | 'form' | 'submit';
+export type SharedStyleClass = 'paper' | 'form' | 'submit' | 'vSpace2';
 export type SharedStyleProps = StyledComponentProps<SharedStyleClass>;
 
 export const sharedStyleCallback: StyleRulesCallback<
@@ -20,6 +20,9 @@ export const sharedStyleCallback: StyleRulesCallback<
     display: 'flex',
     overflow: 'auto',
     flexDirection: 'column',
+  },
+  vSpace2: {
+    marginBottom: theme.spacing(2),
   },
   form: {
     width: '100%', // Fix IE 11 issue.
