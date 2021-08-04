@@ -14,11 +14,15 @@ import { alertError } from './actions/AlertAction';
 import { Account } from './types/Message';
 import { FormatViewModel } from './types/Format';
 import { formatSave } from './actions/FormatAction';
+import store from './store';
+import Maps from './shared/Maps';
+import { mapInit } from './actions/MapAction';
 
 const mapStateToProps: MapStateToProps<AppStateProps, unknown, RootState> = (state: RootState) => {
   return {
-    isConfigLoaded: state.config.urls ? true : false,
+    isConfigLoaded: state.config.urls.roadWave ? true : false,
     isFormatsLoaded: state.format.list.length > 0,
+    isMapsLoaded: !!state.map.reference,
     isLoggedIn: state.account.jwtToken ? true : false,
   };
 };
@@ -70,6 +74,16 @@ const mapDispatchToProps: MapDispatchToPropsFunction<AppDispatchProps, unknown> 
         Routes[Services.RoadWave].FORMATS,
         responseHandler,
       );
+    },
+    getMaps: () => {
+      const maps = new Maps(store.getState().config.googleMapsApiKey);
+      return maps
+        .loadApiScript()
+        .then((m) => dispatch(mapInit(m)))
+        .catch((e) => {
+          console.error(e);
+          dispatch(alertError('Failed to initialize maps'));
+        });
     },
   };
 };

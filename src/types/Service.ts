@@ -8,7 +8,7 @@ export type ServiceRouteMap = Record<Services, Record<string, string>>;
 
 export const Routes: ServiceRouteMap = {
   [Services.Self]: {
-    CONFIG: 'config',
+    CONFIG: 'config.json',
   },
   [Services.User]: {
     ACCOUNT: 'account',

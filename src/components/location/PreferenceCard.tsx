@@ -46,10 +46,11 @@ const PreferenceCard: FunctionComponent<PreferenceCardProps> = (props) => {
     props.selectFormats(selected);
   };
 
-  const renderFormat = (format: FormatSelection) => {
+  const renderFormat = (format: FormatSelection, index: number) => {
     const name = checkboxName(format);
     return (
       <FormControlLabel
+        key={index}
         control={
           <Checkbox checked={state[name]} onChange={handleChange} name={name} color="primary" />
         }

@@ -22,12 +22,14 @@ export interface AppStateProps {
   isConfigLoaded: boolean;
   isLoggedIn: boolean;
   isFormatsLoaded: boolean;
+  isMapsLoaded: boolean;
 }
 
 export interface AppDispatchProps {
   getConfig: () => void;
   getAccount: () => void;
   getFormats: () => void;
+  getMaps: () => void;
 }
 
 export type AppProps = AppStateProps & AppDispatchProps & StyledComponentProps<StyleClass>;
@@ -56,6 +58,8 @@ const App: FunctionComponent<AppProps> = (props) => {
     props.getConfig();
   } else if (!props.isFormatsLoaded) {
     props.getFormats();
+  } else if (!props.isMapsLoaded) {
+    props.getMaps();
   }
 
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);

@@ -12,7 +12,7 @@ export type SharedStyleProps = StyledComponentProps<SharedStyleClass>;
 
 export const sharedStyleCallback: StyleRulesCallback<
   Theme,
-  Record<string, never>,
+  Record<string, unknown>,
   SharedStyleClass
 > = (theme: Theme) => ({
   paper: {
@@ -38,7 +38,7 @@ export const sharedStyleCallback: StyleRulesCallback<
 });
 
 export const withSharedStyles = <
-  TProps extends Record<string, never> = Record<string, never>,
+  TProps extends Record<string, unknown> = Record<string, unknown>,
   TStyleClass extends string = SharedStyleClass,
 >(
   styleCallback?: StyleRulesCallback<Theme, TProps, TStyleClass>,

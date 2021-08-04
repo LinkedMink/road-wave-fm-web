@@ -6,6 +6,7 @@ import confirm from './ConfirmReducer';
 import format from './FormatReducer';
 import loading from './LoadingReducer';
 import location from './LocationReducer';
+import map from './MapReducer';
 import station from './StationReducer';
 
 const rootMap = {
@@ -16,6 +17,7 @@ const rootMap = {
   format,
   loading,
   location,
+  map,
   station,
 };
 

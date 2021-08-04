@@ -6,8 +6,8 @@ import store from '../store';
 import { alertError } from '../actions/AlertAction';
 import { loadingStart, loadingEnd } from '../actions/LoadingAction';
 import { LogService } from './LogService';
-import { ResponseCode, ResponseData, Services } from '../types/Service';
-import { isAction, isString } from './TypeCheck';
+import { Services } from '../types/Service';
+import { isAction } from './TypeCheck';
 
 const logger = LogService.get('RequestFactory');
 const GENERIC_REQUEST_ERROR =
@@ -71,14 +71,10 @@ const handleRawResponse = (dispatch: Dispatch, url: string, options: RequestInit
 };
 
 const handleServiceResponse = <T>(dispatch: Dispatch, requestSuccessFunc: ResponseHandler<T>) => {
-  return (json: ResponseData<T>) => {
-    if (json.status !== ResponseCode.Success && isString(json.data)) {
-      dispatch(alertError(json.data));
-    } else {
-      const result = requestSuccessFunc(json.data);
-      if (isAction(result)) {
-        dispatch(result);
-      }
+  return (json: T) => {
+    const result = requestSuccessFunc(json);
+    if (isAction(result)) {
+      dispatch(result);
     }
 
     dispatch(loadingEnd());

@@ -86,7 +86,7 @@ class NavigationMenu extends React.Component<NavigationMenuProps> {
 
     if (link.tooltip) {
       return (
-        <Tooltip title={link.tooltip} placement="right">
+        <Tooltip key={index} title={link.tooltip} placement="right">
           {listItem}
         </Tooltip>
       );

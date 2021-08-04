@@ -27,7 +27,7 @@ export type MarkerHandler = (marker: google.maps.Marker) => () => void;
 export type AutoCompleteHandler = (marker: google.maps.places.Autocomplete) => () => void;
 
 class Maps {
-  private initPromise: Promise<void> | null = null;
+  private initPromise: Promise<Maps> | null = null;
   private mapElements: MapElements = {
     markers: [],
   };
@@ -35,8 +35,8 @@ class Maps {
 
   constructor(private readonly apiKey: string) {}
 
-  loadApiScript = (options: Record<string, string> = {}): Promise<void> => {
-    if (!this.initPromise && !window.google.maps) {
+  loadApiScript = (options: Record<string, string> = {}): Promise<Maps> => {
+    if (!this.initPromise && !window.google?.maps) {
       this.initPromise = new Promise<void>((resolve, reject) => {
         try {
           window[TEMP_ON_LOAD_FUNCTION] = resolve;
@@ -61,10 +61,11 @@ class Maps {
         }
       }).then(() => {
         window[TEMP_ON_LOAD_FUNCTION] = undefined;
+        return this;
       });
     }
 
-    return this.initPromise as Promise<void>;
+    return this.initPromise as Promise<Maps>;
   };
 
   initMap = (mapElement: string | HTMLElement): void => {
