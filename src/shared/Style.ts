@@ -7,7 +7,7 @@ import {
 } from '@material-ui/core';
 import { PropInjector } from '@material-ui/types';
 
-export type SharedStyleClass = 'paper' | 'form' | 'submit' | 'vSpace2';
+export type SharedStyleClass = 'paper' | 'accordionDetails' | 'form' | 'submit' | 'vSpace2';
 export type SharedStyleProps = StyledComponentProps<SharedStyleClass>;
 
 export const sharedStyleCallback: StyleRulesCallback<
@@ -20,6 +20,10 @@ export const sharedStyleCallback: StyleRulesCallback<
     display: 'flex',
     overflow: 'auto',
     flexDirection: 'column',
+  },
+  accordionDetails: {
+    borderTop: `1px solid ${theme.palette.divider}`,
+    paddingTop: theme.spacing(2),
   },
   vSpace2: {
     marginBottom: theme.spacing(2),

@@ -1,9 +1,9 @@
 import { connect, MapDispatchToPropsFunction, MapStateToProps } from 'react-redux';
 import { Dispatch } from 'redux';
 import {
-  clearLocation,
   clearLocationWatchId,
   setLocation,
+  setLocationFailed,
   setLocationWatchId,
 } from '../../actions/LocationAction';
 import PermissionCard, {
@@ -22,6 +22,8 @@ const mapStateToProps: MapStateToProps<
 > = (state: RootState) => {
   return {
     hasPermission: !!(state.location.watchId && state.location.current),
+    hasFailedGetLocation: state.location.hasFailedGetLocation,
+    currentLocation: state.location.current,
   };
 };
 
@@ -41,8 +43,7 @@ const mapDispatchToProps: MapDispatchToPropsFunction<
           );
         },
         (positionError: GeolocationPositionError) => {
-          dispatch(clearLocationWatchId());
-          dispatch(clearLocation());
+          dispatch(setLocationFailed());
           console.log(positionError);
         },
         {
@@ -56,7 +57,6 @@ const mapDispatchToProps: MapDispatchToPropsFunction<
     },
     disableLocation: () => {
       dispatch(clearLocationWatchId());
-      dispatch(clearLocation());
     },
   };
 };

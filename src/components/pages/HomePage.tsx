@@ -5,12 +5,13 @@ import { SharedStyleProps, withSharedStyles } from '../../shared/Style';
 import ListCardContainer from '../../containers/location/ListCardContainer';
 import MapCardContainer from '../../containers/location/MapCardContainer';
 import PermissionCardContainer from '../../containers/location/PermisssionCardContainer';
-import { StationModel } from '../../types/Station';
+import { StationViewModel } from '../../types/Station';
+import PreferenceCardContainer from '../../containers/location/PreferenceCardContainer';
 
 type HomePageProps = SharedStyleProps;
 
 class HomePage extends React.Component<HomePageProps> {
-  focusStation = (_station: StationModel) => {
+  focusStation = (_station: StationViewModel) => {
     // TODO
   };
 
@@ -21,6 +22,9 @@ class HomePage extends React.Component<HomePageProps> {
           <Grid item xs={12} md={4} container>
             <Grid item xs={12} className={this.props.classes?.vSpace2}>
               <PermissionCardContainer />
+            </Grid>
+            <Grid item xs={12} className={this.props.classes?.vSpace2}>
+              <PreferenceCardContainer />
             </Grid>
             <Grid item xs={12}>
               <ListCardContainer onStationSelect={this.focusStation} />

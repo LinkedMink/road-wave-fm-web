@@ -1,6 +1,7 @@
 export enum Services {
   Self = '',
   User = 'user',
+  RoadWave = 'roadWave',
 }
 
 export type ServiceRouteMap = Record<Services, Record<string, string>>;
@@ -15,6 +16,10 @@ export const Routes: ServiceRouteMap = {
     PASSWORD: 'password',
     REGISTER: 'register',
     SETTINGS: 'settings',
+  },
+  [Services.RoadWave]: {
+    FORMATS: 'formats',
+    STATIONS: 'stations',
   },
 };
 

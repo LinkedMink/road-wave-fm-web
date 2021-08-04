@@ -21,11 +21,13 @@ type StyleClass = 'root' | 'appBarSpacer' | 'content' | 'container';
 export interface AppStateProps {
   isConfigLoaded: boolean;
   isLoggedIn: boolean;
+  isFormatsLoaded: boolean;
 }
 
 export interface AppDispatchProps {
-  getConfig?: () => void;
-  getAccount?: () => void;
+  getConfig: () => void;
+  getAccount: () => void;
+  getFormats: () => void;
 }
 
 export type AppProps = AppStateProps & AppDispatchProps & StyledComponentProps<StyleClass>;
@@ -50,6 +52,12 @@ const styles: StyleRulesCallback<Theme, AppProps, StyleClass> = (theme: Theme) =
 });
 
 const App: FunctionComponent<AppProps> = (props) => {
+  if (!props.isConfigLoaded) {
+    props.getConfig();
+  } else if (!props.isFormatsLoaded) {
+    props.getFormats();
+  }
+
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
   return (

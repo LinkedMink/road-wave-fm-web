@@ -6,6 +6,7 @@ export enum LocationActionType {
   LocationClear = 'LOCATION_CLEAR',
   LocationWatchIdSet = 'LOCATION_WATCH_ID_SET',
   LocationWatchIdClear = 'LOCATION_WATCH_ID_CLEAR',
+  LocationFailed = 'LOCATION_FAILED',
 }
 
 export interface LocationAction extends Action<LocationActionType> {
@@ -37,6 +38,13 @@ export function setLocationWatchId(id: number): LocationAction {
 export function clearLocationWatchId(): LocationAction {
   return {
     type: LocationActionType.LocationWatchIdClear,
+    payload: null,
+  };
+}
+
+export function setLocationFailed(): LocationAction {
+  return {
+    type: LocationActionType.LocationFailed,
     payload: null,
   };
 }

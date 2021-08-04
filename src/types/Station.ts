@@ -1,29 +1,12 @@
-import { TrackedEntityModel } from './Entity';
+import { Coordinates } from './Location';
 
-export interface GeoPointModel {
-  type: string;
-  coordinates: number[];
-}
-
-export interface StationModel extends TrackedEntityModel {
+export interface StationViewModel {
+  id: string;
   callSign: string;
-  city?: string;
-  organization?: string;
-  protocol?: string;
-  frequency?: string;
-  format?: string;
-  websiteUrl?: string;
-  streamUrl?: string;
-  owner?: string;
-  address?: string;
-  phone?: string;
-  regulatoryStatus?: string;
-  power?: number;
-  altitudeAboveAverage?: number;
-  altitudeAboveGround?: number;
-  altitudeAboveSeaLevel?: number;
-  antennaPattern?: string;
-  location: GeoPointModel;
-  licenseGrantedDate?: Date;
-  licenseExpiresDate?: Date;
+  protocol: string;
+  frequency: number;
+  format: string;
+  location: Coordinates;
+  distance?: number;
+  signalStrength?: number;
 }

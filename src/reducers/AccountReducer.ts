@@ -25,7 +25,7 @@ const accountReducer: Reducer<AccountState, AccountAction> = (
       jwtToken: undefined,
       decodedToken: undefined,
     });
-  } else if (action.type === AccountActionType.SaveAccount) {
+  } else if (action.type === AccountActionType.Save) {
     return Object.assign({}, state, {
       profile: action.payload,
     });

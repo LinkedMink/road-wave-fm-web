@@ -3,9 +3,11 @@ import MapCard, { MapCardStateProps } from '../../components/location/MapCard';
 import { RootState } from '../../reducers/RootReducer';
 
 const mapStateToProps: MapStateToProps<MapCardStateProps, Record<string, never>, RootState> = (
-  _state: RootState,
+  state: RootState,
 ) => {
-  return {};
+  return {
+    stations: state.station.list,
+  };
 };
 
 const MapCardContainer = connect(mapStateToProps)(MapCard);

@@ -2,9 +2,9 @@ import { Action } from 'redux';
 import { AccountModel, JwtPayload } from '../types/Account';
 
 export enum AccountActionType {
-  SaveSession = 'SAVE_SESSION',
-  DestroySession = 'DESTROY_SESSION',
-  SaveAccount = 'SAVE_ACCOUNT',
+  SaveSession = 'ACCOUNT_SAVE_SESSION',
+  DestroySession = 'ACCOUNT_DESTROY_SESSION',
+  Save = 'ACCOUNT_SAVE',
 }
 
 export interface AccountTokens {
@@ -33,7 +33,7 @@ export function destroySession(): AccountAction {
 
 export function saveAccount(data: AccountModel): AccountAction {
   return {
-    type: AccountActionType.SaveAccount,
+    type: AccountActionType.Save,
     payload: data,
   };
 }

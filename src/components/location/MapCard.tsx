@@ -3,11 +3,11 @@ import { Paper, Typography } from '@material-ui/core';
 import React, { FunctionComponent } from 'react';
 import { SharedStyleProps, withSharedStyles } from '../../shared/Style';
 import { Coordinates } from '../../types/Location';
-import { StationModel } from '../../types/Station';
+import { StationViewModel } from '../../types/Station';
 
 export interface MapCardStateProps {
   currentLocation?: Coordinates;
-  stations?: StationModel[];
+  stations: StationViewModel[];
 }
 
 type MapCardProps = MapCardStateProps & SharedStyleProps;

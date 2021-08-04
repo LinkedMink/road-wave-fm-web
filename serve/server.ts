@@ -21,6 +21,7 @@ const logLevelPersist = process.env.LOG_LEVEL_PERSIST
 const config = {
   urls: {
     user: process.env.USER_SERVICE_URL,
+    roadWave: process.env.ROAD_WAVE_SERVICE_URL,
   } as Record<string, string>,
   jwtPublicKey,
   logLevelConsole,

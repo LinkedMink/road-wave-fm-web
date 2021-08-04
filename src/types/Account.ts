@@ -1,5 +1,3 @@
-import { TrackedEntityModel } from './Entity';
-
 export enum Claim {
   Settings = 'UserSettings',
 }
@@ -16,7 +14,7 @@ export interface JwtPayload {
   sub: string;
 }
 
-export interface AccountModel extends TrackedEntityModel {
+export interface AccountModel {
   email: string;
   password?: string;
   isEmailVerified: boolean;

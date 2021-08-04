@@ -5,30 +5,46 @@ import { Coordinates } from '../types/Location';
 export interface LocationState {
   watchId?: number;
   current?: Coordinates;
+  hasFailedGetLocation: boolean;
 }
 
-const defaultState: LocationState = {};
+const defaultState: LocationState = {
+  hasFailedGetLocation: false,
+};
 
 const locationReducer: Reducer<LocationState, LocationAction> = (
   state: LocationState = defaultState,
   action: LocationAction,
 ): LocationState => {
   if (action.type === LocationActionType.LocationSet) {
-    return Object.assign({}, state, {
-      current: action.payload,
-    });
+    return {
+      ...state,
+      current: action.payload as Coordinates,
+      hasFailedGetLocation: false,
+    };
   } else if (action.type === LocationActionType.LocationClear) {
-    return Object.assign({}, state, {
+    return {
+      ...state,
       current: undefined,
-    });
+    };
   } else if (action.type === LocationActionType.LocationWatchIdSet) {
-    return Object.assign({}, state, {
-      watchId: action.payload,
-    });
+    return {
+      ...state,
+      watchId: action.payload as number,
+    };
   } else if (action.type === LocationActionType.LocationWatchIdClear) {
-    return Object.assign({}, state, {
+    return {
+      ...state,
       watchId: undefined,
-    });
+      current: undefined,
+    };
+  } else if (action.type === LocationActionType.LocationFailed) {
+    return {
+      ...state,
+      watchId: undefined,
+      current: undefined,
+      hasFailedGetLocation: true,
+    };
   } else {
     return state;
   }

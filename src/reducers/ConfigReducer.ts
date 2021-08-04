@@ -1,5 +1,5 @@
 import { Reducer } from 'redux';
-import { ConfigAction, SAVE_CONFIG } from '../actions/ConfigAction';
+import { ConfigAction, ConfigActionType } from '../actions/ConfigAction';
 import { LogLevel } from '../shared/LogService';
 import { Services } from '../types/Service';
 
@@ -15,6 +15,7 @@ const defaultState: ConfigState = {
   urls: {
     [Services.Self]: '',
     [Services.User]: '',
+    [Services.RoadWave]: '',
   },
   signerKey: null,
   googleMapsApiKey: '',
@@ -26,9 +27,13 @@ const configReducer: Reducer<ConfigState, ConfigAction> = (
   state: ConfigState = defaultState,
   action: ConfigAction,
 ): ConfigState => {
-  if (action.type === SAVE_CONFIG) {
+  if (action.type === ConfigActionType.Save) {
     const config: ConfigState = {
-      urls: action.payload.urls,
+      ...state,
+      urls: {
+        ...state.urls,
+        ...action.payload.urls,
+      },
       signerKey: action.payload.jwtPublicKey ? atob(action.payload.jwtPublicKey) : null,
       googleMapsApiKey: action.payload.googleMapsApiKey,
       logLevelConsole: action.payload.logLevelConsole,
