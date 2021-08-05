@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { Loader } from '@googlemaps/js-api-loader';
 import { connect, MapDispatchToPropsFunction, MapStateToProps } from 'react-redux';
 import { Dispatch } from 'redux';
 
@@ -14,15 +15,14 @@ import { alertError } from './actions/AlertAction';
 import { Account } from './types/Message';
 import { FormatViewModel } from './types/Format';
 import { formatSave } from './actions/FormatAction';
-import store from './store';
-import Maps from './shared/Maps';
 import { mapInit } from './actions/MapAction';
 
 const mapStateToProps: MapStateToProps<AppStateProps, unknown, RootState> = (state: RootState) => {
   return {
     isConfigLoaded: state.config.urls.roadWave ? true : false,
     isFormatsLoaded: state.format.list.length > 0,
-    isMapsLoaded: !!state.map.reference,
+    mapsApiKey:
+      state.config.googleMapsApiKey.length > 0 ? state.config.googleMapsApiKey : undefined,
     isLoggedIn: state.account.jwtToken ? true : false,
   };
 };
@@ -75,10 +75,10 @@ const mapDispatchToProps: MapDispatchToPropsFunction<AppDispatchProps, unknown> 
         responseHandler,
       );
     },
-    getMaps: () => {
-      const maps = new Maps(store.getState().config.googleMapsApiKey);
-      return maps
-        .loadApiScript()
+    getMaps: (apiKey: string) => {
+      const mapsLoader = new Loader({ apiKey });
+      return mapsLoader
+        .load()
         .then((m) => dispatch(mapInit(m)))
         .catch((e) => {
           console.error(e);

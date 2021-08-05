@@ -1,22 +1,14 @@
-FROM node:14-alpine
+FROM nginx:stable-alpine
 
 ARG ENVIRONMENT=development
 
-ENV NODE_ENV ENVIRONMENT
 ENV IS_CONTAINER_ENV true
 
-WORKDIR /usr/src/app
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-COPY package*.json ./
-COPY yarn.lock ./
+WORKDIR /usr/share/nginx/html
 
-RUN apk update
-RUN apk add curl python --no-cache --virtual build-dependencies build-base gcc
-
-RUN yarn install --frozen-lockfile --production=true
-
-COPY . .
+COPY build/ .
+RUN ls -la .
 
 EXPOSE 80
-
-CMD [ "npm", "run", "start:serve" ]

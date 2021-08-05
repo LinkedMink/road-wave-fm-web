@@ -6,6 +6,7 @@ const mapStateToProps: MapStateToProps<MapCardStateProps, Record<string, never>,
   state: RootState,
 ) => {
   return {
+    isMapsApiLoaded: !!state.map.api,
     stations: state.station.list,
   };
 };

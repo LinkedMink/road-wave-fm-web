@@ -22,14 +22,14 @@ export interface AppStateProps {
   isConfigLoaded: boolean;
   isLoggedIn: boolean;
   isFormatsLoaded: boolean;
-  isMapsLoaded: boolean;
+  mapsApiKey?: string;
 }
 
 export interface AppDispatchProps {
   getConfig: () => void;
   getAccount: () => void;
   getFormats: () => void;
-  getMaps: () => void;
+  getMaps: (apiKey: string) => void;
 }
 
 export type AppProps = AppStateProps & AppDispatchProps & StyledComponentProps<StyleClass>;
@@ -56,10 +56,13 @@ const styles: StyleRulesCallback<Theme, AppProps, StyleClass> = (theme: Theme) =
 const App: FunctionComponent<AppProps> = (props) => {
   if (!props.isConfigLoaded) {
     props.getConfig();
-  } else if (!props.isFormatsLoaded) {
-    props.getFormats();
-  } else if (!props.isMapsLoaded) {
-    props.getMaps();
+  } else {
+    if (!props.isFormatsLoaded) {
+      props.getFormats();
+    }
+    if (props.mapsApiKey) {
+      props.getMaps(props.mapsApiKey);
+    }
   }
 
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);

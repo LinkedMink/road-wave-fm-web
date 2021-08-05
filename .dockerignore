@@ -21,3 +21,5 @@ tsconfig*.json
 webpack.*
 *.key
 *.key.pub
+config.json
+config.sample.json

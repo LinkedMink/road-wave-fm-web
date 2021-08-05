@@ -4,6 +4,11 @@ IMAGE_NAME="road-wave-fm-web"
 ARCHITECTURES="linux/amd64,linux/arm64"
 DOCKER_ARGS=""
 
+# React Script Args
+# PUBLIC_URL=
+CI=true
+GENERATE_SOURCEMAP=true
+
 if [ -z "$DOCKER_SCOPE" ]; then
   DOCKER_SCOPE="linkedmink/" 
 fi
@@ -20,13 +25,11 @@ startTime=$(date +"%s")
 echo "---------- Build Started: $startTime ----------"
 
 if [ "$2" = "prod" ]; then
-  yarn run build:prod
-  yarn run build:serve:prod
+  GENERATE_SOURCEMAP=false
   DOCKER_ARGS="--build-arg ENVIRONMENT=production"
-else
-  yarn run build
-  yarn run build:serve
 fi
+
+yarn build
 
 if [ "$1" = "deploy" ]; then
   kubectl set image \

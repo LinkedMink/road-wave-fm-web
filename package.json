@@ -13,11 +13,22 @@
   },
   "private": true,
   "dependencies": {
-    "express": "^4.17.1"
-  },
-  "devDependencies": {
+    "@googlemaps/js-api-loader": "^1.12.1",
     "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
+    "jsonwebtoken": "^8.5.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-redux": "^7.2.4",
+    "react-router-dom": "^5.2.0",
+    "redux": "^4.1.0",
+    "redux-thunk": "^2.3.0",
+    "query-string": "^7.0.1",
+    "url-join": "^4.0.1",
+    "web-vitals": "^1.0.1"
+  },
+  "devDependencies": {
+    "@testing-library/dom": "^8.1.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -34,23 +45,13 @@
     "@types/url-join": "^4.0.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",
-    "jsonwebtoken": "^8.5.1",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-redux": "^7.2.4",
-    "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
-    "redux": "^4.1.0",
-    "redux-thunk": "^2.3.0",
     "prettier": "^2.3.2",
-    "query-string": "^7.0.1",
-    "typescript": "^4.1.2",
-    "url-join": "^4.0.1",
-    "web-vitals": "^1.0.1"
+    "typescript": "^4.1.2"
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && rm build/config*.json",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint -c .eslintrc.js src/**/*.[tj]s{,x}",

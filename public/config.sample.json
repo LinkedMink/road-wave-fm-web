@@ -1,0 +1,10 @@
+{
+  "urls": {
+    "user": "http://localhost:8081",
+    "roadWave": "http://localhost:8080"
+  },
+  "googleMapsApiKey": "<My Key>",
+  "jwtPublicKey": "<My base64 key>",
+  "logLevelConsole": 0,
+  "logLevelPersist": 0
+}

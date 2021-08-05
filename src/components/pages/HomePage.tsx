@@ -19,16 +19,10 @@ class HomePage extends React.Component<HomePageProps> {
     return (
       <Container maxWidth="xl">
         <Grid container spacing={2}>
-          <Grid item xs={12} md={4} container>
-            <Grid item xs={12} className={this.props.classes?.vSpace2}>
-              <PermissionCardContainer />
-            </Grid>
-            <Grid item xs={12} className={this.props.classes?.vSpace2}>
-              <PreferenceCardContainer />
-            </Grid>
-            <Grid item xs={12}>
-              <ListCardContainer onStationSelect={this.focusStation} />
-            </Grid>
+          <Grid item xs={12} md={4}>
+            <PermissionCardContainer />
+            <PreferenceCardContainer />
+            <ListCardContainer onStationSelect={this.focusStation} />
           </Grid>
           <Grid item xs={12} md={8}>
             <MapCardContainer />

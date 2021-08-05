@@ -1,8 +1,8 @@
 import { MapAction, MapActionType } from '../actions/MapAction';
-import Maps from '../shared/Maps';
+import { MapsApi } from '../types/Map';
 
 export interface MapState {
-  reference?: Maps;
+  api?: MapsApi;
 }
 
 const defaultState: MapState = {};
@@ -10,7 +10,7 @@ const defaultState: MapState = {};
 const MapReducer = (state: MapState = defaultState, action: MapAction): MapState => {
   if (action.type === MapActionType.Init) {
     return {
-      reference: action.payload,
+      api: action.payload,
     };
   } else {
     return state;
