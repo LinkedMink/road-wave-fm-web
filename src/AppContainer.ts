@@ -76,7 +76,7 @@ const mapDispatchToProps: MapDispatchToPropsFunction<AppDispatchProps, unknown> 
       );
     },
     getMaps: (apiKey: string) => {
-      const mapsLoader = new Loader({ apiKey });
+      const mapsLoader = new Loader({ apiKey, libraries: ['places'] });
       return mapsLoader
         .load()
         .then((m) => dispatch(mapInit(m)))

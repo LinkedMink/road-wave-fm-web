@@ -1,14 +1,15 @@
 /* eslint-disable react/prop-types */
 import {
-  Box,
-  IconButton,
+  FilledInput,
+  FormControl,
+  InputAdornment,
+  InputLabel,
   StyledComponentProps,
   StyleRulesCallback,
-  TextField,
   Theme,
 } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useEffect } from 'react';
 import { SharedStyleProps, withSharedStyles } from '../../shared/Style';
 
 type StyleClass = 'search';
@@ -28,6 +29,7 @@ const styles: StyleRulesCallback<Theme, Record<string, unknown>, StyleClass> = (
 
 export interface SearchBarOwnProps {
   map?: google.maps.Map;
+  onPlaceChanged: (autocomplete: google.maps.places.Autocomplete) => void;
 }
 
 type SearchBarProps = SearchBarOwnProps & SharedStyleProps & StyleProps;
@@ -35,15 +37,32 @@ type SearchBarProps = SearchBarOwnProps & SharedStyleProps & StyleProps;
 const SearchBar: FunctionComponent<SearchBarProps> = (props) => {
   const inputRef = React.createRef<HTMLInputElement>();
 
+  useEffect(() => {
+    if (props.map && inputRef.current) {
+      const autocomplete = new google.maps.places.Autocomplete(inputRef.current, {
+        componentRestrictions: { country: 'us' },
+        types: ['geocode'],
+      });
+      autocomplete.bindTo('bounds', props.map);
+
+      const handler = props.onPlaceChanged.bind(undefined, autocomplete);
+      autocomplete.addListener('place_changed', handler);
+    }
+  });
+
   return (
-    <form noValidate>
-      <Box className={props.classes?.search}>
-        <TextField inputRef={inputRef} label="Search" />
-        <IconButton aria-label="Search">
-          <SearchIcon />
-        </IconButton>
-      </Box>
-    </form>
+    <FormControl variant="filled" fullWidth={true}>
+      <InputLabel htmlFor="location-search">Search</InputLabel>
+      <FilledInput
+        id="location-search"
+        inputRef={inputRef}
+        endAdornment={
+          <InputAdornment position="end">
+            <SearchIcon />
+          </InputAdornment>
+        }
+      />
+    </FormControl>
   );
 };
 

@@ -3,75 +3,41 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  Checkbox,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
+  StyledComponentProps,
+  StyleRulesCallback,
+  Theme,
   Typography,
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import React, { ChangeEvent, FunctionComponent } from 'react';
+import clsx from 'clsx';
+import React, { FunctionComponent } from 'react';
+import PreferenceFormatGroupContainer from '../../containers/location/PreferenceFormatGroupContainer';
+import PreferenceLocationGroupContainer from '../../containers/location/PreferenceLocationGroupContainer';
 import { SharedStyleProps, withSharedStyles } from '../../shared/Style';
-import { FormatSelection } from '../../types/Format';
 
-const CHECKBOX_PREFIX = 'format';
+type StyleClass = 'sections';
+type StyleProps = StyledComponentProps<StyleClass>;
 
-export interface PreferenceCardStateProps {
-  formats: FormatSelection[];
-}
+const styles: StyleRulesCallback<Theme, Record<string, unknown>, StyleClass> = (theme: Theme) => ({
+  sections: {
+    marginBottom: theme.spacing(1),
+  },
+});
 
-export interface PreferenceCardDispatchProps {
-  selectFormats: (ids: string[]) => void;
-}
-
-type PreferenceCardProps = PreferenceCardStateProps &
-  PreferenceCardDispatchProps &
-  SharedStyleProps;
+type PreferenceCardProps = SharedStyleProps & StyleProps;
 
 const PreferenceCard: FunctionComponent<PreferenceCardProps> = (props) => {
-  const checkboxName = (format: FormatSelection) => CHECKBOX_PREFIX + format.id;
-
-  const checkboxState = props.formats.reduce((acc, next) => {
-    acc[next.id] = next.isSelected;
-    return acc;
-  }, {} as Record<string, boolean>);
-
-  const [state, setState] = React.useState(checkboxState);
-
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const formatId = event.target.name.substring(event.target.name.length - CHECKBOX_PREFIX.length);
-    setState({ ...state, [formatId]: event.target.checked });
-
-    const selected = Object.keys(state).filter((id) => state[id]);
-    props.selectFormats(selected);
-  };
-
-  const renderFormat = (format: FormatSelection, index: number) => {
-    const name = checkboxName(format);
-    return (
-      <FormControlLabel
-        key={index}
-        control={
-          <Checkbox checked={state[name]} onChange={handleChange} name={name} color="primary" />
-        }
-        label={format.name}
-      />
-    );
-  };
-
   return (
-    <Accordion>
+    <Accordion defaultExpanded={true}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <Typography variant="h5">Preferences</Typography>
       </AccordionSummary>
-      <AccordionDetails className={props.classes?.accordionDetails}>
-        <FormControl component="fieldset">
-          <FormLabel component="legend">Formats</FormLabel>
-          {props.formats.map(renderFormat)}
-        </FormControl>
+      <AccordionDetails className={clsx(props.classes?.accordionDetails, props.classes?.columnBox)}>
+        <PreferenceLocationGroupContainer />
+        <PreferenceFormatGroupContainer />
       </AccordionDetails>
     </Accordion>
   );
 };
 
-export default withSharedStyles()(PreferenceCard);
+export default withSharedStyles(styles)(PreferenceCard);

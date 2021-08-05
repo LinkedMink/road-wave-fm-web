@@ -1,13 +1,13 @@
 import { connect, MapDispatchToPropsFunction, MapStateToProps } from 'react-redux';
 import { Dispatch } from 'redux';
-import PreferenceCard, {
-  PreferenceCardDispatchProps,
-  PreferenceCardStateProps,
-} from '../../components/location/PreferenceCard';
+import PreferenceFormatGroup, {
+  PreferenceFormatGroupDispatchProps,
+  PreferenceFormatGroupStateProps,
+} from '../../components/location/PreferenceFormatGroup';
 import { RootState } from '../../reducers/RootReducer';
 
 const mapStateToProps: MapStateToProps<
-  PreferenceCardStateProps,
+  PreferenceFormatGroupStateProps,
   Record<string, never>,
   RootState
 > = (state: RootState) => {
@@ -17,7 +17,7 @@ const mapStateToProps: MapStateToProps<
 };
 
 const mapDispatchToProps: MapDispatchToPropsFunction<
-  PreferenceCardDispatchProps,
+  PreferenceFormatGroupDispatchProps,
   Record<string, never>
 > = (_dispatch: Dispatch) => {
   return {
@@ -27,6 +27,9 @@ const mapDispatchToProps: MapDispatchToPropsFunction<
   };
 };
 
-const PreferenceCardContainer = connect(mapStateToProps, mapDispatchToProps)(PreferenceCard);
+const PreferenceFormatGroupContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(PreferenceFormatGroup);
 
-export default PreferenceCardContainer;
+export default PreferenceFormatGroupContainer;

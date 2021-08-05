@@ -45,9 +45,12 @@ const styles: StyleRulesCallback<Theme, AppProps, StyleClass> = (theme: Theme) =
     flexGrow: 1,
     height: '100vh',
     overflow: 'auto',
+    alignItems: 'stretch',
   },
   container: {
+    display: 'flex',
     flex: '1 1 auto',
+    alignItems: 'stretch',
     paddingTop: theme.spacing(4),
     paddingBottom: theme.spacing(4),
   },

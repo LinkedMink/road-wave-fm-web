@@ -4,11 +4,20 @@ import Grid from '@material-ui/core/Grid';
 import { SharedStyleProps, withSharedStyles } from '../../shared/Style';
 import ListCardContainer from '../../containers/location/ListCardContainer';
 import MapCardContainer from '../../containers/location/MapCardContainer';
-import PermissionCardContainer from '../../containers/location/PermisssionCardContainer';
 import { StationViewModel } from '../../types/Station';
-import PreferenceCardContainer from '../../containers/location/PreferenceCardContainer';
+import PreferenceCard from '../location/PreferenceCard';
+import { StyledComponentProps, StyleRulesCallback, Theme } from '@material-ui/core';
 
-type HomePageProps = SharedStyleProps;
+type StyleClass = 'fullscreen';
+type StyleProps = StyledComponentProps<StyleClass>;
+
+const styles: StyleRulesCallback<Theme, Record<string, unknown>, StyleClass> = (_theme: Theme) => ({
+  fullscreen: {
+    height: '100%',
+  },
+});
+
+type HomePageProps = SharedStyleProps & StyleProps;
 
 class HomePage extends React.Component<HomePageProps> {
   focusStation = (_station: StationViewModel) => {
@@ -18,13 +27,12 @@ class HomePage extends React.Component<HomePageProps> {
   render = () => {
     return (
       <Container maxWidth="xl">
-        <Grid container spacing={2}>
+        <Grid container spacing={2} className={this.props.classes?.fullscreen}>
           <Grid item xs={12} md={4}>
-            <PermissionCardContainer />
-            <PreferenceCardContainer />
+            <PreferenceCard />
             <ListCardContainer onStationSelect={this.focusStation} />
           </Grid>
-          <Grid item xs={12} md={8}>
+          <Grid item xs={12} md={8} className={this.props.classes?.fullscreen}>
             <MapCardContainer />
           </Grid>
         </Grid>
@@ -33,4 +41,4 @@ class HomePage extends React.Component<HomePageProps> {
   };
 }
 
-export default withSharedStyles()(HomePage);
+export default withSharedStyles(styles)(HomePage);
