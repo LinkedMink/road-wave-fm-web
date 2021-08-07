@@ -3,12 +3,13 @@ import { Paper, StyledComponentProps, StyleRulesCallback, Theme } from '@materia
 import clsx from 'clsx';
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { SharedStyleProps, withSharedStyles } from '../../shared/Style';
-import { Coordinates } from '../../types/Location';
+import { Coordinates } from '../../types/Map';
 import { StationViewModel } from '../../types/Station';
 import SearchBar from './SearchBar';
 
 const INITIAL_MAP_CENTER = { lat: 39.8283, lng: -98.5795 }; // Center of US
 const INITIAL_ZOOM = 4;
+const FOCUS_ZOOM = 10;
 
 type StyleClass = 'map' | 'search' | 'panel';
 type StyleProps = StyledComponentProps<StyleClass>;
@@ -38,7 +39,7 @@ export interface MapCardStateProps {
 }
 
 export interface MapCardDispatchProps {
-  setLocation(lat: number, lng: number): void;
+  selectLocation(lat: number, lng: number): void;
 }
 
 type MapCardProps = MapCardStateProps & MapCardDispatchProps & SharedStyleProps & StyleProps;
@@ -50,7 +51,7 @@ const MapCard: FunctionComponent<MapCardProps> = (props) => {
   const placeChangedHandler = (autocomplate: google.maps.places.Autocomplete) => {
     const location = autocomplate.getPlace().geometry?.location;
     if (location) {
-      props.setLocation(location.lat(), location.lng());
+      props.selectLocation(location.lat(), location.lng());
     }
   };
 

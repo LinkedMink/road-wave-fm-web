@@ -1,11 +1,26 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { createStore, applyMiddleware, compose } from 'redux';
-import thunk from 'redux-thunk';
+import { configureStore } from '@reduxjs/toolkit';
+import { Action } from 'redux';
+import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import rootReducer from './reducers/RootReducer';
+import rootReducer, { RootState } from './reducers/RootReducer';
 
-const storeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = configureStore({
+  reducer: rootReducer,
+  devTools: process.env.NODE_ENV !== 'production',
+});
 
-const store = createStore(rootReducer, storeEnhancers(applyMiddleware(thunk)));
+export type AppStore = typeof store;
+export type AppThunkDispatch<TAction extends Action = Action> = ThunkDispatch<
+  RootState,
+  undefined,
+  TAction
+>;
+export type AppThunkAction<TAction extends Action = Action, TResult = void> = ThunkAction<
+  Promise<TResult>,
+  RootState,
+  undefined,
+  TAction
+>;
 
 export default store;

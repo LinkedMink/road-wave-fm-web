@@ -1,10 +1,11 @@
 import { Reducer } from 'redux';
 import { LocationAction, LocationActionType } from '../actions/LocationAction';
-import { Coordinates } from '../types/Location';
+import { Coordinates } from '../types/Map';
 
 export interface LocationState {
   watchId?: number;
-  current?: Coordinates;
+  user?: Coordinates;
+  search?: Coordinates;
   hasFailedGetLocation: boolean;
 }
 
@@ -16,33 +17,38 @@ const locationReducer: Reducer<LocationState, LocationAction> = (
   state: LocationState = defaultState,
   action: LocationAction,
 ): LocationState => {
-  if (action.type === LocationActionType.LocationSet) {
+  if (action.type === LocationActionType.LocationUserSet) {
     return {
       ...state,
-      current: action.payload as Coordinates,
-      hasFailedGetLocation: false,
+      user: action.payload as Coordinates,
     };
-  } else if (action.type === LocationActionType.LocationClear) {
+  } else if (action.type === LocationActionType.LocationSearchSet) {
     return {
       ...state,
-      current: undefined,
+      search: action.payload as Coordinates,
+    };
+  } else if (action.type === LocationActionType.LocationSearchClear) {
+    return {
+      ...state,
+      search: undefined,
     };
   } else if (action.type === LocationActionType.LocationWatchIdSet) {
     return {
       ...state,
       watchId: action.payload as number,
+      hasFailedGetLocation: false,
     };
   } else if (action.type === LocationActionType.LocationWatchIdClear) {
     return {
       ...state,
       watchId: undefined,
-      current: undefined,
+      user: undefined,
     };
-  } else if (action.type === LocationActionType.LocationFailed) {
+  } else if (action.type === LocationActionType.LocationWatchFailed) {
     return {
       ...state,
       watchId: undefined,
-      current: undefined,
+      user: undefined,
       hasFailedGetLocation: true,
     };
   } else {

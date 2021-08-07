@@ -15,21 +15,17 @@ import HeaderPanel from './components/HeaderPanel';
 import AlertDialogContainer from './containers/AlertDialogContainer';
 import ConfirmDialogContainer from './containers/ConfirmDialogContainer';
 import NavigationMenuContainer from './containers/NavigationMenuContainer';
+import { useEffect } from 'react';
 
 type StyleClass = 'root' | 'appBarSpacer' | 'content' | 'container';
 
 export interface AppStateProps {
-  isConfigLoaded: boolean;
   isLoggedIn: boolean;
-  isFormatsLoaded: boolean;
-  mapsApiKey?: string;
+  isInitialized: boolean;
 }
 
 export interface AppDispatchProps {
-  getConfig: () => void;
-  getAccount: () => void;
-  getFormats: () => void;
-  getMaps: (apiKey: string) => void;
+  initialize(): void;
 }
 
 export type AppProps = AppStateProps & AppDispatchProps & StyledComponentProps<StyleClass>;
@@ -57,18 +53,13 @@ const styles: StyleRulesCallback<Theme, AppProps, StyleClass> = (theme: Theme) =
 });
 
 const App: FunctionComponent<AppProps> = (props) => {
-  if (!props.isConfigLoaded) {
-    props.getConfig();
-  } else {
-    if (!props.isFormatsLoaded) {
-      props.getFormats();
-    }
-    if (props.mapsApiKey) {
-      props.getMaps(props.mapsApiKey);
-    }
-  }
-
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (!props.isInitialized) {
+      props.initialize();
+    }
+  });
 
   return (
     <BrowserRouter>

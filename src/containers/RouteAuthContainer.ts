@@ -7,8 +7,8 @@ const mapStateToProps: MapStateToProps<RouteAuthStateProps, RouteAuthOwnProps, R
   state: RootState,
 ) => {
   return {
-    isLoggedIn: state.account.jwtToken ? true : false,
-    claims: state.account.decodedToken?.claims,
+    isLoggedIn: state.session.jwtToken ? true : false,
+    claims: state.session.decodedToken?.claims,
   };
 };
 

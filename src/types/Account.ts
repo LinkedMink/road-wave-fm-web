@@ -4,6 +4,11 @@ export enum Claim {
 
 export const MIN_PASSWORD_LENGTH = 8;
 
+export enum SessionActionType {
+  Save = 'SESSION_SAVE',
+  Destroy = 'SESSION_DESTROY',
+}
+
 export interface JwtPayload {
   aud: string;
   claims: Set<Claim>;
@@ -12,6 +17,11 @@ export interface JwtPayload {
   iat: number;
   iss: string;
   sub: string;
+}
+
+export interface SessionTokens {
+  jwtToken: string;
+  decodedToken: JwtPayload;
 }
 
 export interface AccountModel {

@@ -20,7 +20,9 @@ type StyleProps = StyledComponentProps<StyleClass>;
 
 const styles: StyleRulesCallback<Theme, Record<string, unknown>, StyleClass> = (theme: Theme) => ({
   sections: {
-    marginBottom: theme.spacing(1),
+    '& > div': {
+      marginBottom: theme.spacing(2),
+    },
   },
 });
 
@@ -32,7 +34,13 @@ const PreferenceCard: FunctionComponent<PreferenceCardProps> = (props) => {
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <Typography variant="h5">Preferences</Typography>
       </AccordionSummary>
-      <AccordionDetails className={clsx(props.classes?.accordionDetails, props.classes?.columnBox)}>
+      <AccordionDetails
+        className={clsx(
+          props.classes?.accordionDetails,
+          props.classes?.columnBox,
+          props.classes?.sections,
+        )}
+      >
         <PreferenceLocationGroupContainer />
         <PreferenceFormatGroupContainer />
       </AccordionDetails>

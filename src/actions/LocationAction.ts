@@ -1,12 +1,13 @@
 import { Action } from 'redux';
-import { Coordinates } from '../types/Location';
+import { Coordinates } from '../types/Map';
 
 export enum LocationActionType {
-  LocationSet = 'LOCATION_SET',
-  LocationClear = 'LOCATION_CLEAR',
+  LocationUserSet = 'LOCATION_USER_SET',
+  LocationSearchSet = 'LOCATION_SEARCH_SET',
+  LocationSearchClear = 'LOCATION_SEARCH_CLEAR',
   LocationWatchIdSet = 'LOCATION_WATCH_ID_SET',
   LocationWatchIdClear = 'LOCATION_WATCH_ID_CLEAR',
-  LocationFailed = 'LOCATION_FAILED',
+  LocationWatchFailed = 'LOCATION_FAILED',
 }
 
 export interface LocationAction extends Action<LocationActionType> {
@@ -14,16 +15,23 @@ export interface LocationAction extends Action<LocationActionType> {
   payload: null | number | Coordinates;
 }
 
-export function setLocation(coordinates: Coordinates): LocationAction {
+export function setUserLocation(coordinates: Coordinates): LocationAction {
   return {
-    type: LocationActionType.LocationSet,
+    type: LocationActionType.LocationUserSet,
     payload: coordinates,
   };
 }
 
-export function clearLocation(): LocationAction {
+export function setSearchLocation(coordinates: Coordinates): LocationAction {
   return {
-    type: LocationActionType.LocationClear,
+    type: LocationActionType.LocationSearchSet,
+    payload: coordinates,
+  };
+}
+
+export function clearSearchLocation(): LocationAction {
+  return {
+    type: LocationActionType.LocationSearchClear,
     payload: null,
   };
 }
@@ -42,9 +50,9 @@ export function clearLocationWatchId(): LocationAction {
   };
 }
 
-export function setLocationFailed(): LocationAction {
+export function setLocationWatchFailed(): LocationAction {
   return {
-    type: LocationActionType.LocationFailed,
+    type: LocationActionType.LocationWatchFailed,
     payload: null,
   };
 }

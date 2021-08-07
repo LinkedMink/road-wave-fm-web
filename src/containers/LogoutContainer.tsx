@@ -4,8 +4,8 @@ import { connect, MapDispatchToPropsFunction, MapStateToProps } from 'react-redu
 import { Dispatch } from 'redux';
 
 import { StorageKey } from '../types/Storage';
-import { destroySession } from '../actions/AccountAction';
 import { RootState } from '../reducers/RootReducer';
+import { destroySession } from '../actions/SessionAction';
 
 interface LogoutStateProps {
   isLoggedIn: boolean;
@@ -21,7 +21,7 @@ const mapStateToProps: MapStateToProps<LogoutStateProps, Record<string, never>, 
   state: RootState,
 ) => {
   return {
-    isLoggedIn: state.account.jwtToken ? true : false,
+    isLoggedIn: state.session.jwtToken ? true : false,
   };
 };
 

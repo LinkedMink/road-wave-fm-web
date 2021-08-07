@@ -1,9 +1,10 @@
 import { Reducer } from 'redux';
-import { ConfigAction, ConfigActionType } from '../actions/ConfigAction';
+import { ConfigAction, ConfigActionType, ConfigData } from '../actions/ConfigAction';
 import { LogLevel } from '../shared/LogService';
 import { Services } from '../types/Service';
 
 export interface ConfigState {
+  isInitialized: boolean;
   urls: Record<Services, string>;
   signerKey: string | null;
   googleMapsApiKey: string;
@@ -12,6 +13,7 @@ export interface ConfigState {
 }
 
 const defaultState: ConfigState = {
+  isInitialized: false,
   urls: {
     [Services.Self]: '',
     [Services.User]: '',
@@ -28,19 +30,23 @@ const configReducer: Reducer<ConfigState, ConfigAction> = (
   action: ConfigAction,
 ): ConfigState => {
   if (action.type === ConfigActionType.Save) {
-    const config: ConfigState = {
+    const config = action.payload as ConfigData;
+    return {
       ...state,
       urls: {
         ...state.urls,
-        ...action.payload.urls,
+        ...config.urls,
       },
-      signerKey: action.payload.jwtPublicKey ? atob(action.payload.jwtPublicKey) : null,
-      googleMapsApiKey: action.payload.googleMapsApiKey,
-      logLevelConsole: action.payload.logLevelConsole,
-      logLevelPersist: action.payload.logLevelPersist,
+      signerKey: config.jwtPublicKey ? atob(config.jwtPublicKey) : null,
+      googleMapsApiKey: config.googleMapsApiKey,
+      logLevelConsole: config.logLevelConsole,
+      logLevelPersist: config.logLevelPersist,
     };
-
-    return config;
+  } else if (action.type === ConfigActionType.Initialize) {
+    return {
+      ...state,
+      isInitialized: true,
+    };
   } else {
     return state;
   }

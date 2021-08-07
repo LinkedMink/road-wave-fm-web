@@ -1,4 +1,4 @@
-import { Coordinates } from '../types/Location';
+import { Coordinates } from '../types/Map';
 import { isArray, isString } from './TypeCheck';
 
 const GOOGLE_MAPS_BASE_URL = 'https://maps.googleapis.com/maps/api/js?';

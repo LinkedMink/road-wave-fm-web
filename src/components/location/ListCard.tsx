@@ -22,19 +22,31 @@ import SignalWifiOffIcon from '@material-ui/icons/SignalWifiOff';
 import ZoomInIcon from '@material-ui/icons/ZoomIn';
 import React, { FunctionComponent } from 'react';
 import { SharedStyleProps, withSharedStyles } from '../../shared/Style';
-import { StationViewModel } from '../../types/Station';
+import { StationRequest, StationViewModel } from '../../types/Station';
 
 export interface ListCardOwnProps {
   onStationSelect: (station: StationViewModel) => void;
 }
 
 export interface ListCardStateProps {
+  searchCriteria?: StationRequest;
   stations: StationViewModel[];
 }
 
-type ListCardProps = ListCardOwnProps & ListCardStateProps & SharedStyleProps;
+export interface ListCardDispatchProps {
+  retrieveStations(criteria: StationRequest): void;
+}
+
+type ListCardProps = ListCardOwnProps &
+  ListCardStateProps &
+  ListCardDispatchProps &
+  SharedStyleProps;
 
 const ListCard: FunctionComponent<ListCardProps> = (props) => {
+  if (props.searchCriteria) {
+    props.retrieveStations(props.searchCriteria);
+  }
+
   const iconBySignalStrength = (signal?: number) => {
     if (!signal) {
       return <SignalWifiOffIcon />;

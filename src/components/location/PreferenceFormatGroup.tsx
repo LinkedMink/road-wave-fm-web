@@ -1,5 +1,12 @@
 /* eslint-disable react/prop-types */
-import { Box, Checkbox, FormControl, FormControlLabel, FormLabel } from '@material-ui/core';
+import {
+  Box,
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Typography,
+} from '@material-ui/core';
 import React, { ChangeEvent, FunctionComponent } from 'react';
 import { SharedStyleProps, withSharedStyles } from '../../shared/Style';
 import { FormatSelection } from '../../types/Format';
@@ -51,6 +58,7 @@ const PreferenceFormatGroup: FunctionComponent<PreferenceFormatGroupProps> = (pr
 
   return (
     <Box className={props.classes?.columnBox}>
+      <Typography variant="h6">Filter By</Typography>
       <FormControl component="fieldset">
         <FormLabel component="legend">Formats</FormLabel>
         {props.formats.map(renderFormat)}

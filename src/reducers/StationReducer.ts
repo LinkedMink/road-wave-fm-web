@@ -1,26 +1,30 @@
 import { StationAction, StationActionType } from '../actions/StationAction';
-import { StationViewModel } from '../types/Station';
+import { StationRequest, StationViewModel } from '../types/Station';
 
 export interface StationState {
   list: StationViewModel[];
+  isLoading: boolean;
+  lastRequest?: StationRequest;
 }
 
 const defaultState: StationState = {
   list: [],
+  isLoading: false,
 };
 
-const StationReducer = (
+const stationReducer = (
   state: StationState = defaultState,
   action: StationAction,
 ): StationState => {
   if (action.type === StationActionType.Save) {
     return {
       ...state,
-      list: action.payload,
+      list: action.payload.data,
+      lastRequest: action.payload.params,
     };
   } else {
     return state;
   }
 };
 
-export default StationReducer;
+export default stationReducer;

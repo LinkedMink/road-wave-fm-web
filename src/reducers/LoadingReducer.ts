@@ -8,7 +8,7 @@ export interface LoadingState {
 }
 
 const defaultState: LoadingState = {
-  isLoading: false,
+  isLoading: true,
 };
 
 const loadingReducer: Reducer<LoadingState, LoadingAction> = (

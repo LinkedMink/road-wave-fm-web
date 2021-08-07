@@ -1,5 +1,6 @@
 import { connect, MapDispatchToPropsFunction, MapStateToProps } from 'react-redux';
 import { Dispatch } from 'redux';
+import { formatSelect } from '../../actions/FormatAction';
 import PreferenceFormatGroup, {
   PreferenceFormatGroupDispatchProps,
   PreferenceFormatGroupStateProps,
@@ -11,18 +12,19 @@ const mapStateToProps: MapStateToProps<
   Record<string, never>,
   RootState
 > = (state: RootState) => {
+  const selected = new Set(state.format.selected);
   return {
-    formats: state.format.list,
+    formats: state.format.list.map((f) => ({ ...f, isSelected: selected.has(f.id) })),
   };
 };
 
 const mapDispatchToProps: MapDispatchToPropsFunction<
   PreferenceFormatGroupDispatchProps,
   Record<string, never>
-> = (_dispatch: Dispatch) => {
+> = (dispatch: Dispatch) => {
   return {
-    selectFormats: (_ids: string[]) => {
-      // TODO
+    selectFormats: (ids: string[]) => {
+      dispatch(formatSelect(ids));
     },
   };
 };

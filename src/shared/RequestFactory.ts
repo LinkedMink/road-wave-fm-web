@@ -4,10 +4,8 @@ import urlJoin from 'url-join';
 
 import store from '../store';
 import { alertError } from '../actions/AlertAction';
-import { loadingStart, loadingEnd } from '../actions/LoadingAction';
 import { LogService } from './LogService';
 import { Services } from '../types/Service';
-import { isAction } from './TypeCheck';
 
 const logger = LogService.get('RequestFactory');
 const GENERIC_REQUEST_ERROR =
@@ -26,7 +24,7 @@ export enum HttpMethods {
 
 export const getRequestOptions = (
   method = HttpMethods.GET,
-  requestData: Record<string, unknown> | unknown[] | null = null,
+  requestData: unknown | null = null,
   isAuthorized = true,
 ): RequestInit => {
   const headers: Record<string, string> = {
@@ -36,8 +34,8 @@ export const getRequestOptions = (
 
   if (isAuthorized) {
     const state = store.getState();
-    if (state.account.jwtToken) {
-      headers['Authorization'] = `Bearer ${state.account.jwtToken}`;
+    if (state.session.jwtToken) {
+      headers['Authorization'] = `Bearer ${state.session.jwtToken}`;
     }
   }
 
@@ -53,7 +51,7 @@ export const getRequestOptions = (
   return options;
 };
 
-const handleRawResponse = (dispatch: Dispatch, url: string, options: RequestInit) => {
+const handleRawResponse = <TResponse>(dispatch: Dispatch, url: string, options: RequestInit) => {
   return (response: Response) => {
     if (response.status === 500) {
       logger.error({
@@ -66,18 +64,7 @@ const handleRawResponse = (dispatch: Dispatch, url: string, options: RequestInit
       return Promise.resolve(null);
     }
 
-    return response.json();
-  };
-};
-
-const handleServiceResponse = <T>(dispatch: Dispatch, requestSuccessFunc: ResponseHandler<T>) => {
-  return (json: T) => {
-    const result = requestSuccessFunc(json);
-    if (isAction(result)) {
-      dispatch(result);
-    }
-
-    dispatch(loadingEnd());
+    return response.json() as Promise<TResponse>;
   };
 };
 
@@ -89,8 +76,8 @@ const handleGenericCatch = (dispatch: Dispatch, url: string, options: RequestIni
       body: options.body,
       stack: error.stack,
     });
-    dispatch(loadingEnd());
     dispatch(alertError(GENERIC_REQUEST_ERROR));
+    return null;
   };
 };
 
@@ -104,15 +91,14 @@ export const getServiceActionUrl = (targetService: Services, path: string): stri
   }
 };
 
-export const getJsonResponse = <TResponse = unknown>(
+export const getJsonResponse = <TResponse = unknown, TRequest = unknown>(
   dispatch: Dispatch,
   targetService: Services,
   path: string,
-  requestSuccessFunc: ResponseHandler<TResponse>,
   method = HttpMethods.GET,
-  requestData: Record<string, unknown> | unknown[] | null = null,
+  requestData: TRequest | null = null,
   isAuthorized = true,
-): Promise<void> => {
+): Promise<TResponse | null> => {
   let url = getServiceActionUrl(targetService, path);
 
   if (requestData && method === HttpMethods.GET) {
@@ -128,10 +114,7 @@ export const getJsonResponse = <TResponse = unknown>(
     isAuthorized,
   );
 
-  dispatch(loadingStart());
-
   return fetch(url, options)
-    .then(handleRawResponse(dispatch, url, options))
-    .then(handleServiceResponse(dispatch, requestSuccessFunc))
+    .then(handleRawResponse<TResponse>(dispatch, url, options))
     .catch(handleGenericCatch(dispatch, url, options));
 };

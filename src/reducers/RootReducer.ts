@@ -7,6 +7,7 @@ import format from './FormatReducer';
 import loading from './LoadingReducer';
 import location from './LocationReducer';
 import map from './MapReducer';
+import session from './SessionReducer';
 import station from './StationReducer';
 
 const rootMap = {
@@ -18,6 +19,7 @@ const rootMap = {
   loading,
   location,
   map,
+  session,
   station,
 };
 

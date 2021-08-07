@@ -72,7 +72,7 @@ const mapStateToProps: MapStateToProps<
   RootState
 > = (state: RootState, ownProps: NavigationMenuOwnProps) => {
   let links;
-  if (state.account.jwtToken) {
+  if (state.session.jwtToken) {
     links = getAuthenticatedLinks();
   } else {
     links = getGuestLinks();

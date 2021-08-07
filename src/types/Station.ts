@@ -1,4 +1,4 @@
-import { Coordinates } from './Location';
+import { Coordinates } from './Map';
 
 export interface StationViewModel {
   id: string;
@@ -9,4 +9,10 @@ export interface StationViewModel {
   location: Coordinates;
   distance?: number;
   signalStrength?: number;
+}
+
+export interface StationRequest {
+  lat: number;
+  lng: number;
+  fmt: string[];
 }

@@ -41,6 +41,7 @@ const SearchBar: FunctionComponent<SearchBarProps> = (props) => {
     if (props.map && inputRef.current) {
       const autocomplete = new google.maps.places.Autocomplete(inputRef.current, {
         componentRestrictions: { country: 'us' },
+        strictBounds: false,
         types: ['geocode'],
       });
       autocomplete.bindTo('bounds', props.map);

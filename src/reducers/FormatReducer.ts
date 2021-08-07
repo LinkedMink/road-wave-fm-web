@@ -1,19 +1,27 @@
 import { FormatAction, FormatActionType } from '../actions/FormatAction';
-import { FormatSelection } from '../types/Format';
+import { FormatViewModel } from '../types/Format';
 
 export interface FormatState {
-  list: FormatSelection[];
+  list: FormatViewModel[];
+  selected: string[];
 }
 
 const defaultState: FormatState = {
   list: [],
+  selected: [],
 };
 
 const formatReducer = (state: FormatState = defaultState, action: FormatAction): FormatState => {
   if (action.type === FormatActionType.Save) {
+    const formats = action.payload as FormatViewModel[];
     return {
       ...state,
-      list: action.payload.map((f) => ({ ...f, isSelected: false })),
+      list: formats.map((f) => ({ ...f, isSelected: false })),
+    };
+  } else if (action.type === FormatActionType.Select) {
+    return {
+      ...state,
+      selected: action.payload as string[],
     };
   } else {
     return state;

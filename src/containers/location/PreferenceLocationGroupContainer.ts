@@ -1,10 +1,11 @@
 import { connect, MapDispatchToPropsFunction, MapStateToProps } from 'react-redux';
 import { Dispatch } from 'redux';
+import { alertError } from '../../actions/AlertAction';
 import {
   clearLocationWatchId,
-  setLocation,
-  setLocationFailed,
+  setLocationWatchFailed,
   setLocationWatchId,
+  setUserLocation,
 } from '../../actions/LocationAction';
 import PreferenceLocationGroup, {
   PreferenceLocationGroupDispatchProps,
@@ -12,8 +13,9 @@ import PreferenceLocationGroup, {
 } from '../../components/location/PreferenceLocationGroup';
 import { RootState } from '../../reducers/RootReducer';
 
-const MAX_POSITION_AGE = 5 * 60 * 1000;
-const GET_POSITION_TIMEOUT = 0;
+const PERMISSION_GRANT_ERROR =
+  'No prompt will appear to enable locaion sharing after it has been declined. Look for a button in the address bar to reenable it.';
+const CLIENT_LOCATION_ERROR = '';
 
 const mapStateToProps: MapStateToProps<
   PreferenceLocationGroupStateProps,
@@ -21,9 +23,9 @@ const mapStateToProps: MapStateToProps<
   RootState
 > = (state: RootState) => {
   return {
-    isLocationWatchEnabled: !!(state.location.watchId && state.location.current),
+    isLocationWatchEnabled: !!state.location.watchId,
     hasFailedGetLocation: state.location.hasFailedGetLocation,
-    currentLocation: state.location.current,
+    currentLocation: state.location.user,
   };
 };
 
@@ -36,19 +38,22 @@ const mapDispatchToProps: MapDispatchToPropsFunction<
       const id = navigator.geolocation.watchPosition(
         (position: GeolocationPosition) => {
           dispatch(
-            setLocation({
+            setUserLocation({
               lat: position.coords.latitude,
               lng: position.coords.longitude,
             }),
           );
         },
         (positionError: GeolocationPositionError) => {
-          dispatch(setLocationFailed());
-          console.log(positionError);
+          if (positionError.PERMISSION_DENIED === positionError.code) {
+            dispatch(alertError(PERMISSION_GRANT_ERROR));
+            dispatch(setLocationWatchFailed());
+          } else if (positionError.POSITION_UNAVAILABLE === positionError.code) {
+            dispatch(alertError(CLIENT_LOCATION_ERROR));
+            dispatch(setLocationWatchFailed());
+          }
         },
         {
-          maximumAge: MAX_POSITION_AGE,
-          timeout: GET_POSITION_TIMEOUT,
           enableHighAccuracy: true,
         },
       );
