@@ -20,8 +20,12 @@ const styles: StyleRulesCallback<Theme, Record<string, unknown>, StyleClass> = (
 type HomePageProps = SharedStyleProps & StyleProps;
 
 class HomePage extends React.Component<HomePageProps> {
-  focusStation = (_station: StationViewModel) => {
-    // TODO
+  state = {
+    selectedStation: undefined as StationViewModel | undefined,
+  };
+
+  selectStation = (station: StationViewModel) => {
+    this.setState({ ...this.state, selectedStation: station });
   };
 
   render = () => {
@@ -30,10 +34,16 @@ class HomePage extends React.Component<HomePageProps> {
         <Grid container spacing={2} className={this.props.classes?.fullscreen}>
           <Grid item xs={12} md={4}>
             <PreferenceCard />
-            <ListCardContainer onStationSelect={this.focusStation} />
+            <ListCardContainer
+              onStationClick={this.selectStation}
+              selected={this.state.selectedStation}
+            />
           </Grid>
           <Grid item xs={12} md={8} className={this.props.classes?.fullscreen}>
-            <MapCardContainer />
+            <MapCardContainer
+              onMarkerClick={this.selectStation}
+              selected={this.state.selectedStation}
+            />
           </Grid>
         </Grid>
       </Container>

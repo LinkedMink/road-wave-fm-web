@@ -4,12 +4,15 @@ import {
   AccordionDetails,
   AccordionSummary,
   Avatar,
-  IconButton,
+  Collapse,
   List,
   ListItem,
   ListItemAvatar,
   ListItemSecondaryAction,
   ListItemText,
+  StyledComponentProps,
+  StyleRulesCallback,
+  Theme,
   Typography,
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -19,18 +22,37 @@ import SignalWifi2BarIcon from '@material-ui/icons/SignalWifi2Bar';
 import SignalWifi3BarIcon from '@material-ui/icons/SignalWifi3Bar';
 import SignalWifi4BarIcon from '@material-ui/icons/SignalWifi4Bar';
 import SignalWifiOffIcon from '@material-ui/icons/SignalWifiOff';
-import ZoomInIcon from '@material-ui/icons/ZoomIn';
+import clsx from 'clsx';
 import React, { FunctionComponent } from 'react';
+import { useEffect } from 'react';
+import { indexToChar } from '../../shared/Collection';
 import { SharedStyleProps, withSharedStyles } from '../../shared/Style';
 import { StationRequest, StationViewModel } from '../../types/Station';
+import LoadingOverlay from '../LoadingOverlay';
+
+type StyleClass = 'avatar' | 'container';
+type StyleProps = StyledComponentProps<StyleClass>;
+
+const styles: StyleRulesCallback<Theme, Record<string, unknown>, StyleClass> = (theme: Theme) => ({
+  container: {
+    width: '100%',
+    alignItems: 'stretch',
+  },
+  avatar: {
+    backgroundColor: theme.palette.secondary.main,
+    color: theme.palette.secondary.contrastText,
+  },
+});
 
 export interface ListCardOwnProps {
-  onStationSelect: (station: StationViewModel) => void;
+  selected?: StationViewModel;
+  onStationClick: (station: StationViewModel, event: React.MouseEvent) => void;
 }
 
 export interface ListCardStateProps {
   searchCriteria?: StationRequest;
-  stations: StationViewModel[];
+  isLoading: boolean;
+  stations?: StationViewModel[];
 }
 
 export interface ListCardDispatchProps {
@@ -40,12 +62,15 @@ export interface ListCardDispatchProps {
 type ListCardProps = ListCardOwnProps &
   ListCardStateProps &
   ListCardDispatchProps &
-  SharedStyleProps;
+  SharedStyleProps &
+  StyleProps;
 
 const ListCard: FunctionComponent<ListCardProps> = (props) => {
-  if (props.searchCriteria) {
-    props.retrieveStations(props.searchCriteria);
-  }
+  useEffect(() => {
+    if (!props.isLoading && props.searchCriteria) {
+      props.retrieveStations(props.searchCriteria);
+    }
+  });
 
   const iconBySignalStrength = (signal?: number) => {
     if (!signal) {
@@ -65,41 +90,49 @@ const ListCard: FunctionComponent<ListCardProps> = (props) => {
 
   const renderStation = (station: StationViewModel, index: number) => {
     return (
-      <ListItem key={index} button onClick={() => props.onStationSelect(station)}>
+      <ListItem
+        key={index}
+        button
+        selected={station === props.selected}
+        onClick={(event) => props.onStationClick(station, event)}
+      >
         <ListItemAvatar>
-          <Avatar>{iconBySignalStrength(station.signalStrength)}</Avatar>
+          <Avatar className={props.classes?.avatar}>{indexToChar(index)}</Avatar>
         </ListItemAvatar>
         <ListItemText
           primary={`${station.callSign} ${station.protocol} ${station.frequency}`}
-          secondary={station.format}
+          secondary={`Format: ${station.format}${
+            station.distance ? `, ${(station.distance / 1000).toFixed(1)} km` : ''
+          }`}
         />
         <ListItemSecondaryAction>
-          <IconButton edge="end" aria-label="delete">
-            <ZoomInIcon />
-          </IconButton>
+          {iconBySignalStrength(station.signalStrength)}
         </ListItemSecondaryAction>
       </ListItem>
     );
   };
 
   return (
-    <Accordion>
+    <Accordion defaultExpanded={true}>
+      <LoadingOverlay isLoading={props.isLoading} />
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <Typography variant="h5">Station List</Typography>
       </AccordionSummary>
-      <AccordionDetails className={props.classes?.accordionDetails}>
-        <List>
-          {props.stations.length > 0 ? (
-            props.stations.map(renderStation)
-          ) : (
-            <ListItem>
-              <ListItemText primary="No Stations Founds" />
-            </ListItem>
-          )}
-        </List>
+      <AccordionDetails className={clsx(props.classes?.accordionDetails, props.classes?.container)}>
+        <Collapse className={props.classes?.container} in={!props.isLoading}>
+          <List className={props.classes?.container}>
+            {props.stations && props.stations.length > 0 ? (
+              props.stations.map(renderStation)
+            ) : (
+              <ListItem>
+                <ListItemText primary="No stations results" />
+              </ListItem>
+            )}
+          </List>
+        </Collapse>
       </AccordionDetails>
     </Accordion>
   );
 };
 
-export default withSharedStyles()(ListCard);
+export default withSharedStyles(styles)(ListCard);

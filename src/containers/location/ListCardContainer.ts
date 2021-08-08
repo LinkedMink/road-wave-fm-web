@@ -7,6 +7,7 @@ import ListCard, {
 } from '../../components/location/ListCard';
 import { RootState } from '../../reducers/RootReducer';
 import { isArrayContentsEqual } from '../../shared/Collection';
+import { areEqualCoordinates } from '../../shared/Math';
 import { AppThunkDispatch } from '../../store';
 import { StationRequest } from '../../types/Station';
 
@@ -15,11 +16,11 @@ const mapStateToProps: MapStateToProps<ListCardStateProps, ListCardOwnProps, Roo
 ) => {
   const hasNewCriteria =
     state.location.search &&
-    (state.location.search?.lat !== state.station.lastRequest?.lat ||
-      state.location.search?.lng !== state.station.lastRequest?.lng ||
+    (!areEqualCoordinates(state.location.search, state.station.lastRequest) ||
       !isArrayContentsEqual(state.format.selected, state.station.lastRequest?.fmt));
 
   return {
+    isLoading: state.station.isLoading,
     stations: state.station.list,
     searchCriteria: hasNewCriteria
       ? {

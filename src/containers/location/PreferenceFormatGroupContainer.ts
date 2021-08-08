@@ -12,9 +12,9 @@ const mapStateToProps: MapStateToProps<
   Record<string, never>,
   RootState
 > = (state: RootState) => {
-  const selected = new Set(state.format.selected);
   return {
-    formats: state.format.list.map((f) => ({ ...f, isSelected: selected.has(f.id) })),
+    formats: state.format.list,
+    selected: state.format.selected,
   };
 };
 

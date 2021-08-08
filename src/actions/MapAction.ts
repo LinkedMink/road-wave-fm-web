@@ -1,5 +1,4 @@
 import { Action } from 'redux';
-import { MapsApi } from '../types/Map';
 
 export enum MapActionType {
   Init = 'MAP_INIT',
@@ -7,12 +6,12 @@ export enum MapActionType {
 
 export interface MapAction extends Action<MapActionType> {
   type: MapActionType;
-  payload: MapsApi;
+  payload: null;
 }
 
-export function mapInit(maps: MapsApi): MapAction {
+export function mapInit(): MapAction {
   return {
     type: MapActionType.Init,
-    payload: maps,
+    payload: null,
   };
 }

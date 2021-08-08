@@ -1,16 +1,17 @@
 import { MapAction, MapActionType } from '../actions/MapAction';
-import { MapsApi } from '../types/Map';
 
 export interface MapState {
-  api?: MapsApi;
+  isInitialized: boolean;
 }
 
-const defaultState: MapState = {};
+const defaultState: MapState = {
+  isInitialized: false,
+};
 
 const MapReducer = (state: MapState = defaultState, action: MapAction): MapState => {
   if (action.type === MapActionType.Init) {
     return {
-      api: action.payload,
+      isInitialized: true,
     };
   } else {
     return state;

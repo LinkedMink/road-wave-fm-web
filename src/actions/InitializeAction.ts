@@ -29,8 +29,8 @@ const fetchConfigAction: AppThunkAction = async (dispatch, _getState) => {
 const fetchMapsApi: AppThunkAction = async (dispatch, getState) => {
   const apiKey = getState().config.googleMapsApiKey;
   const mapsLoader = new Loader({ apiKey, libraries: ['places'] });
-  const mapsApi = await mapsLoader.load();
-  dispatch(mapInit(mapsApi));
+  await mapsLoader.load();
+  dispatch(mapInit());
 };
 
 const fetchFormats: AppThunkAction = async (dispatch, _getState) => {

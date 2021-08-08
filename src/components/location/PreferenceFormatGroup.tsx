@@ -9,12 +9,13 @@ import {
 } from '@material-ui/core';
 import React, { ChangeEvent, FunctionComponent } from 'react';
 import { SharedStyleProps, withSharedStyles } from '../../shared/Style';
-import { FormatSelection } from '../../types/Format';
+import { FormatViewModel } from '../../types/Format';
 
 const CHECKBOX_PREFIX = 'format';
 
 export interface PreferenceFormatGroupStateProps {
-  formats: FormatSelection[];
+  formats: FormatViewModel[];
+  selected: string[];
 }
 
 export interface PreferenceFormatGroupDispatchProps {
@@ -26,31 +27,37 @@ type PreferenceFormatGroupProps = PreferenceFormatGroupStateProps &
   SharedStyleProps;
 
 const PreferenceFormatGroup: FunctionComponent<PreferenceFormatGroupProps> = (props) => {
-  const checkboxName = (format: FormatSelection) => CHECKBOX_PREFIX + format.id;
+  const selected = new Set(props.selected);
 
-  const checkboxState = props.formats.reduce((acc, next) => {
-    acc[next.id] = next.isSelected;
-    return acc;
-  }, {} as Record<string, boolean>);
+  const checkboxName = (format: FormatViewModel) => CHECKBOX_PREFIX + format.id;
 
-  const [state, setState] = React.useState(checkboxState);
+  // const checkboxState = props.formats.reduce((acc, next) => {
+  //   acc[next.id] = selected.has(next.id);
+  //   return acc;
+  // }, {} as Record<string, boolean>);
+
+  // const [state, setState] = React.useState(checkboxState);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const formatId = event.target.name.substring(event.target.name.length - CHECKBOX_PREFIX.length);
-    setState({ ...state, [formatId]: event.target.checked });
+    const formatId = event.target.name.substring(CHECKBOX_PREFIX.length);
+    if (event.target.checked) {
+      selected.add(formatId);
+    } else {
+      selected.delete(formatId);
+    }
+    // setState({ ...state, [formatId]: event.target.checked });
 
-    const selected = Object.keys(state).filter((id) => state[id]);
-    props.selectFormats(selected);
+    // const selected = Object.keys(state).filter((id) => state[id]);
+    props.selectFormats(Array.from(selected));
   };
 
-  const renderFormat = (format: FormatSelection, index: number) => {
+  const renderFormat = (format: FormatViewModel, index: number) => {
     const name = checkboxName(format);
+    const checked = selected.has(format.id);
     return (
       <FormControlLabel
         key={index}
-        control={
-          <Checkbox checked={state[name]} onChange={handleChange} name={name} color="primary" />
-        }
+        control={<Checkbox checked={checked} onChange={handleChange} name={name} color="primary" />}
         label={format.name}
       />
     );

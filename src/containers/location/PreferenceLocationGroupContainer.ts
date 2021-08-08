@@ -5,6 +5,7 @@ import {
   clearLocationWatchId,
   setLocationWatchFailed,
   setLocationWatchId,
+  setSearchLocation,
   setUserLocation,
 } from '../../actions/LocationAction';
 import PreferenceLocationGroup, {
@@ -25,7 +26,8 @@ const mapStateToProps: MapStateToProps<
   return {
     isLocationWatchEnabled: !!state.location.watchId,
     hasFailedGetLocation: state.location.hasFailedGetLocation,
-    currentLocation: state.location.user,
+    userLocation: state.location.user,
+    searchLocation: state.location.search,
   };
 };
 
@@ -60,9 +62,8 @@ const mapDispatchToProps: MapDispatchToPropsFunction<
 
       dispatch(setLocationWatchId(id));
     },
-    disableLocationWatch: () => {
-      dispatch(clearLocationWatchId());
-    },
+    disableLocationWatch: () => dispatch(clearLocationWatchId()),
+    selectLocation: (lat: number, lng: number) => dispatch(setSearchLocation({ lat, lng })),
   };
 };
 

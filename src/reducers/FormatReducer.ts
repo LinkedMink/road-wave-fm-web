@@ -16,7 +16,7 @@ const formatReducer = (state: FormatState = defaultState, action: FormatAction):
     const formats = action.payload as FormatViewModel[];
     return {
       ...state,
-      list: formats.map((f) => ({ ...f, isSelected: false })),
+      list: formats,
     };
   } else if (action.type === FormatActionType.Select) {
     return {

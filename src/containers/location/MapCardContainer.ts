@@ -3,27 +3,26 @@ import { Dispatch } from 'redux';
 import { setSearchLocation } from '../../actions/LocationAction';
 import MapCard, {
   MapCardDispatchProps,
+  MapCardOwnProps,
   MapCardStateProps,
 } from '../../components/location/MapCard';
 import { RootState } from '../../reducers/RootReducer';
 
-const mapStateToProps: MapStateToProps<MapCardStateProps, Record<string, never>, RootState> = (
+const mapStateToProps: MapStateToProps<MapCardStateProps, MapCardOwnProps, RootState> = (
   state: RootState,
 ) => {
   return {
-    isMapsApiLoaded: !!state.map.api,
+    isMapsApiLoaded: state.map.isInitialized,
     stations: state.station.list,
+    userLocation: state.location.user,
   };
 };
 
-const mapDispatchToProps: MapDispatchToPropsFunction<
-  MapCardDispatchProps,
-  Record<string, never>
-> = (dispatch: Dispatch) => {
+const mapDispatchToProps: MapDispatchToPropsFunction<MapCardDispatchProps, MapCardOwnProps> = (
+  dispatch: Dispatch,
+) => {
   return {
-    selectLocation: (lat: number, lng: number) => {
-      dispatch(setSearchLocation({ lat, lng }));
-    },
+    selectLocation: (lat: number, lng: number) => dispatch(setSearchLocation({ lat, lng })),
   };
 };
 

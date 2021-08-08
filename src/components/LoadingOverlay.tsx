@@ -1,4 +1,3 @@
-import clsx from 'clsx';
 import React from 'react';
 import {
   StyledComponentProps,
@@ -6,45 +5,22 @@ import {
   Theme,
   withStyles,
 } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
+import { Backdrop, Box } from '@material-ui/core';
 
-type StyleClass =
-  | 'overlay'
-  | 'overlayVisible'
-  | 'animationContainer'
-  | 'animationSurface'
-  | 'loadingText';
+type StyleClass = 'overlay' | 'animationContainer';
 
-const styles: StyleRulesCallback<Theme, Record<string, never>, StyleClass> = (theme: Theme) => ({
+const styles: StyleRulesCallback<Theme, LoadingOverlayStateProps, StyleClass> = (theme: Theme) => ({
   overlay: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    backgroundColor: '#282d32',
-    zIndex: -1,
-    opacity: 0,
-    transition: '0.2s ease-in-out',
-  },
-  overlayVisible: {
-    zIndex: 100,
-    opacity: 0.6,
+    zIndex: theme.zIndex.drawer + 1,
+    // color: '#fff',
   },
   animationContainer: {
     display: 'flex',
+    maxWidth: theme.breakpoints.values.sm,
     height: '100%',
     alignItems: 'center',
-  },
-  animationSurface: {
-    width: '100%',
-    padding: theme.spacing(2),
-    textAlign: 'center',
-    lineHeight: '3em',
-  },
-  loadingText: {
-    marginBottom: theme.spacing(2),
+    justifyContent: 'center',
   },
 });
 
@@ -67,21 +43,11 @@ class LoadingOverlay extends React.Component<LoadingOverlayProps> {
 
   render() {
     return (
-      <div
-        className={clsx(
-          this.props.classes?.overlay,
-          this.props.isLoading && this.props.classes?.overlayVisible,
-        )}
-      >
-        <Container maxWidth="md" className={this.props.classes?.animationContainer}>
-          <Paper className={this.props.classes?.animationSurface}>
-            <Typography className={this.props.classes?.loadingText} variant="h4">
-              {this.props.message}
-            </Typography>
-            {this.renderLoadingAnimation()}
-          </Paper>
-        </Container>
-      </div>
+      <Backdrop className={this.props.classes?.overlay} open={this.props.isLoading}>
+        <Box className={this.props.classes?.animationContainer}>
+          {this.renderLoadingAnimation()}
+        </Box>
+      </Backdrop>
     );
   }
 }
