@@ -7,4 +7,5 @@ export const isArrayContentsEqual = (first?: unknown[], second?: unknown[]): boo
   return second.every((e) => firstSet.has(e));
 };
 
-export const indexToChar = (index: number): string => String.fromCharCode(65 + index);
+// export const indexToChar = (index: number): string => String.fromCharCode(65 + index);
+export const indexToChar = (index: number): string => String(index + 1);

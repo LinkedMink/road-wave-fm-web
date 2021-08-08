@@ -2,6 +2,7 @@
 import {
   Box,
   Chip,
+  CircularProgress,
   Collapse,
   List,
   ListItem,
@@ -79,11 +80,8 @@ const PreferenceLocationGroup: FunctionComponent<PreferenceLocationGroupProps> =
   return (
     <Box className={props.classes?.columnBox}>
       <Typography variant="h6">Location</Typography>
-      <List className={props.classes?.list}>
-        <Tooltip
-          title="Enable tracking to automatically update nearby stations based on your location"
-          placement="right"
-        >
+      <List className={props.classes?.list} dense={true}>
+        <Tooltip title="Enable tracking to automatically update nearby stations based on your location">
           <ListItem>
             <ListItemIcon>
               <LocationOnIcon />
@@ -94,15 +92,18 @@ const PreferenceLocationGroup: FunctionComponent<PreferenceLocationGroupProps> =
             </ListItemSecondaryAction>
           </ListItem>
         </Tooltip>
-        <Collapse in={!!location}>
-          <ListItem>
-            <ListItemIcon>
-              <MyLocationIcon />
-            </ListItemIcon>
-            <ListItemText>
-              <Chip label={latLng} color="primary" />
-            </ListItemText>
-          </ListItem>
+        <Collapse in={props.isLocationWatchEnabled}>
+          <Tooltip title="Your current location">
+            <ListItem>
+              <ListItemIcon>
+                <MyLocationIcon />
+              </ListItemIcon>
+              <ListItemText>
+                {location && <Chip label={latLng} color="primary" />}
+                {!location && <CircularProgress />}
+              </ListItemText>
+            </ListItem>
+          </Tooltip>
         </Collapse>
       </List>
     </Box>

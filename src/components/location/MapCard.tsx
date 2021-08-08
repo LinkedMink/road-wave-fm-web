@@ -112,8 +112,17 @@ const MapCard: FunctionComponent<MapCardProps> = (props) => {
           return marker;
         });
 
-        if (createdMarkers.length > 0) {
+        if (createdMarkers.length > 1) {
           mapRef.fitBounds(newBounds);
+        } else if (createdMarkers.length === 1) {
+          const firstPos = createdMarkers[0].getPosition();
+          if (firstPos) {
+            mapRef.panTo(firstPos);
+            const zoom = mapRef.getZoom();
+            if (zoom && zoom < FOCUS_ZOOM_MIN) {
+              mapRef.setZoom(FOCUS_ZOOM_MIN);
+            }
+          }
         }
 
         setMarkers({

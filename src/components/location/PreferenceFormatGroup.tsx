@@ -23,7 +23,7 @@ type StyleProps = StyledComponentProps<StyleClass>;
 
 const styles: StyleRulesCallback<Theme, Record<string, unknown>, StyleClass> = (theme: Theme) => ({
   list: {
-    maxHeight: theme.spacing(50),
+    maxHeight: theme.spacing(45),
     overflow: 'auto',
   },
 });
@@ -82,10 +82,7 @@ const PreferenceFormatGroup: FunctionComponent<PreferenceFormatGroupProps> = (pr
 
   return (
     <Box className={props.classes?.columnBox}>
-      <Tooltip
-        title="Find stations by the selected formats. If none are selected, the closest will be found."
-        placement="right"
-      >
+      <Tooltip title="Find stations by the selected formats. If none are selected, the closest will be found.">
         <Typography variant="h6">Filter by Format</Typography>
       </Tooltip>
       <List className={props.classes?.list}>{props.formats.map(renderFormat)}</List>
