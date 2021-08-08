@@ -13,6 +13,7 @@ const mapStateToProps: MapStateToProps<MapCardStateProps, MapCardOwnProps, RootS
 ) => {
   return {
     isMapsApiLoaded: state.map.isInitialized,
+    isTrackingUser: state.location.watchId !== undefined,
     stations: state.station.list,
     userLocation: state.location.user,
   };

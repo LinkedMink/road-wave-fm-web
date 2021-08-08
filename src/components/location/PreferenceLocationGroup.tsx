@@ -3,19 +3,35 @@ import {
   Box,
   Chip,
   Collapse,
-  FormControlLabel,
-  FormGroup,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemSecondaryAction,
+  ListItemText,
+  StyledComponentProps,
+  StyleRulesCallback,
   Switch,
+  Theme,
   Tooltip,
   Typography,
 } from '@material-ui/core';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
+import MyLocationIcon from '@material-ui/icons/MyLocation';
 import React, { ChangeEvent, FunctionComponent } from 'react';
 import { getDistance } from '../../shared/Math';
 import { SharedStyleProps, withSharedStyles } from '../../shared/Style';
 import { Coordinates } from '../../types/Map';
 
 const RESEARCH_DISTANCE_MIN = 100;
+
+type StyleClass = 'list';
+type StyleProps = StyledComponentProps<StyleClass>;
+
+const styles: StyleRulesCallback<Theme, Record<string, unknown>, StyleClass> = (theme: Theme) => ({
+  list: {
+    maxWidth: theme.spacing(50),
+  },
+});
 
 export interface PreferenceLocationGroupStateProps {
   isLocationWatchEnabled: boolean;
@@ -32,7 +48,8 @@ export interface PreferenceLocationGroupDispatchProps {
 
 type PreferenceLocationGroupProps = PreferenceLocationGroupStateProps &
   PreferenceLocationGroupDispatchProps &
-  SharedStyleProps;
+  SharedStyleProps &
+  StyleProps;
 
 const PreferenceLocationGroup: FunctionComponent<PreferenceLocationGroupProps> = (props) => {
   const [isTrackingEnabled, setIsTrackingEnabled] = React.useState(props.isLocationWatchEnabled);
@@ -47,7 +64,7 @@ const PreferenceLocationGroup: FunctionComponent<PreferenceLocationGroupProps> =
   };
 
   const location = props.userLocation;
-  const latLng = location ? `${location?.lat.toFixed(6)}, ${location?.lng.toFixed(6)}` : '';
+  const latLng = location ? `${location?.lat.toFixed(5)}, ${location?.lng.toFixed(5)}` : '';
 
   React.useEffect(() => {
     if (
@@ -62,25 +79,34 @@ const PreferenceLocationGroup: FunctionComponent<PreferenceLocationGroupProps> =
   return (
     <Box className={props.classes?.columnBox}>
       <Typography variant="h6">Location</Typography>
-      <FormGroup row>
+      <List className={props.classes?.list}>
         <Tooltip
-          title="Enable location tracking to automatically update nearby stations"
+          title="Enable tracking to automatically update nearby stations based on your location"
           placement="right"
         >
-          <FormControlLabel
-            control={<Switch checked={isTrackingEnabled} onChange={handleChange} />}
-            color="primary"
-            label="Tracking"
-          />
+          <ListItem>
+            <ListItemIcon>
+              <LocationOnIcon />
+            </ListItemIcon>
+            <ListItemText>Tracking</ListItemText>
+            <ListItemSecondaryAction>
+              <Switch checked={isTrackingEnabled} onChange={handleChange} />
+            </ListItemSecondaryAction>
+          </ListItem>
         </Tooltip>
-      </FormGroup>
-      <Collapse in={!!location}>
-        <Box>
-          <Chip label={latLng} color="primary" icon={<LocationOnIcon />} />
-        </Box>
-      </Collapse>
+        <Collapse in={!!location}>
+          <ListItem>
+            <ListItemIcon>
+              <MyLocationIcon />
+            </ListItemIcon>
+            <ListItemText>
+              <Chip label={latLng} color="primary" />
+            </ListItemText>
+          </ListItem>
+        </Collapse>
+      </List>
     </Box>
   );
 };
 
-export default withSharedStyles()(PreferenceLocationGroup);
+export default withSharedStyles(styles)(PreferenceLocationGroup);

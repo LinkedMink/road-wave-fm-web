@@ -19,7 +19,7 @@ const getGuestLinks = () => {
       name: 'Home',
       icon: HomeOutlinedIcon,
       active: false,
-      tooltip: 'Discover the dangers of traveling by auto',
+      tooltip: 'Find radio stations near you on the go',
     },
     {
       path: '/login',

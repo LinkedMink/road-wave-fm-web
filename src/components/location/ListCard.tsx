@@ -30,13 +30,17 @@ import { SharedStyleProps, withSharedStyles } from '../../shared/Style';
 import { StationRequest, StationViewModel } from '../../types/Station';
 import LoadingOverlay from '../LoadingOverlay';
 
-type StyleClass = 'avatar' | 'container';
+type StyleClass = 'avatar' | 'container' | 'list';
 type StyleProps = StyledComponentProps<StyleClass>;
 
 const styles: StyleRulesCallback<Theme, Record<string, unknown>, StyleClass> = (theme: Theme) => ({
   container: {
     width: '100%',
     alignItems: 'stretch',
+  },
+  list: {
+    maxHeight: theme.spacing(50),
+    overflow: 'auto',
   },
   avatar: {
     backgroundColor: theme.palette.secondary.main,
@@ -93,6 +97,7 @@ const ListCard: FunctionComponent<ListCardProps> = (props) => {
       <ListItem
         key={index}
         button
+        dense={true}
         selected={station === props.selected}
         onClick={(event) => props.onStationClick(station, event)}
       >
@@ -120,7 +125,7 @@ const ListCard: FunctionComponent<ListCardProps> = (props) => {
       </AccordionSummary>
       <AccordionDetails className={clsx(props.classes?.accordionDetails, props.classes?.container)}>
         <Collapse className={props.classes?.container} in={!props.isLoading}>
-          <List className={props.classes?.container}>
+          <List className={clsx(props.classes?.container, props.classes?.list)}>
             {props.stations && props.stations.length > 0 ? (
               props.stations.map(renderStation)
             ) : (

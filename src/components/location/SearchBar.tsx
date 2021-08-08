@@ -7,6 +7,7 @@ import {
   StyledComponentProps,
   StyleRulesCallback,
   Theme,
+  Tooltip,
 } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import React, { FunctionComponent, useEffect } from 'react';
@@ -29,6 +30,7 @@ const styles: StyleRulesCallback<Theme, Record<string, unknown>, StyleClass> = (
 
 export interface SearchBarOwnProps {
   map?: google.maps.Map;
+  disabled: boolean;
   onPlaceChanged: (autocomplete: google.maps.places.Autocomplete) => void;
 }
 
@@ -51,19 +53,25 @@ const SearchBar: FunctionComponent<SearchBarProps> = (props) => {
     }
   });
 
+  const tooltip = props.disabled
+    ? 'Search is disabled when location tracking is enabled'
+    : 'Search by nearby landmarks';
   return (
-    <FormControl variant="filled" fullWidth={true}>
-      <InputLabel htmlFor="location-search">Search</InputLabel>
-      <FilledInput
-        id="location-search"
-        inputRef={inputRef}
-        endAdornment={
-          <InputAdornment position="end">
-            <SearchIcon />
-          </InputAdornment>
-        }
-      />
-    </FormControl>
+    <Tooltip title={tooltip}>
+      <FormControl variant="filled" fullWidth={true}>
+        <InputLabel htmlFor="location-search">Search</InputLabel>
+        <FilledInput
+          id="location-search"
+          inputRef={inputRef}
+          disabled={props.disabled}
+          endAdornment={
+            <InputAdornment position="end">
+              <SearchIcon />
+            </InputAdornment>
+          }
+        />
+      </FormControl>
+    </Tooltip>
   );
 };
 

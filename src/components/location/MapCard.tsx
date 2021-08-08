@@ -1,5 +1,11 @@
 /* eslint-disable react/prop-types */
-import { Paper, StyledComponentProps, StyleRulesCallback, Theme } from '@material-ui/core';
+import {
+  Paper,
+  StyledComponentProps,
+  StyleRulesCallback,
+  Theme,
+  useTheme,
+} from '@material-ui/core';
 import clsx from 'clsx';
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { indexToChar } from '../../shared/Collection';
@@ -46,6 +52,7 @@ export interface MapCardOwnProps {
 
 export interface MapCardStateProps {
   isMapsApiLoaded: boolean;
+  isTrackingUser: boolean;
   userLocation?: Coordinates;
   stations?: StationViewModel[];
 }
@@ -66,6 +73,7 @@ interface MarkersFor {
 }
 
 const MapCard: FunctionComponent<MapCardProps> = (props) => {
+  const theme = useTheme();
   const [userMarker, setUserMarker] = useState<google.maps.Marker>();
   const [markers, setMarkers] = useState<MarkersFor>();
   const [mapRef, setMapRef] = useState<google.maps.Map>();
@@ -128,11 +136,21 @@ const MapCard: FunctionComponent<MapCardProps> = (props) => {
           new google.maps.Marker({
             position: props.userLocation,
             map: mapRef,
-            title: 'Your Location',
+            title: `Your Location: ${props.userLocation.lat.toFixed(
+              5,
+            )}, ${props.userLocation.lng.toFixed(5)}`,
+            clickable: false,
             icon: {
               path: PersonPinCircleIconPath,
+              scale: 2,
+              fillColor: theme.palette.secondary.dark,
+              fillOpacity: 0.6,
             },
           });
+
+        if (!tempMarker.getMap()) {
+          tempMarker.setMap(mapRef);
+        }
 
         const markerPos = tempMarker.getPosition();
         if (tempMarker !== userMarker) {
@@ -151,6 +169,7 @@ const MapCard: FunctionComponent<MapCardProps> = (props) => {
       <SearchBar
         className={props.classes?.search}
         map={mapRef}
+        disabled={props.isTrackingUser}
         onPlaceChanged={placeChangedHandler}
       />
       <div className={props.classes?.map} ref={mapDivRef}></div>
