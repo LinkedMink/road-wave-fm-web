@@ -23,8 +23,7 @@ import SignalWifi3BarIcon from '@material-ui/icons/SignalWifi3Bar';
 import SignalWifi4BarIcon from '@material-ui/icons/SignalWifi4Bar';
 import SignalWifiOffIcon from '@material-ui/icons/SignalWifiOff';
 import clsx from 'clsx';
-import React, { FunctionComponent } from 'react';
-import { useEffect } from 'react';
+import React, { FunctionComponent, useEffect } from 'react';
 import { indexToChar } from '../../shared/Collection';
 import { SharedStyleProps, withSharedStyles } from '../../shared/Style';
 import { StationRequest, StationViewModel } from '../../types/Station';
@@ -79,13 +78,13 @@ const ListCard: FunctionComponent<ListCardProps> = (props) => {
   const iconBySignalStrength = (signal?: number) => {
     if (!signal) {
       return <SignalWifiOffIcon />;
-    } else if (signal < 0.2) {
+    } else if (signal < 0.15) {
       return <SignalWifi0BarIcon />;
-    } else if (signal < 0.4) {
+    } else if (signal < 0.35) {
       return <SignalWifi1BarIcon />;
-    } else if (signal < 0.6) {
+    } else if (signal < 0.55) {
       return <SignalWifi2BarIcon />;
-    } else if (signal < 0.8) {
+    } else if (signal < 0.75) {
       return <SignalWifi3BarIcon />;
     } else {
       return <SignalWifi4BarIcon />;

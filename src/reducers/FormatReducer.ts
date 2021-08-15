@@ -16,7 +16,7 @@ const formatReducer = (state: FormatState = defaultState, action: FormatAction):
     const formats = action.payload as FormatViewModel[];
     return {
       ...state,
-      list: formats,
+      list: formats.sort((a, b) => a.name.localeCompare(b.name)),
     };
   } else if (action.type === FormatActionType.Select) {
     return {
