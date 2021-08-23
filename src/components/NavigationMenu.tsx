@@ -43,8 +43,12 @@ const styles: StyleRulesCallback<Theme, NavigationMenuOwnProps, StyleClass> = (t
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    width: theme.spacing(7),
+    // width: theme.spacing(7),
+    width: 0,
     [theme.breakpoints.up('sm')]: {
+      width: theme.spacing(7),
+    },
+    [theme.breakpoints.up('md')]: {
       width: theme.spacing(8),
     },
   },

@@ -10,8 +10,9 @@ import SetPasswordContainer from '../containers/pages/SetPasswordContainer';
 import RegisterContainer from '../containers/pages/RegisterContainer';
 import HomeContainer from '../containers/pages/HomeContainer';
 // import SettingsContainer from '../containers/pages/SettingsContainer';
-import AboutScreen from './pages/AboutPage';
-import UnauthorizedScreen from './pages/UnauthorizedPage';
+import AboutPage from './pages/AboutPage';
+import UnauthorizedPage from './pages/UnauthorizedPage';
+import SettingsPage from './pages/SettingsPage';
 
 export interface RouterOutletOwnProps {
   defaultRedirect: string;
@@ -25,9 +26,10 @@ class RouterOutlet extends React.Component<RouterOutletOwnProps> {
       <Route exact path="/register" component={RegisterContainer} />
       <Route exact path="/password-reset" component={PasswordResetContainer} />
       <Route exact path="/set-password/:email/:token" component={SetPasswordContainer} />
-      <Route exact path="/about" component={AboutScreen} />
-      <Route exact path="/unauthorized/:claims" component={UnauthorizedScreen} />
+      <Route exact path="/about" component={AboutPage} />
+      <Route exact path="/unauthorized/:claims" component={UnauthorizedPage} />
       <Route exact path="/home" component={HomeContainer} />
+      <Route exact path="/settings" component={SettingsPage} />
       {/* <RouteAuthContainer
         requiredClaim={Claim.Settings}
         exact

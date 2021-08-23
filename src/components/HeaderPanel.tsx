@@ -169,8 +169,12 @@ class HeaderPanel extends React.Component<HeaderPanelProps, HeaderPanelState> {
         <Typography variant="h6" color="inherit" className={this.props.classes?.title}>
           Road Wave FM
         </Typography>
-        {this.renderAccount()}
-        {this.renderMenu()}
+        {
+          // this.renderAccount()}
+        }
+        {
+          //this.renderMenu()}
+        }
       </Toolbar>
     </AppBar>
   );

@@ -1,7 +1,20 @@
 import { Coordinates } from '../types/Map';
 
-export const getDistance = (_p1: Coordinates, _p2: Coordinates): number => {
-  return 0; // TODO
+const EARTH_RADIUS = 6371;
+
+const toRadians = (degrees: number): number => (degrees * Math.PI) / 180;
+
+export const getEarthDistance = (p1: Coordinates, p2: Coordinates): number => {
+  const dLat = toRadians(p2.lat - p1.lat);
+  const dLng = toRadians(p2.lng - p1.lng);
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(toRadians(p1.lat)) *
+      Math.cos(toRadians(p2.lat)) *
+      Math.sin(dLng / 2) *
+      Math.sin(dLng / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return EARTH_RADIUS * c;
 };
 
 export const areEqualCoordinates = (p1?: Coordinates, p2?: Coordinates): boolean =>

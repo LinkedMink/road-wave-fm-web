@@ -1,6 +1,6 @@
 import { Loader } from '@googlemaps/js-api-loader';
 import { ConfigData, saveConfig, setInitialized } from './ConfigAction';
-import { formatSave } from './FormatAction';
+import { formatRestore, formatSave } from './FormatAction';
 import { loadingEnd } from './LoadingAction';
 import { mapInit } from './MapAction';
 import { saveSession } from './SessionAction';
@@ -34,6 +34,13 @@ const fetchMapsApi: AppThunkAction = async (dispatch, getState) => {
 };
 
 const fetchFormats: AppThunkAction = async (dispatch, _getState) => {
+  const formatData = localStorage.getItem(StorageKey.FormatState);
+  if (formatData) {
+    const formatState = JSON.parse(formatData);
+    dispatch(formatRestore(formatState));
+    return;
+  }
+
   const formats = await getJsonResponse<ResponseData<FormatViewModel[]>>(
     dispatch,
     Services.RoadWave,

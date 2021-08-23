@@ -19,11 +19,11 @@ import {
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import MyLocationIcon from '@material-ui/icons/MyLocation';
 import React, { ChangeEvent, FunctionComponent } from 'react';
-import { getDistance } from '../../shared/Math';
+import { getEarthDistance } from '../../shared/Math';
 import { SharedStyleProps, withSharedStyles } from '../../shared/Style';
 import { Coordinates } from '../../types/Map';
 
-const RESEARCH_DISTANCE_MIN = 100;
+const UPDATE_DISTANCE_KM = 10;
 
 type StyleClass = 'list';
 type StyleProps = StyledComponentProps<StyleClass>;
@@ -71,7 +71,7 @@ const PreferenceLocationGroup: FunctionComponent<PreferenceLocationGroupProps> =
     if (
       props.userLocation &&
       (!props.searchLocation ||
-        getDistance(props.userLocation, props.searchLocation) > RESEARCH_DISTANCE_MIN)
+        getEarthDistance(props.userLocation, props.searchLocation) > UPDATE_DISTANCE_KM)
     ) {
       props.selectLocation(props.userLocation.lat, props.userLocation.lng);
     }

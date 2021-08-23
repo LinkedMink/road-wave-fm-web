@@ -1,10 +1,10 @@
 import { connect, MapStateToProps } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import LockOpenIcon from '@material-ui/icons/LockOpen';
+// import LockOpenIcon from '@material-ui/icons/LockOpen';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
-import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
+// import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
 import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
-
+// import SettingsIcon from '@material-ui/icons/Settings';
 import NavigationMenu, {
   NavigationMenuLink,
   NavigationMenuOwnProps,
@@ -21,6 +21,15 @@ const getGuestLinks = () => {
       active: false,
       tooltip: 'Find radio stations near you on the go',
     },
+    /*
+    {
+      path: '/settings',
+      name: 'Settings',
+      icon: SettingsIcon,
+      active: false,
+      tooltip: 'Configure your station search settings',
+    },
+
     {
       path: '/login',
       name: 'Login',
@@ -36,6 +45,7 @@ const getGuestLinks = () => {
       tooltip: 'Create a new account',
     },
     {},
+    */
     {
       path: '/about',
       name: 'About',
