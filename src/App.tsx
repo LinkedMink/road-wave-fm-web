@@ -16,6 +16,7 @@ import AlertDialogContainer from './containers/AlertDialogContainer';
 import ConfirmDialogContainer from './containers/ConfirmDialogContainer';
 import NavigationMenuContainer from './containers/NavigationMenuContainer';
 import { useEffect } from 'react';
+import AlertSnackbarContainer from './containers/AlertSnackbarContainer';
 
 type StyleClass = 'root' | 'appBarSpacer' | 'content' | 'container';
 
@@ -66,6 +67,7 @@ const App: FunctionComponent<AppProps> = (props) => {
       <CssBaseline />
       <LoadingOverlayContainer />
       <AlertDialogContainer />
+      <AlertSnackbarContainer />
       <ConfirmDialogContainer />
       <div className={props.classes?.root}>
         <HeaderPanel

@@ -6,6 +6,7 @@ export enum AlertActionType {
   Redirect = 'ALERT_REDIRECT',
   Error = 'ALERT_ERROR',
   Info = 'ALERT_INFO',
+  Warn = 'ALERT_WARN',
   Success = 'ALERT_SUCCESS',
 }
 
@@ -52,6 +53,13 @@ export function alertError(text: string): AlertAction {
 export function alertInfo(text: string): AlertAction {
   return {
     type: AlertActionType.Info,
+    payload: text,
+  };
+}
+
+export function alertWarn(text: string): AlertAction {
+  return {
+    type: AlertActionType.Warn,
     payload: text,
   };
 }

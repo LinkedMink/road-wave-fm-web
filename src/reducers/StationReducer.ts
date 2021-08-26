@@ -6,10 +6,12 @@ export interface StationState {
   selected?: StationViewModel;
   isLoading: boolean;
   lastRequest?: StationRequest;
+  hasLastRequestFailed: boolean;
 }
 
 const defaultState: StationState = {
   isLoading: false,
+  hasLastRequestFailed: false,
 };
 
 const stationReducer = (
@@ -22,7 +24,9 @@ const stationReducer = (
       ...state,
       list: requestResult.data,
       lastRequest: requestResult.params,
+      hasLastRequestFailed: false,
       selected: undefined,
+      isLoading: false,
     };
   } else if (action.type === StationActionType.Select) {
     return {
@@ -38,6 +42,17 @@ const stationReducer = (
     return {
       ...state,
       isLoading: false,
+    };
+  } else if (action.type === StationActionType.SetFailed) {
+    return {
+      ...state,
+      isLoading: false,
+      hasLastRequestFailed: true,
+    };
+  } else if (action.type === StationActionType.SetReady) {
+    return {
+      ...state,
+      hasLastRequestFailed: false,
     };
   } else {
     return state;

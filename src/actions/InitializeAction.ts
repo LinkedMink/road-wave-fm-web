@@ -5,7 +5,7 @@ import { loadingEnd } from './LoadingAction';
 import { mapInit } from './MapAction';
 import { saveSession } from './SessionAction';
 import { retryThunkAction } from './ThunkAction';
-import { getJsonResponse } from '../shared/RequestFactory';
+import { getJsonResponse, handleGenericCatch } from '../shared/RequestFactory';
 import { decodeToken } from '../shared/Token';
 import { AppThunkAction } from '../store';
 import { FormatViewModel } from '../types/Format';
@@ -17,7 +17,7 @@ const fetchConfigAction: AppThunkAction = async (dispatch, _getState) => {
     dispatch,
     Services.Self,
     Routes[Services.Self].CONFIG,
-  );
+  ).catch(handleGenericCatch(dispatch));
 
   if (config) {
     dispatch(saveConfig(config));
@@ -45,7 +45,7 @@ const fetchFormats: AppThunkAction = async (dispatch, _getState) => {
     dispatch,
     Services.RoadWave,
     Routes[Services.RoadWave].FORMATS,
-  );
+  ).catch(handleGenericCatch(dispatch));
 
   if (formats) {
     dispatch(formatSave(formats.data));

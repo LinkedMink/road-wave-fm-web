@@ -9,7 +9,7 @@ import { RouteComponentProps } from 'react-router-dom';
 
 export interface AlertDialogStateProps {
   isActive: boolean;
-  title: string;
+  title?: string;
   text?: string;
   redirect?: string;
 }

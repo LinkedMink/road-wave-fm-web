@@ -14,7 +14,7 @@ const mapStateToProps: MapStateToProps<AlertDialogStateProps, RouteComponentProp
   state: RootState,
 ) => {
   return {
-    isActive: state.alert.severity !== AlertSeverity.None ? true : false,
+    isActive: state.alert.severity === AlertSeverity.Error || !!state.alert.redirect,
     title: state.alert.severity,
     text: state.alert.message,
     redirect: state.alert.redirect,

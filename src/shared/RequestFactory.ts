@@ -51,29 +51,15 @@ export const getRequestOptions = (
   return options;
 };
 
-const handleRawResponse = <TResponse>(dispatch: Dispatch, url: string, options: RequestInit) => {
+const responseToJson = <TResponse>() => {
   return (response: Response) => {
-    if (response.status === 500) {
-      logger.error({
-        url,
-        verb: options.method,
-        body: options.body,
-        response: `${response.status}: ${response.body}`,
-      });
-      dispatch(alertError(GENERIC_REQUEST_ERROR));
-      return Promise.resolve(null);
-    }
-
     return response.json() as Promise<TResponse>;
   };
 };
 
-const handleGenericCatch = (dispatch: Dispatch, url: string, options: RequestInit) => {
-  return (error: Error) => {
+export const handleGenericCatch = (dispatch: Dispatch) => {
+  return (error: Error): null => {
     logger.error({
-      url,
-      verb: options.method,
-      body: options.body,
       stack: error.stack,
     });
     dispatch(alertError(GENERIC_REQUEST_ERROR));
@@ -98,7 +84,7 @@ export const getJsonResponse = <TResponse = unknown, TRequest = unknown>(
   method = HttpMethods.GET,
   requestData: TRequest | null = null,
   isAuthorized = true,
-): Promise<TResponse | null> => {
+): Promise<TResponse> => {
   let url = getServiceActionUrl(targetService, path);
 
   if (requestData && method === HttpMethods.GET) {
@@ -114,7 +100,5 @@ export const getJsonResponse = <TResponse = unknown, TRequest = unknown>(
     isAuthorized,
   );
 
-  return fetch(url, options)
-    .then(handleRawResponse<TResponse>(dispatch, url, options))
-    .catch(handleGenericCatch(dispatch, url, options));
+  return fetch(url, options).then(responseToJson<TResponse>());
 };

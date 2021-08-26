@@ -1,6 +1,6 @@
 import { Action } from 'redux';
 import urlJoin from 'url-join';
-import { getJsonResponse, HttpMethods } from '../shared/RequestFactory';
+import { getJsonResponse, handleGenericCatch, HttpMethods } from '../shared/RequestFactory';
 import { AppThunkAction } from '../store';
 import { AccountModel } from '../types/Account';
 import { AccountMessage } from '../types/Message';
@@ -43,7 +43,7 @@ export const fetchAccountAction = (): AppThunkAction<AccountAction> => {
       Services.User,
       Routes[Services.User].ACCOUNT,
       HttpMethods.GET,
-    );
+    ).catch(handleGenericCatch(dispatch));
 
     if (response) {
       dispatch(storeAccount(response.data));
@@ -63,7 +63,7 @@ export const saveAccountAction = (
       Routes[Services.User].ACCOUNT,
       HttpMethods.PUT,
       properties,
-    );
+    ).catch(handleGenericCatch(dispatch));
 
     if (response) {
       dispatch(storeAccount(response.data));
@@ -89,7 +89,7 @@ export const deleteAccountAction = (): AppThunkAction<AccountAction> => {
       Services.User,
       Routes[Services.User].ACCOUNT,
       HttpMethods.DELETE,
-    );
+    ).catch(handleGenericCatch(dispatch));
 
     if (response) {
       dispatch(clearAccount());
@@ -107,7 +107,7 @@ export const fetchPasswordResetAction = (email: string): AppThunkAction<AccountA
       dispatch,
       Services.User,
       urlJoin(Routes[Services.User].PASSWORD, encodeURIComponent(email)),
-    );
+    ).catch(handleGenericCatch(dispatch));
 
     if (response) {
       dispatch(alertRedirect(AccountMessage.PASSWORD_RESET_SENT, '/login'));
@@ -133,7 +133,7 @@ export const savePasswordResetAction = (
         resetToken,
         password,
       },
-    );
+    ).catch(handleGenericCatch(dispatch));
 
     if (response) {
       dispatch(alertRedirect(AccountMessage.PASSWORD_RESET_SUCCESS, '/login'));
@@ -157,7 +157,7 @@ export const saveRegisterAction = (
         email,
         password,
       },
-    );
+    ).catch(handleGenericCatch(dispatch));
 
     if (response) {
       dispatch(alertRedirect(AccountMessage.REGISTER_SUCCESS, '/login'));

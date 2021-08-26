@@ -2,21 +2,19 @@ import { Reducer } from 'redux';
 import { AlertAction, AlertActionType, AlertRedirect } from '../actions/AlertAction';
 
 export enum AlertSeverity {
-  None = 'None',
   Success = 'Success',
   Info = 'Info',
+  Warn = 'Warning',
   Error = 'Error',
 }
 
 export interface AlertState {
-  severity: AlertSeverity;
+  severity?: AlertSeverity;
   message?: string;
   redirect?: string;
 }
 
-const defaultState: AlertState = {
-  severity: AlertSeverity.None,
-};
+const defaultState: AlertState = {};
 
 const accountReducer: Reducer<AlertState, AlertAction> = (
   state: AlertState = defaultState,
@@ -24,7 +22,7 @@ const accountReducer: Reducer<AlertState, AlertAction> = (
 ): AlertState => {
   if (action.type === AlertActionType.Clear) {
     return Object.assign({}, state, {
-      severity: AlertSeverity.None,
+      severity: undefined,
       message: undefined,
       redirect: undefined,
     });
@@ -37,6 +35,12 @@ const accountReducer: Reducer<AlertState, AlertAction> = (
   } else if (action.type === AlertActionType.Info) {
     return Object.assign({}, state, {
       severity: AlertSeverity.Info,
+      message: action.payload,
+      redirect: undefined,
+    });
+  } else if (action.type === AlertActionType.Warn) {
+    return Object.assign({}, state, {
+      severity: AlertSeverity.Warn,
       message: action.payload,
       redirect: undefined,
     });

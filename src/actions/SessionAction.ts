@@ -1,5 +1,5 @@
 import { Action } from 'redux';
-import { getJsonResponse, HttpMethods } from '../shared/RequestFactory';
+import { getJsonResponse, handleGenericCatch, HttpMethods } from '../shared/RequestFactory';
 import { decodeToken } from '../shared/Token';
 import { AppThunkAction } from '../store';
 import {
@@ -50,7 +50,7 @@ export const loginRequestAction = (
         email,
         password,
       },
-    );
+    ).catch(handleGenericCatch(dispatch));
 
     if (response) {
       localStorage.removeItem(StorageKey.AuthToken);

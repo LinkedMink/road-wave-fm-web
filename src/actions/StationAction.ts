@@ -3,12 +3,17 @@ import { getJsonResponse, HttpMethods } from '../shared/RequestFactory';
 import { AppThunkAction } from '../store';
 import { ResponseData, Services, Routes } from '../types/Service';
 import { StationRequest, StationViewModel } from '../types/Station';
+import { alertWarn } from './AlertAction';
+
+const RETRY_INTERVAL = 15000;
 
 export enum StationActionType {
   Store = 'STATION_STORE',
   Select = 'STATION_SELECT',
   LoadStart = 'STATION_LOAD_START',
   LoadEnd = 'STATION_LOAD_END',
+  SetFailed = 'STATION_SET_FAILED',
+  SetReady = 'STATION_SET_READY',
 }
 
 export interface StationRequestResult {
@@ -52,24 +57,49 @@ export function stationLoadEnd(): StationAction {
   };
 }
 
+export function stationSetFailed(): StationAction {
+  return {
+    type: StationActionType.SetFailed,
+    payload: null,
+  };
+}
+
+export function stationSetReady(): StationAction {
+  return {
+    type: StationActionType.SetReady,
+    payload: null,
+  };
+}
+
 export const fetchStationAction = (criteria: StationRequest): AppThunkAction<StationAction> => {
   return (async (dispatch, _getState) => {
     dispatch(stationLoadStart());
-    const response = await getJsonResponse<ResponseData<StationViewModel[]>>(
-      dispatch,
-      Services.RoadWave,
-      Routes[Services.RoadWave].STATIONS,
-      HttpMethods.GET,
-      criteria,
-    );
+    try {
+      const response = await getJsonResponse<ResponseData<StationViewModel[]>>(
+        dispatch,
+        Services.RoadWave,
+        Routes[Services.RoadWave].STATIONS,
+        HttpMethods.GET,
+        criteria,
+      );
 
-    if (response) {
       if (response.data.length > 0) {
         dispatch(stationStore(criteria, response.data));
       } else {
         dispatch(stationStore(criteria, []));
       }
+    } catch (e) {
+      dispatch(stationSetFailed());
+      dispatch(
+        alertWarn(
+          `Failed to get stations and will retry in ${
+            RETRY_INTERVAL / 1000
+          } seconds. Check your network connection.`,
+        ),
+      );
+      setTimeout(() => {
+        dispatch(stationSetReady());
+      }, RETRY_INTERVAL);
     }
-    dispatch(stationLoadEnd());
   }) as AppThunkAction;
 };

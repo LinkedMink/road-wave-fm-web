@@ -15,6 +15,7 @@ const mapStateToProps: MapStateToProps<ListCardStateProps, ListCardOwnProps, Roo
   state: RootState,
 ) => {
   const hasNewCriteria =
+    !state.station.hasLastRequestFailed &&
     state.location.search &&
     (!areEqualCoordinates(state.location.search, state.station.lastRequest) ||
       !isArrayContentsEqual(state.format.selected, state.station.lastRequest?.fmt));
