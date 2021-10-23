@@ -28,7 +28,6 @@ import { SharedStyleProps, withSharedStyles } from '../../shared/Style';
 import { StationRequest, StationViewModel } from '../../types/Station';
 import LoadingSpinner from '../LoadingSpinner';
 
-
 type StyleClass = 'avatar' | 'container' | 'list';
 type StyleProps = StyledComponentProps<StyleClass>;
 

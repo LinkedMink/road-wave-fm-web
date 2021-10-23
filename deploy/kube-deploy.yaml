@@ -6,8 +6,8 @@ data:
   config.json: |
   {
     "urls": {
-      "user": "http://localhost:8081",
-      "roadWave": "http://localhost:8080"
+      "user": "http://user.api.mydomain.local",
+      "roadWave": "http://rwfm.api.mydomain.local"
     },
     "googleMapsApiKey": "<My Key>",
     "jwtPublicKey": "<My base64 key>",

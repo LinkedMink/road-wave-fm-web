@@ -1,23 +1,25 @@
 {
   "typescript.tsdk": "node_modules/typescript/lib",
+  "files.eol": "\n",
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": false,
+  "editor.tabSize": 2,
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "files.eol": "\n"
   },
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "files.eol": "\n"
   },
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "files.eol": "\n"
   },
   "[html]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "files.eol": "\n"
   },
   "[scss]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "files.eol": "\n"
-  }  
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+  }
 }

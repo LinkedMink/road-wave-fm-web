@@ -1,9 +1,12 @@
 .vscode
+.yarn
+deploy/*
+!deploy/nginx.conf
 node_modules
 coverage
 public
-serve
 src
+
 .babelrc
 .dockerignore
 .env

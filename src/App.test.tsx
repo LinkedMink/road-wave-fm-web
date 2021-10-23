@@ -1,9 +1,21 @@
+import { render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-import AppContainer from './AppContainer';
+import { Provider } from 'react-redux';
 
-test('renders learn react link', () => {
-  render(<AppContainer />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+import AppContainer from './AppContainer';
+import store from './store';
+
+test('should render root app without build errors when initialized', async () => {
+  render(
+    <React.StrictMode>
+      <Provider store={store}>
+        <AppContainer />
+      </Provider>
+    </React.StrictMode>,
+  );
+
+  await waitFor(() => screen.getByRole('heading'));
+
+  const headerEl = screen.getByRole('heading');
+  expect(headerEl).toBeInTheDocument();
 });

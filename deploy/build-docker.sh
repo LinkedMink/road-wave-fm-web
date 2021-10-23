@@ -24,6 +24,8 @@ fi
 startTime=$(date +"%s")
 echo "---------- Build Started: $startTime ----------"
 
+cd ../
+
 if [ "$2" = "prod" ]; then
   GENERATE_SOURCEMAP=false
   DOCKER_ARGS="--build-arg ENVIRONMENT=production"

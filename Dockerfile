@@ -4,7 +4,7 @@ ARG ENVIRONMENT=development
 
 ENV IS_CONTAINER_ENV true
 
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY deploy/nginx.conf /etc/nginx/conf.d/default.conf
 
 WORKDIR /usr/share/nginx/html
 
