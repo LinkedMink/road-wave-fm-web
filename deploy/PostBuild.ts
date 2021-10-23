@@ -22,7 +22,7 @@ const main = async (): Promise<number> => {
     logger.warn('No File: build/config.json');
   }
 
-  if (Boolean(process.env.AWS_AMPLIFY) === true) {
+  if (Boolean(process.env.DEPLOY_TO_AWS_AMPLIFY) === true) {
     logger.debug('Writting deployed config.json');
 
     if (!process.env.URL_USER_API || !process.env.URL_ROAD_WAVE_API || !process.env.GOOGLE_MAPS_API_KEY || !process.env.USER_API_JWT_PUBLIC_KEY) {
