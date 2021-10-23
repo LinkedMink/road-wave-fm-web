@@ -20,8 +20,7 @@ class RouteAuth extends React.Component<RouteAuthProps> {
   }
 
   getNoComponentProps(props: RouteAuthProps): Partial<RouteAuthProps> {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { component: Component, ...rest } = props;
+    const { component: _, ...rest } = props;
     return rest;
   }
 

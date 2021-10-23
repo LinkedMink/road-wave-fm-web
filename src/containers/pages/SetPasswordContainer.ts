@@ -7,8 +7,6 @@ import SetPasswordScreen, {
 import { AppThunkDispatch } from '../../store';
 import { savePasswordResetAction } from '../../actions/AccountAction';
 
-const SUCCESS_MESSAGE = 'Your password has been reset.';
-
 const mapStateToProps: MapStateToProps<
   SetPasswordPageStateProps,
   Record<string, never>,

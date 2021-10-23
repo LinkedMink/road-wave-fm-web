@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { connect, MapDispatchToPropsFunction, MapStateToProps } from 'react-redux';
 import { initializeAction } from './actions/InitializeAction';
 

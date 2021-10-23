@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import {
   Accordion,
   AccordionDetails,
@@ -27,7 +26,8 @@ import React, { FunctionComponent, useEffect } from 'react';
 import { indexToChar } from '../../shared/Collection';
 import { SharedStyleProps, withSharedStyles } from '../../shared/Style';
 import { StationRequest, StationViewModel } from '../../types/Station';
-import LoadingOverlay from '../LoadingOverlay';
+import LoadingSpinner from '../LoadingSpinner';
+
 
 type StyleClass = 'avatar' | 'container' | 'list';
 type StyleProps = StyledComponentProps<StyleClass>;
@@ -118,11 +118,11 @@ const ListCard: FunctionComponent<ListCardProps> = (props) => {
 
   return (
     <Accordion defaultExpanded={true}>
-      <LoadingOverlay isLoading={props.isLoading} />
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <Typography variant="h5">Station List</Typography>
       </AccordionSummary>
       <AccordionDetails className={clsx(props.classes?.accordionDetails, props.classes?.container)}>
+        <LoadingSpinner isLoading={props.isLoading} message="Refreshing..." />
         <Collapse className={props.classes?.container} in={!props.isLoading}>
           <List className={clsx(props.classes?.container, props.classes?.list)}>
             {props.stations && props.stations.length > 0 ? (

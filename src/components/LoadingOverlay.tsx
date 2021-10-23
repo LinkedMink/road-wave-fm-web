@@ -13,7 +13,6 @@ type StyleClass = 'overlay' | 'animationContainer';
 const styles: StyleRulesCallback<Theme, LoadingOverlayStateProps, StyleClass> = (theme: Theme) => ({
   overlay: {
     zIndex: theme.zIndex.drawer + 1,
-    // color: '#fff',
   },
   animationContainer: {
     display: 'flex',

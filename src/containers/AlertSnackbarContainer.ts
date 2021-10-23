@@ -10,7 +10,7 @@ import { RootState } from '../reducers/RootReducer';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { AlertSeverity } from '../reducers/AlertReducer';
 
-const DEFAULT_AUTO_HIDE_MS = 7500;
+const DEFAULT_AUTO_HIDE_MS = 6000;
 
 const mapStateToProps: MapStateToProps<AlertSnackbarStateProps, RouteComponentProps, RootState> = (
   state: RootState,

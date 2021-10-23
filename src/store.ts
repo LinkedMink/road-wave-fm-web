@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { configureStore } from '@reduxjs/toolkit';
 import { Action } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';

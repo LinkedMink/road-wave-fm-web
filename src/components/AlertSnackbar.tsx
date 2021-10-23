@@ -1,12 +1,12 @@
-/* eslint-disable react/prop-types */
 import Alert, { Color } from '@material-ui/lab/Alert';
 import { Grow, Snackbar } from '@material-ui/core';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { AlertSeverity } from '../reducers/AlertReducer';
 import { TransitionProps } from '@material-ui/core/transitions';
+import { useEffect } from 'react';
 
-const GROW_TIMEOUT = 250;
+const GROW_TIMEOUT = 300;
 
 const GrowTransition: React.FunctionComponent<TransitionProps> = (props: TransitionProps) => {
   return <Grow timeout={GROW_TIMEOUT} {...props} />;
@@ -28,21 +28,30 @@ type AlertSnackbarProps = RouteComponentProps &
   AlertSnackbarDispatchProps;
 
 const AlertSnackbar: React.FunctionComponent<AlertSnackbarProps> = (props) => {
-  const severity = props.severity?.toLowerCase() as Color;
+  const [state, setState] = React.useState({
+    text: undefined as string | undefined,
+    severity: undefined as Color | undefined,
+  });
 
-  const handleClose = () => {
-    setTimeout(() => props.close(), GROW_TIMEOUT);
-  };
+  useEffect(() => {
+    if (props.isActive && !state.text) {
+      setState({ text: props.text as string, severity: props.severity?.toLowerCase() as Color });
+    } else if (!props.isActive && state.text) {
+      setTimeout(() => {
+        setState({ text: undefined, severity: undefined });
+      }, GROW_TIMEOUT);
+    }
+  });
 
   return (
     <Snackbar
       open={props.isActive}
       autoHideDuration={props.closeInMs}
       TransitionComponent={GrowTransition}
-      onClose={handleClose}
+      onClose={props.close}
     >
-      <Alert severity={severity} elevation={4} variant="filled">
-        {props.text}
+      <Alert severity={state.severity} elevation={4} variant="filled">
+        {state.text}
       </Alert>
     </Snackbar>
   );

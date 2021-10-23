@@ -92,7 +92,7 @@ export const fetchStationAction = (criteria: StationRequest): AppThunkAction<Sta
       dispatch(stationSetFailed());
       dispatch(
         alertWarn(
-          `Failed to get stations and will retry in ${
+          `Failed to get stations, retry in ${
             RETRY_INTERVAL / 1000
           } seconds. Check your network connection.`,
         ),
