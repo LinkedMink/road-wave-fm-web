@@ -25,12 +25,18 @@ const main = async (): Promise<number> => {
   if (Boolean(process.env.DEPLOY_TO_AWS_AMPLIFY) === true) {
     logger.debug('Writting deployed config.json');
 
-    if (!process.env.URL_USER_API || !process.env.URL_ROAD_WAVE_API || !process.env.GOOGLE_MAPS_API_KEY || !process.env.USER_API_JWT_PUBLIC_KEY) {
-      logger.error('Must set environment variables when deploying with AWS Amplify')
+    if (
+      !process.env.URL_USER_API ||
+      !process.env.URL_ROAD_WAVE_API ||
+      !process.env.GOOGLE_MAPS_API_KEY ||
+      !process.env.USER_API_JWT_PUBLIC_KEY
+    ) {
+      logger.error('Must set environment variables when deploying with AWS Amplify');
       return 1;
     }
 
-    const logLevel = Number(process.env.LOG_LEVEL) ?? 0
+    const logLevelNum = Number(process.env.LOG_LEVEL);
+    const logLevel = isNaN(logLevelNum) ? 0 : logLevelNum;
     const config = {
       urls: {
         user: process.env.URL_USER_API,
@@ -42,7 +48,7 @@ const main = async (): Promise<number> => {
       logLevelPersist: logLevel,
     };
 
-    await fs.writeFile('build/config.json', JSON.stringify(config))
+    await fs.writeFile('build/config.json', JSON.stringify(config));
     logger.info('Write: build/config.json');
   } else {
     logger.debug('Target environment does not require prebuilt config.json');
