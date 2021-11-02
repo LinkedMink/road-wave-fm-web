@@ -17,6 +17,9 @@ type StyleClass = 'overlay' | 'overlayOpen';
 
 const styles: StyleRulesCallback<Theme, LoadingSpinnerOwnProps, StyleClass> = (theme: Theme) => ({
   overlay: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
