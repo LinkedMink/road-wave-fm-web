@@ -1974,6 +1974,69 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@linkedmink/road-wave-fm-web@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "@linkedmink/road-wave-fm-web@workspace:."
+  dependencies:
+    "@googlemaps/js-api-loader": ^1.12.11
+    "@material-ui/core": ^4.12.3
+    "@material-ui/icons": ^4.11.2
+    "@material-ui/lab": ^4.0.0-alpha.60
+    "@reduxjs/toolkit": ^1.6.2
+    "@testing-library/dom": ^8.11.1
+    "@testing-library/jest-dom": ^5.16.0
+    "@testing-library/react": ^11.2.7
+    "@testing-library/user-event": ^12.8.3
+    "@tsconfig/create-react-app": ^1.0.2
+    "@tsconfig/node16": ^1.0.2
+    "@types/google.maps": ^3.47.0
+    "@types/jest": ^26.0.24
+    "@types/jsonwebtoken": ^8.5.6
+    "@types/react": ^17.0.37
+    "@types/react-dom": ^17.0.11
+    "@types/react-redux": ^7.1.20
+    "@types/react-router-dom": ^5.3.2
+    "@types/url-join": ^4.0.1
+    "@typescript-eslint/eslint-plugin": ^4.33.0
+    "@typescript-eslint/parser": ^4.33.0
+    chalk: ^4.1.2
+    clsx: ^1.1.1
+    dotenv: ^10.0.0
+    eslint: ^7.32.0
+    eslint-config-prettier: ^8.3.0
+    eslint-plugin-prettier: ^3.4.1
+    eslint-plugin-react: ^7.27.1
+    husky: ^7.0.4
+    jsonwebtoken: ^8.5.1
+    lint-staged: ^12.1.2
+    prettier: ^2.5.1
+    query-string: ^7.0.1
+    react: ^17.0.2
+    react-dom: ^17.0.2
+    react-redux: ^7.2.6
+    react-router-dom: ^5.3.0
+    react-scripts: ~4.0.3
+    redux: ^4.1.2
+    redux-thunk: ^2.4.1
+    ts-node-dev: ^1.1.8
+    typescript: ~4.4.4
+    url-join: ^4.0.1
+    web-vitals: ^1.1.2
+    workbox-background-sync: ^5.1.4
+    workbox-broadcast-update: ^5.1.4
+    workbox-cacheable-response: ^5.1.4
+    workbox-core: ^5.1.4
+    workbox-expiration: ^5.1.4
+    workbox-google-analytics: ^5.1.4
+    workbox-navigation-preload: ^5.1.4
+    workbox-precaching: ^5.1.4
+    workbox-range-requests: ^5.1.4
+    workbox-routing: ^5.1.4
+    workbox-strategies: ^5.1.4
+    workbox-streams: ^5.1.4
+  languageName: unknown
+  linkType: soft
+
 "@material-ui/core@npm:^4.12.3":
   version: 4.12.3
   resolution: "@material-ui/core@npm:4.12.3"
@@ -14467,69 +14530,6 @@ resolve@^2.0.0-next.3:
   checksum: 006accc40578ee2beae382757c4ce2908a826b27e2b079efdcd2959ee544ddf210b7b5d7d5e80467807604244e7388427330f5c6d4cd61e6edaddc5773ccc393
   languageName: node
   linkType: hard
-
-"road-wave-fm-web@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "road-wave-fm-web@workspace:."
-  dependencies:
-    "@googlemaps/js-api-loader": ^1.12.11
-    "@material-ui/core": ^4.12.3
-    "@material-ui/icons": ^4.11.2
-    "@material-ui/lab": ^4.0.0-alpha.60
-    "@reduxjs/toolkit": ^1.6.2
-    "@testing-library/dom": ^8.11.1
-    "@testing-library/jest-dom": ^5.16.0
-    "@testing-library/react": ^11.2.7
-    "@testing-library/user-event": ^12.8.3
-    "@tsconfig/create-react-app": ^1.0.2
-    "@tsconfig/node16": ^1.0.2
-    "@types/google.maps": ^3.47.0
-    "@types/jest": ^26.0.24
-    "@types/jsonwebtoken": ^8.5.6
-    "@types/react": ^17.0.37
-    "@types/react-dom": ^17.0.11
-    "@types/react-redux": ^7.1.20
-    "@types/react-router-dom": ^5.3.2
-    "@types/url-join": ^4.0.1
-    "@typescript-eslint/eslint-plugin": ^4.33.0
-    "@typescript-eslint/parser": ^4.33.0
-    chalk: ^4.1.2
-    clsx: ^1.1.1
-    dotenv: ^10.0.0
-    eslint: ^7.32.0
-    eslint-config-prettier: ^8.3.0
-    eslint-plugin-prettier: ^3.4.1
-    eslint-plugin-react: ^7.27.1
-    husky: ^7.0.4
-    jsonwebtoken: ^8.5.1
-    lint-staged: ^12.1.2
-    prettier: ^2.5.1
-    query-string: ^7.0.1
-    react: ^17.0.2
-    react-dom: ^17.0.2
-    react-redux: ^7.2.6
-    react-router-dom: ^5.3.0
-    react-scripts: ~4.0.3
-    redux: ^4.1.2
-    redux-thunk: ^2.4.1
-    ts-node-dev: ^1.1.8
-    typescript: ~4.4.4
-    url-join: ^4.0.1
-    web-vitals: ^1.1.2
-    workbox-background-sync: ^5.1.4
-    workbox-broadcast-update: ^5.1.4
-    workbox-cacheable-response: ^5.1.4
-    workbox-core: ^5.1.4
-    workbox-expiration: ^5.1.4
-    workbox-google-analytics: ^5.1.4
-    workbox-navigation-preload: ^5.1.4
-    workbox-precaching: ^5.1.4
-    workbox-range-requests: ^5.1.4
-    workbox-routing: ^5.1.4
-    workbox-strategies: ^5.1.4
-    workbox-streams: ^5.1.4
-  languageName: unknown
-  linkType: soft
 
 "rollup-plugin-babel@npm:^4.3.3":
   version: 4.4.0
