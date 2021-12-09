@@ -1,6 +1,6 @@
 # Road Wave FM - Web App
 
-- ![Build State](https://github.com/LinkedMink/road-wave-fm-web/actions/workflows/verify-build.yml/badge.svg)
+![Build State](https://github.com/LinkedMink/road-wave-fm-web/actions/workflows/verify-build.yml/badge.svg)
 
 ## Overview
 
