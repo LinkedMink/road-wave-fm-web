@@ -9,14 +9,8 @@ on:
     - develop
     - feature/*
     - fix/*
-  workflow_dispatch:
-    inputs:
-      uploadBuild:
-        description: 'Upload distribution files to Github'
-        default: false
-        type: boolean
 jobs:
   build:
     uses: LinkedMink/road-wave-fm-web/.github/workflows/build.yml@main
     with:
-      uploadBuild: ${{ github.event.inputs.uploadBuild }}
+      uploadBuild: false
