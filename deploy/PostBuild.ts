@@ -8,6 +8,9 @@ const main = async (): Promise<number> => {
   const logger = getLogger(path.basename(__filename));
   logger.info('Start Post-Build');
 
+  await fs.copyFile('LICENSE.md', 'build/docs/LICENSE.md');
+  logger.info('Removed: build/config.sample.json');
+
   try {
     await fs.rm('build/config.sample.json');
     logger.info('Removed: build/config.sample.json');
