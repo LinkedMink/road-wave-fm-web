@@ -14,9 +14,9 @@ class AboutPage extends React.Component<SharedStyleProps> {
         <Paper className={this.props.classes?.paper}>
           <Typography variant="h3">About</Typography>
           <Typography variant="body1">
-            Development on this project has stalled in favor of focusing on a mobile app front-end
-            <Link href="https://github.com/LinkedMink/road-wave-fm-web">Road Wave FM - UI</Link>. We
-            wanted a UI that would be convenient to use while driving, but the integration of web
+            Development on this project has stalled in favor of focusing on a mobile app front-end (
+            <Link href="https://github.com/LinkedMink/road-wave-fm-web">Road Wave FM - UI</Link>).
+            We wanted a UI that would be convenient to use while driving, but the integration of web
             apps on mobile devices isn&apos;t the greatest. If someone&apos;s interested in picking
             this project up feel free to reach out.
           </Typography>
