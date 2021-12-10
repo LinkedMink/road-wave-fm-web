@@ -1,6 +1,6 @@
 {
-  "name": "road-wave-fm-web",
-  "version": "0.1.3",
+  "name": "@linkedmink/road-wave-fm-web",
+  "version": "0.9.0",
   "description": "A web application to communicate with the Road Wave FM data source",
   "license": "MIT",
   "author": {
