@@ -19,4 +19,4 @@ jobs:
   build:
     uses: LinkedMink/road-wave-fm-web/.github/workflows/build.yml@main
     with:
-      uploadBuild: ${{ github.event.inputs && github.event.inputs.uploadBuild }}
+      uploadBuild: ${{ github.event.inputs.uploadBuild }}
