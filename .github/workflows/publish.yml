@@ -10,7 +10,7 @@ on:
         required: true
 jobs:
   build:
-    uses: LinkedMink/road-wave-fm-web/.github/workflows/verify-build.yml@main
+    uses: LinkedMink/road-wave-fm-web/.github/workflows/build.yml@main
     with:
       uploadBuild: true
   publish:
