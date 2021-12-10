@@ -23,12 +23,12 @@ jobs:
       with:
         name: app-bundle
     - name: Compress Artifacts
-      run: tar -czvf road-wave-fm-web-${{ github.event.inputs.uploadToTag }}.tar.gz ${{steps.download.outputs.download-path}}
+      run: tar -czvf ${{ github.event.repository.name }}-${{ github.event.inputs.uploadToTag }}.tar.gz ${{steps.download.outputs.download-path}}
     - name: Upload Packages to Github
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: road-wave-fm-web-${{ github.event.inputs.uploadToTag }}.tar.gz
+        file: ${{ github.event.repository.name }}-${{ github.event.inputs.uploadToTag }}.tar.gz
         tag: ${{ github.event.inputs.uploadToTag }}
         overwrite: true
         file_glob: true
