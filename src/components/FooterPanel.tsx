@@ -16,7 +16,7 @@ const styles: StyleRulesCallback<Theme, Record<string, never>, StyleClass> = (th
     marginLeft: theme.spacing(4),
     display: 'flex',
     flexDirection: 'row',
-    padding: 0,
+    padding: theme.spacing(2, 0),
   },
   footerText: {
     padding: theme.spacing(0, 4),
