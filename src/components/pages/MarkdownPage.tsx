@@ -11,13 +11,16 @@ interface MarkdownPageOwnRouteParams {
 }
 
 const MarkdownPage: FunctionComponent<SharedStyleProps> = (props) => {
+  const [document, setDocument] = useState('');
   const [markdown, setMarkdown] = useState('');
   const { documentName } = useParams<MarkdownPageOwnRouteParams>();
 
   useEffect(() => {
-    if (markdown) {
+    if (markdown && documentName == document) {
       return;
     }
+
+    setDocument(documentName);
 
     fetch(`/docs/${documentName}.md`)
       .then((response) => {
