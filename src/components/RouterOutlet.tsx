@@ -11,6 +11,7 @@ import RegisterContainer from '../containers/pages/RegisterContainer';
 import HomeContainer from '../containers/pages/HomeContainer';
 // import SettingsContainer from '../containers/pages/SettingsContainer';
 import AboutPage from './pages/AboutPage';
+import MarkdownPage from './pages/MarkdownPage';
 import UnauthorizedPage from './pages/UnauthorizedPage';
 import SettingsPage from './pages/SettingsPage';
 
@@ -27,6 +28,7 @@ class RouterOutlet extends React.Component<RouterOutletOwnProps> {
       <Route exact path="/password-reset" component={PasswordResetContainer} />
       <Route exact path="/set-password/:email/:token" component={SetPasswordContainer} />
       <Route exact path="/about" component={AboutPage} />
+      <Route exact path="/document/:documentName" component={MarkdownPage} />
       <Route exact path="/unauthorized/:claims" component={UnauthorizedPage} />
       <Route exact path="/home" component={HomeContainer} />
       <Route exact path="/settings" component={SettingsPage} />

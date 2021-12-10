@@ -39,7 +39,8 @@ const styles: StyleRulesCallback<Theme, AppProps, StyleClass> = (theme: Theme) =
   container: {
     display: 'flex',
     flexDirection: 'column',
-    flex: `1 1 calc(100vh - ${theme.spacing(4)}px)`,
+    flex: `1 1`,
+    minHeight: `100vh`,
     alignItems: 'stretch',
     overflow: 'hidden',
   },
