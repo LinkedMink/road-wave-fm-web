@@ -22,7 +22,7 @@ type StyleProps = StyledComponentProps<StyleClass>;
 
 const styles: StyleRulesCallback<Theme, Record<string, unknown>, StyleClass> = (theme: Theme) => ({
   list: {
-    maxHeight: theme.spacing(45),
+    maxHeight: theme.spacing(42),
     overflow: 'auto',
   },
 });

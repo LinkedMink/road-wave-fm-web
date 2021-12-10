@@ -19,9 +19,12 @@ const styles: StyleRulesCallback<Theme, Record<string, never>, StyleClass> = (th
     padding: theme.spacing(2, 0),
   },
   footerText: {
-    padding: theme.spacing(0, 4),
+    padding: theme.spacing(0, 2),
     borderLeft: `1px solid ${theme.palette.divider}`,
     borderRight: `1px solid ${theme.palette.divider}`,
+    [theme.breakpoints.up('md')]: {
+      padding: theme.spacing(0, 4),
+    },
   },
 });
 
@@ -42,6 +45,13 @@ class FooterPanel extends React.Component<FooterPanelProps> {
           </Link>{' '}
           {new Date().getFullYear()}
           {'.'}
+        </Typography>
+        <Typography
+          variant="body1"
+          color="textSecondary"
+          className={this.props.classes?.footerText}
+        >
+          <Link href="docs/LICENSE.md">License</Link>
         </Typography>
         <Typography
           variant="body1"

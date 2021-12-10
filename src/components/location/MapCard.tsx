@@ -28,10 +28,13 @@ type StyleProps = StyledComponentProps<StyleClass>;
 
 const styles: StyleRulesCallback<Theme, Record<string, unknown>, StyleClass> = (theme: Theme) => ({
   panel: {
-    height: '100%',
+    height: theme.spacing(64),
     display: 'flex',
     alignItems: 'stretch',
     flexDirection: 'column',
+    [theme.breakpoints.up('md')]: {
+      height: '100%',
+    },
   },
   search: {
     flex: '0 0 auto',

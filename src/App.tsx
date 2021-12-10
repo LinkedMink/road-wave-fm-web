@@ -33,22 +33,26 @@ export type AppProps = AppStateProps & AppDispatchProps & StyledComponentProps<S
 const styles: StyleRulesCallback<Theme, AppProps, StyleClass> = (theme: Theme) => ({
   root: {
     display: 'flex',
+    overflow: 'auto',
   },
   appBarSpacer: theme.mixins.toolbar,
-  content: {
+  container: {
     display: 'flex',
     flexDirection: 'column',
-    flexGrow: 1,
-    height: '100vh',
-    overflow: 'auto',
+    flex: `1 1 calc(100vh - ${theme.spacing(4)}px)`,
     alignItems: 'stretch',
+    overflow: 'hidden',
   },
-  container: {
+  content: {
     display: 'flex',
     flex: '1 1 auto',
     alignItems: 'stretch',
-    paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4),
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
+    [theme.breakpoints.up('md')]: {
+      paddingTop: theme.spacing(4),
+      paddingBottom: theme.spacing(4),
+    },
   },
 });
 
@@ -75,13 +79,13 @@ const App: FunctionComponent<AppProps> = (props) => {
           onMenuOpen={() => setIsMenuOpen(true)}
         />
         <NavigationMenuContainer isOpen={isMenuOpen} onMenuClose={() => setIsMenuOpen(false)} />
-        <main className={props.classes?.content}>
+        <div className={props.classes?.container}>
           <div className={props.classes?.appBarSpacer} />
-          <div className={props.classes?.container}>
+          <main className={props.classes?.content}>
             <RouterOutlet defaultRedirect={'/home'} />
-          </div>
+          </main>
           <FooterPanel />
-        </main>
+        </div>
       </div>
     </BrowserRouter>
   );

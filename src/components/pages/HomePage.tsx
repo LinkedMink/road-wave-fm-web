@@ -12,9 +12,7 @@ type StyleClass = 'fullscreen';
 type StyleProps = StyledComponentProps<StyleClass>;
 
 const styles: StyleRulesCallback<Theme, Record<string, unknown>, StyleClass> = (_theme: Theme) => ({
-  fullscreen: {
-    height: '100%',
-  },
+  fullscreen: {},
 });
 
 type HomePageProps = SharedStyleProps & StyleProps;
