@@ -1,7 +1,4 @@
-name: Verify and Build
-concurrency: 
-  group: build-${{ github.ref }}
-  cancel-in-progress: true
+name: Build
 on:
   workflow_call:
     inputs:
@@ -9,21 +6,9 @@ on:
         description: 'Upload distribution files to Github'
         default: false
         type: boolean
-  workflow_dispatch:
-    inputs:
-      uploadBuild:
-        description: 'Upload distribution files to Github'
-        default: false
-        type: boolean
-  push:
-    branches:
-    - main
-    - develop
-    - feature/*
-    - fix/*
 jobs:
-  verify:
-    runs-on: ubuntu-20.04
+  build:
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v2
@@ -39,7 +24,7 @@ jobs:
     - name: Build
       run: yarn build
     - name: Upload Packages
-      if: ${{ inputs.uploadBuild || github.event.inputs.uploadBuild }}
+      if: ${{ inputs.uploadBuild }}
       uses: actions/upload-artifact@v2
       with:
         name: app-bundle
