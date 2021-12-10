@@ -8,6 +8,7 @@ import {
 import Box from '@material-ui/core/Box';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
+import { getLinkReference } from '../shared/Element';
 
 type StyleClass = 'footerBox' | 'footerText';
 
@@ -39,26 +40,26 @@ class FooterPanel extends React.Component<FooterPanelProps> {
           color="textSecondary"
           className={this.props.classes?.footerText}
         >
+          <Link component={getLinkReference('/document/privacy_policy')}>Privacy Policy</Link>
+        </Typography>
+        <Typography
+          variant="body1"
+          color="textSecondary"
+          className={this.props.classes?.footerText}
+        >
+          <Link component={getLinkReference('/document/LICENSE')}>License</Link>
+        </Typography>
+        <Typography
+          variant="body1"
+          color="textSecondary"
+          className={this.props.classes?.footerText}
+        >
           {'Copyright © '}
           <Link color="inherit" href="#">
             Harlan Sang
           </Link>{' '}
           {new Date().getFullYear()}
           {'.'}
-        </Typography>
-        <Typography
-          variant="body1"
-          color="textSecondary"
-          className={this.props.classes?.footerText}
-        >
-          <Link href="docs/LICENSE.md">License</Link>
-        </Typography>
-        <Typography
-          variant="body1"
-          color="textSecondary"
-          className={this.props.classes?.footerText}
-        >
-          <Link href="docs/privacy_policy.md">Privacy Policy</Link>
         </Typography>
       </Box>
     );

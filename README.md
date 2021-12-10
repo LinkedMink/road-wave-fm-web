@@ -5,9 +5,10 @@
 ## Overview
 
 Development on this project has stalled in favor of focusing on a mobile app front-end
-[road_wave_fm_ui](https://github.com/LinkedMink/road_wave_fm_ui). We wanted a UI that would be convenient to use
-while driving, but the integration of web apps on mobile devices isn't the greatest. If someone's interested in
-picking this project up feel free to reach out.
+([road_wave_fm_ui](https://github.com/LinkedMink/road_wave_fm_ui)).
+We wanted a UI that would be convenient to use while driving, but web apps lack tight
+integration on mobile devices. If someone&apos;s interested in picking this project up
+feel free to reach out on our Github page.
 
 ## Dependencies
 

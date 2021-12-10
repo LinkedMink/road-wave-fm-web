@@ -1992,6 +1992,7 @@ __metadata:
     "@types/google.maps": ^3.47.0
     "@types/jest": ^26.0.24
     "@types/jsonwebtoken": ^8.5.6
+    "@types/marked": ^4.0.1
     "@types/react": ^17.0.37
     "@types/react-dom": ^17.0.11
     "@types/react-redux": ^7.1.20
@@ -2009,6 +2010,7 @@ __metadata:
     husky: ^7.0.4
     jsonwebtoken: ^8.5.1
     lint-staged: ^12.1.2
+    marked: ^4.0.7
     prettier: ^2.5.1
     query-string: ^7.0.1
     react: ^17.0.2
@@ -2765,6 +2767,13 @@ __metadata:
   dependencies:
     "@types/node": "*"
   checksum: c1c0e40cb1366d3b5f72c2c283abee8e5aedc5656d8857752ed4cb318eb8e117dad87f35431f73cdc03e7b02d169d19b3a1e58422ef94776c17cfd003ee05a33
+  languageName: node
+  linkType: hard
+
+"@types/marked@npm:^4.0.1":
+  version: 4.0.1
+  resolution: "@types/marked@npm:4.0.1"
+  checksum: c2dabaae5ed5e2806ee3ef7f717ef7fe91ac5ee2718162219dd34de9d684d36efd561987fb3316b659d1add6d432696ca507da04b94380a77aac30870cb276d7
   languageName: node
   linkType: hard
 
@@ -10977,6 +10986,15 @@ fsevents@^1.2.7:
   dependencies:
     object-visit: ^1.0.0
   checksum: c27045a5021c344fc19b9132eb30313e441863b2951029f8f8b66f79d3d8c1e7e5091578075a996f74e417479506fe9ede28c44ca7bc351a61c9d8073daec36a
+  languageName: node
+  linkType: hard
+
+"marked@npm:^4.0.7":
+  version: 4.0.7
+  resolution: "marked@npm:4.0.7"
+  bin:
+    marked: bin/marked.js
+  checksum: bcda0d945014403e14e70e1a78afe4913d317b7eec5a882ce8ec989f153add18654dbdbd4535bc92e704f053f3d1b3c4a62b3e1c53ae78fe7544635d2749d80a
   languageName: node
   linkType: hard
 

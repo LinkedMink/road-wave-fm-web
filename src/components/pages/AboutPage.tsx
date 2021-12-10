@@ -14,15 +14,17 @@ class AboutPage extends React.Component<SharedStyleProps> {
         <Paper className={this.props.classes?.paper}>
           <Typography variant="h3">About</Typography>
           <Typography variant="body1">
-            Development on this project has stalled in favor of focusing on a mobile app front-end (
-            <Link href="https://github.com/LinkedMink/road-wave-fm-web">Road Wave FM - UI</Link>).
-            We wanted a UI that would be convenient to use while driving, but the integration of web
-            apps on mobile devices isn&apos;t the greatest. If someone&apos;s interested in picking
-            this project up feel free to reach out.
+            Development on this project has stalled in favor of focusing on a mobile app front-end.
+            We wanted a UI that would be convenient to use while driving, but web apps lack tight
+            integration on mobile devices. If someone&apos;s interested in picking this project up
+            feel free to reach out on our Github page.
           </Typography>
           <br />
           <Typography variant="h4">Related Projects</Typography>
           <List>
+            <Link href="https://github.com/LinkedMink/road_wave_fm_ui">
+              <ListItem button>Road Wave FM - Mobile UI</ListItem>
+            </Link>
             <Link href="https://github.com/LinkedMink/road-wave-fm-web">
               <ListItem button>Road Wave FM - Web App</ListItem>
             </Link>
