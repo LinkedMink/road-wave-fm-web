@@ -14,6 +14,7 @@ jobs:
       uploadBuild: true
       appBundleName: app-bundle
   publish:
+    needs: [build]
     uses: LinkedMink/road-wave-fm-web/.github/workflows/publish.yml@main
     with:
       uploadToTag: ${{ github.ref }}
