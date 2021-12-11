@@ -1,15 +1,17 @@
 # Contributing
 
-## Submission Process
+WIP
 
-### Engage
+## Engage
 
-- Features: Discuss
-- Bugs: Open Issue
+- Features: Discuss the desired feature or alteration in [GitHub](https://github.com/LinkedMink/road-wave-fm-web/discussions)
+- Bugs: Open an issue in [GitHub](https://github.com/LinkedMink/road-wave-fm-web/issues)
 
-### Branch
+## Including Changes
 
-- hotfix/\*: Changes to address bugs
+### Branches
+
+- fix/\*: Changes to address bugs
 - feature/\*: Changes to add new or alter existing functionality
 - main: Changes that are destined for the next release
 

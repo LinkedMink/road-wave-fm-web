@@ -11,11 +11,7 @@
 !.yarn/sdks
 !.yarn/versions
 
-# testing
-/coverage
-
 # production
-/build
 *.tgz
 
 # misc
