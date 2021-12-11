@@ -3,9 +3,16 @@ on:
   workflow_call:
     inputs:
       uploadBuild:
-        description: 'Upload distribution files to Github'
-        default: false
         type: boolean
+        required: false
+        default: false
+        description: 'Upload distribution files to Github'
+      appBundleName:
+        type: string
+        required: false
+        default: app-bundle
+        description: 'Name associated with actions/upload-artifact'
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -27,5 +34,5 @@ jobs:
       if: ${{ inputs.uploadBuild }}
       uses: actions/upload-artifact@v2
       with:
-        name: app-bundle
+        name: ${{ inputs.appBundleName }}
         path: build

@@ -1,18 +1,26 @@
 name: Publish
-concurrency: 
-  group: publish
-  cancel-in-progress: true
 on:
-  workflow_dispatch:
+  workflow_call:
     inputs:
       uploadToTag:
-        description: 'Upload built Bundle to Github tag'
+        type: string
         required: true
+        description: 'Upload built Bundle to Github tag'
+      appBundleName:
+        type: string
+        required: false
+        default: app-bundle
+        description: 'Name associated with actions/upload-artifact'
+    secrets:
+      GITHUB_TOKEN:
+        required: true
+
 jobs:
   build:
     uses: LinkedMink/road-wave-fm-web/.github/workflows/build.yml@main
     with:
       uploadBuild: true
+      appBundleName: ${{ inputs.appBundleName }}
   publish:
     needs: [build]
     runs-on: ubuntu-latest
@@ -22,14 +30,15 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: app-bundle
+        path: ''
     - name: Compress Artifacts
-      run: tar -czvf ${{ github.event.repository.name }}-${{ github.event.inputs.uploadToTag }}.tar.gz ${{steps.download.outputs.download-path}}
+      run: tar -czvf ${{ github.event.repository.name }}-${{ inputs.uploadToTag }}.tar.gz ${{steps.download.outputs.download-path}}
     - name: Upload Packages to Github
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: ${{ github.event.repository.name }}-${{ github.event.inputs.uploadToTag }}.tar.gz
-        tag: ${{ github.event.inputs.uploadToTag }}
+        file: ${{ github.event.repository.name }}-${{ inputs.uploadToTag }}.tar.gz
+        tag: ${{ inputs.uploadToTag }}
         overwrite: true
         file_glob: true
         prerelease: true
