@@ -1,4 +1,4 @@
-name: Publish
+name: Publish Dispatch
 concurrency: 
   group: publish
   cancel-in-progress: true
@@ -16,7 +16,12 @@ on:
         description: 'Name associated with actions/upload-artifact'
 
 jobs:
-  publish-workflow:
+  build:
+    uses: LinkedMink/road-wave-fm-web/.github/workflows/build.yml@main
+    with:
+      uploadBuild: true
+      appBundleName: ${{ github.event.inputs.appBundleName }}
+  publish:
     uses: LinkedMink/road-wave-fm-web/.github/workflows/publish.yml@main
     with:
       uploadToTag: ${{ github.event.inputs.uploadToTag }}

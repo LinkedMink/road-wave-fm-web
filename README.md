@@ -1,6 +1,6 @@
 # Road Wave FM - Web App
 
-![Build State](https://github.com/LinkedMink/road-wave-fm-web/actions/workflows/build.yml/verify-ref.svg)
+![Build State](https://github.com/LinkedMink/road-wave-fm-web/actions/workflows/verify-ref.yml/badge.svg)
 
 ## Notice
 
@@ -16,7 +16,7 @@ Road Wave FM for Web provides a front end interface to query data about terresti
 The app aims to be a mobile friendly and simple, so that you can hear fresh tunes on long road trips.
 
 - Use your device's location to find nearby stations
-  - Track your location automatically when moving across long distance ()
+  - Track your location automatically when moving across long distance (like on road trips)
 - Find by using Google's Places API autocomplete (search by Cities, Addresses, etc.)
 - Filter by formats and remember settings
 - Covers the United States and Canada

@@ -1,16 +1,17 @@
-import React from 'react';
+import Box from '@material-ui/core/Box';
+import Link from '@material-ui/core/Link';
 import {
   StyledComponentProps,
   StyleRulesCallback,
   Theme,
   withStyles,
 } from '@material-ui/core/styles';
-import Box from '@material-ui/core/Box';
-import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
+import clsx from 'clsx';
+import React from 'react';
 import { getLinkReference } from '../shared/Element';
 
-type StyleClass = 'footerBox' | 'footerText';
+type StyleClass = 'footerBox' | 'footerText' | 'footerLink';
 
 const styles: StyleRulesCallback<Theme, Record<string, never>, StyleClass> = (theme: Theme) => ({
   footerBox: {
@@ -29,6 +30,14 @@ const styles: StyleRulesCallback<Theme, Record<string, never>, StyleClass> = (th
     [theme.breakpoints.up('md')]: {
       padding: theme.spacing(0, 4),
     },
+    '&:last-child': {
+      borderRight: 'none',
+    },
+  },
+  footerLink: {
+    '&:hover, &:focus': {
+      backgroundColor: theme.palette.action.hover,
+    },
   },
 });
 
@@ -41,14 +50,14 @@ class FooterPanel extends React.Component<FooterPanelProps> {
         <Typography
           variant="body1"
           color="textSecondary"
-          className={this.props.classes?.footerText}
+          className={clsx(this.props.classes?.footerText, this.props.classes?.footerLink)}
         >
           <Link component={getLinkReference('/document/privacy_policy')}>Privacy Policy</Link>
         </Typography>
         <Typography
           variant="body1"
           color="textSecondary"
-          className={this.props.classes?.footerText}
+          className={clsx(this.props.classes?.footerText, this.props.classes?.footerLink)}
         >
           <Link component={getLinkReference('/document/LICENSE')}>License</Link>
         </Typography>
@@ -58,11 +67,8 @@ class FooterPanel extends React.Component<FooterPanelProps> {
           className={this.props.classes?.footerText}
         >
           {'Copyright © '}
-          <Link color="inherit" href="#">
-            Harlan Sang
-          </Link>{' '}
           {new Date().getFullYear()}
-          {'.'}
+          {' Harlan Sang.'}
         </Typography>
       </Box>
     );

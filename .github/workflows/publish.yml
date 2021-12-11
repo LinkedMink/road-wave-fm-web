@@ -16,11 +16,6 @@ on:
         required: true
 
 jobs:
-  build:
-    uses: LinkedMink/road-wave-fm-web/.github/workflows/build.yml@main
-    with:
-      uploadBuild: true
-      appBundleName: ${{ inputs.appBundleName }}
   publish:
     needs: [build]
     runs-on: ubuntu-latest
@@ -29,7 +24,7 @@ jobs:
       id: download
       uses: actions/download-artifact@v2
       with:
-        name: app-bundle
+        name: ${{ inputs.appBundleName }}
         path: ''
     - name: Compress Artifacts
       run: tar -czvf ${{ github.event.repository.name }}-${{ inputs.uploadToTag }}.tar.gz ${{steps.download.outputs.download-path}}
