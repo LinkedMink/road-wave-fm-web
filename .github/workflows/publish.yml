@@ -28,7 +28,7 @@ jobs:
     - name: Compress Artifacts
       run: |
         cd ./archive
-        tar -czvf ${{ github.event.repository.name }}-${{ inputs.uploadToTag }}.tar.gz ./
+        tar -czvf ../${{ github.event.repository.name }}-${{ inputs.uploadToTag }}.tar.gz ./
         cd ../
     - name: Upload Packages to Github
       uses: svenstaro/upload-release-action@v2

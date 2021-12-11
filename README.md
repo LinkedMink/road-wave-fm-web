@@ -1,6 +1,6 @@
 # Road Wave FM - Web App
 
-![Build State](https://github.com/LinkedMink/road-wave-fm-web/actions/workflows/verify-ref.yml/badge.svg)
+![Build State](https://github.com/LinkedMink/road-wave-fm-web/actions/workflows/build-main.yml/badge.svg)
 
 ## Notice
 
@@ -12,7 +12,7 @@ feel free to reach out on our Github page.
 
 ## Overview
 
-Road Wave FM for Web provides a front end interface to query data about terrestial radio stations.
+Road Wave FM for Web provides a front end interface to query data about terrestrial radio stations.
 The app aims to be a mobile friendly and simple, so that you can hear fresh tunes on long road trips.
 
 - Use your device's location to find nearby stations

@@ -1,4 +1,4 @@
-name: Verify Ref
+name: Build main
 concurrency: 
   group: build-${{ github.ref }}
   cancel-in-progress: true
@@ -6,9 +6,6 @@ on:
   push:
     branches:
     - main
-    - develop
-    - feature/*
-    - fix/*
 jobs:
   build:
     uses: LinkedMink/road-wave-fm-web/.github/workflows/build.yml@main
