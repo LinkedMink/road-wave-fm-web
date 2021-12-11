@@ -10,33 +10,40 @@ interface MarkdownPageOwnRouteParams {
   documentName: string;
 }
 
+interface MarkdownPageState {
+  document?: string;
+  markdown?: string;
+}
+
 const MarkdownPage: FunctionComponent<SharedStyleProps> = (props) => {
-  const [document, setDocument] = useState('');
-  const [markdown, setMarkdown] = useState('');
+  const [state, setState] = useState<MarkdownPageState>({});
   const { documentName } = useParams<MarkdownPageOwnRouteParams>();
 
   useEffect(() => {
-    if (markdown && documentName == document) {
+    if (state.markdown && documentName === state.document) {
       return;
     }
-
-    setDocument(documentName);
 
     fetch(`/docs/${documentName}.md`)
       .then((response) => {
         return response.text();
       })
       .then((text) => {
-        setMarkdown(marked(text));
+        setState({ document: documentName, markdown: marked(text) });
       })
-      .catch(() => setMarkdown(`<p>Error getting document: ${documentName}<p>`));
+      .catch(() =>
+        setState({
+          document: documentName,
+          markdown: `<p>Document not found: ${documentName}<p>`,
+        }),
+      );
   });
 
   return (
     <Container maxWidth="lg">
       <Paper className={props.classes?.paper}>
-        <article dangerouslySetInnerHTML={{ __html: markdown }}></article>
-        <LoadingSpinner isLoading={!markdown} message="Loading..." />
+        <article dangerouslySetInnerHTML={{ __html: state.markdown ?? '' }}></article>
+        <LoadingSpinner isLoading={!state.markdown} message="" />
       </Paper>
     </Container>
   );

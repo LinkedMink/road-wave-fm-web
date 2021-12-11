@@ -1,0 +1,15 @@
+name: Publish
+concurrency: 
+  group: publish
+  cancel-in-progress: true
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  publish-workflow:
+    uses: LinkedMink/road-wave-fm-web/.github/workflows/publish.yml@main
+    with:
+      uploadToTag: ${{ github.ref }}
+      appBundleName: app-bundle
