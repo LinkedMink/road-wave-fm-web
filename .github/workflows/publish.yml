@@ -24,9 +24,12 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: ${{ inputs.appBundleName }}
-        path: ''
+        path: archive
     - name: Compress Artifacts
-      run: tar -czvf ${{ github.event.repository.name }}-${{ inputs.uploadToTag }}.tar.gz ${{steps.download.outputs.download-path}}
+      run: |
+        cd ./archive
+        tar -czvf ${{ github.event.repository.name }}-${{ inputs.uploadToTag }}.tar.gz ./
+        cd ../
     - name: Upload Packages to Github
       uses: svenstaro/upload-release-action@v2
       with:
