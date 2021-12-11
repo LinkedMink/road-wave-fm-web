@@ -26,3 +26,5 @@ jobs:
     with:
       uploadToTag: ${{ github.event.inputs.uploadToTag }}
       appBundleName: ${{ github.event.inputs.appBundleName }}
+    secrets:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

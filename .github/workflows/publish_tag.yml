@@ -18,3 +18,5 @@ jobs:
     with:
       uploadToTag: ${{ github.ref }}
       appBundleName: app-bundle
+    secrets:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
