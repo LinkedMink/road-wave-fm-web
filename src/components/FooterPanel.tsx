@@ -16,8 +16,11 @@ const styles: StyleRulesCallback<Theme, Record<string, never>, StyleClass> = (th
   footerBox: {
     marginLeft: theme.spacing(4),
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'column',
     padding: theme.spacing(2, 0),
+    [theme.breakpoints.up('sm')]: {
+      flexDirection: 'row',
+    },
   },
   footerText: {
     padding: theme.spacing(0, 2),

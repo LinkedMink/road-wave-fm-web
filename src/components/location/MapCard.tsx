@@ -28,7 +28,7 @@ type StyleProps = StyledComponentProps<StyleClass>;
 
 const styles: StyleRulesCallback<Theme, Record<string, unknown>, StyleClass> = (theme: Theme) => ({
   panel: {
-    height: theme.spacing(64),
+    minHeight: '580px',
     display: 'flex',
     alignItems: 'stretch',
     flexDirection: 'column',
