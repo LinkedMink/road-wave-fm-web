@@ -11,7 +11,7 @@ import clsx from 'clsx';
 import React from 'react';
 import { getLinkReference } from '../shared/Element';
 
-type StyleClass = 'footerBox' | 'footerText' | 'footerLink';
+type StyleClass = 'footerBox' | 'footerText';
 
 const styles: StyleRulesCallback<Theme, Record<string, never>, StyleClass> = (theme: Theme) => ({
   footerBox: {
@@ -21,6 +21,9 @@ const styles: StyleRulesCallback<Theme, Record<string, never>, StyleClass> = (th
     padding: theme.spacing(2, 0),
     [theme.breakpoints.up('sm')]: {
       flexDirection: 'row',
+    },
+    '& a': {
+      color: theme.palette.type === 'dark' ? theme.palette.secondary.light : undefined,
     },
   },
   footerText: {
@@ -34,11 +37,6 @@ const styles: StyleRulesCallback<Theme, Record<string, never>, StyleClass> = (th
       borderRight: 'none',
     },
   },
-  footerLink: {
-    '&:hover, &:focus': {
-      backgroundColor: theme.palette.action.hover,
-    },
-  },
 });
 
 type FooterPanelProps = StyledComponentProps<StyleClass>;
@@ -50,14 +48,14 @@ class FooterPanel extends React.Component<FooterPanelProps> {
         <Typography
           variant="body1"
           color="textSecondary"
-          className={clsx(this.props.classes?.footerText, this.props.classes?.footerLink)}
+          className={clsx(this.props.classes?.footerText)}
         >
           <Link component={getLinkReference('/document/privacy_policy')}>Privacy Policy</Link>
         </Typography>
         <Typography
           variant="body1"
           color="textSecondary"
-          className={clsx(this.props.classes?.footerText, this.props.classes?.footerLink)}
+          className={clsx(this.props.classes?.footerText)}
         >
           <Link component={getLinkReference('/document/LICENSE')}>License</Link>
         </Typography>

@@ -1,17 +1,32 @@
-import React from 'react';
+import { StyledComponentProps, StyleRulesCallback, Theme } from '@material-ui/core';
 import Container from '@material-ui/core/Container';
-import Paper from '@material-ui/core/Paper';
 import Link from '@material-ui/core/Link';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
+import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import React from 'react';
 import { SharedStyleProps, withSharedStyles } from '../../shared/Style';
 
-class AboutPage extends React.Component<SharedStyleProps> {
-  render() {
-    return (
-      <Container maxWidth="lg">
-        <Paper className={this.props.classes?.paper}>
+type StyleClass = 'contentSection';
+type StyleProps = StyledComponentProps<StyleClass>;
+
+const styles: StyleRulesCallback<Theme, Record<string, never>, StyleClass> = (theme: Theme) => ({
+  contentSection: {
+    marginBottom: theme.spacing(4),
+  },
+  linkText: {
+    color: theme.palette.type === 'dark' ? theme.palette.secondary.light : undefined,
+  },
+});
+
+type AboutPageProps = StyleProps & SharedStyleProps;
+
+const AboutPage: React.FunctionComponent<AboutPageProps> = (props) => {
+  return (
+    <Container maxWidth="lg">
+      <Paper className={props.classes?.paper}>
+        <section className={props.classes?.contentSection}>
           <Typography variant="h3">About</Typography>
           <Typography variant="body1">
             Development on this project has stalled in favor of focusing on a mobile app front-end.
@@ -19,7 +34,8 @@ class AboutPage extends React.Component<SharedStyleProps> {
             integration on mobile devices. If someone&apos;s interested in picking this project up
             feel free to reach out on our Github page.
           </Typography>
-          <br />
+        </section>
+        <section className={props.classes?.contentSection}>
           <Typography variant="h4">Related Projects</Typography>
           <List>
             <Link href="https://github.com/LinkedMink/road_wave_fm_ui">
@@ -35,10 +51,10 @@ class AboutPage extends React.Component<SharedStyleProps> {
               <ListItem button>Node User Service</ListItem>
             </Link>
           </List>
-        </Paper>
-      </Container>
-    );
-  }
-}
+        </section>
+      </Paper>
+    </Container>
+  );
+};
 
-export default withSharedStyles()(AboutPage);
+export default withSharedStyles(styles)(AboutPage);

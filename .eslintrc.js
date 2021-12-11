@@ -23,5 +23,6 @@ module.exports = {
       { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
     ],
     'react/prop-types': 'off',
+    'prettier/prettier': 'off',
   },
 };

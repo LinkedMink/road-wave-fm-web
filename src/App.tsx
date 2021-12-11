@@ -1,21 +1,24 @@
-import React, { FunctionComponent, useState } from 'react';
-import { BrowserRouter } from 'react-router-dom';
 import {
   CssBaseline,
+  PaletteType,
   StyledComponentProps,
   StyleRulesCallback,
   Theme,
+  ThemeProvider,
+  useMediaQuery,
   withStyles,
 } from '@material-ui/core';
-import LoadingOverlayContainer from './containers/LoadingOverlayContainer';
+import { createTheme } from '@material-ui/core/styles';
+import React, { FunctionComponent, useEffect, useState } from 'react';
+import { BrowserRouter } from 'react-router-dom';
 import FooterPanel from './components/FooterPanel';
-import RouterOutlet from './components/RouterOutlet';
 import HeaderPanel from './components/HeaderPanel';
+import RouterOutlet from './components/RouterOutlet';
 import AlertDialogContainer from './containers/AlertDialogContainer';
-import ConfirmDialogContainer from './containers/ConfirmDialogContainer';
-import NavigationMenuContainer from './containers/NavigationMenuContainer';
-import { useEffect } from 'react';
 import AlertSnackbarContainer from './containers/AlertSnackbarContainer';
+import ConfirmDialogContainer from './containers/ConfirmDialogContainer';
+import LoadingOverlayContainer from './containers/LoadingOverlayContainer';
+import NavigationMenuContainer from './containers/NavigationMenuContainer';
 
 type StyleClass = 'root' | 'appBarSpacer' | 'content' | 'container';
 
@@ -58,7 +61,22 @@ const styles: StyleRulesCallback<Theme, AppProps, StyleClass> = (theme: Theme) =
 });
 
 const App: FunctionComponent<AppProps> = (props) => {
+  const isDarkModePrefered = useMediaQuery('(prefers-color-scheme: dark)');
+
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const [paletteType, setPaletteType] = React.useState<PaletteType>(
+    isDarkModePrefered ? 'dark' : 'light',
+  );
+
+  const theme = React.useMemo(
+    () =>
+      createTheme({
+        palette: {
+          type: paletteType,
+        },
+      }),
+    [paletteType],
+  );
 
   useEffect(() => {
     if (!props.isInitialized) {
@@ -68,26 +86,30 @@ const App: FunctionComponent<AppProps> = (props) => {
 
   return (
     <BrowserRouter>
-      <CssBaseline />
-      <LoadingOverlayContainer />
-      <AlertDialogContainer />
-      <AlertSnackbarContainer />
-      <ConfirmDialogContainer />
-      <div className={props.classes?.root}>
-        <HeaderPanel
-          isLoggedIn={props.isLoggedIn}
-          isOpen={isMenuOpen}
-          onMenuOpen={() => setIsMenuOpen(true)}
-        />
-        <NavigationMenuContainer isOpen={isMenuOpen} onMenuClose={() => setIsMenuOpen(false)} />
-        <div className={props.classes?.container}>
-          <div className={props.classes?.appBarSpacer} />
-          <main className={props.classes?.content}>
-            <RouterOutlet defaultRedirect={'/home'} />
-          </main>
-          <FooterPanel />
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <LoadingOverlayContainer />
+        <AlertDialogContainer />
+        <AlertSnackbarContainer />
+        <ConfirmDialogContainer />
+        <div className={props.classes?.root}>
+          <HeaderPanel
+            isLoggedIn={props.isLoggedIn}
+            isOpen={isMenuOpen}
+            onMenuOpen={() => setIsMenuOpen(true)}
+            isDarkMode={paletteType === 'dark'}
+            onDarkModeToggle={() => setPaletteType(paletteType === 'dark' ? 'light' : 'dark')}
+          />
+          <NavigationMenuContainer isOpen={isMenuOpen} onMenuClose={() => setIsMenuOpen(false)} />
+          <div className={props.classes?.container}>
+            <div className={props.classes?.appBarSpacer} />
+            <main className={props.classes?.content}>
+              <RouterOutlet defaultRedirect={'/home'} />
+            </main>
+            <FooterPanel />
+          </div>
         </div>
-      </div>
+      </ThemeProvider>
     </BrowserRouter>
   );
 };

@@ -26,6 +26,9 @@ export const sharedStyleCallback: StyleRulesCallback<
     display: 'flex',
     overflow: 'auto',
     flexDirection: 'column',
+    '& a': {
+      color: theme.palette.type === 'dark' ? theme.palette.secondary.light : undefined,
+    },
   },
   accordionDetails: {
     borderTop: `1px solid ${theme.palette.divider}`,

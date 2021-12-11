@@ -1,21 +1,25 @@
-import clsx from 'clsx';
+import { Tooltip } from '@material-ui/core';
+import AppBar from '@material-ui/core/AppBar';
+import IconButton from '@material-ui/core/IconButton';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import {
   StyledComponentProps,
   StyleRulesCallback,
   Theme,
   withStyles,
 } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import IconButton from '@material-ui/core/IconButton';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import MenuIcon from '@material-ui/icons/Menu';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import Brightness4Icon from '@material-ui/icons/Brightness4';
+import Brightness7Icon from '@material-ui/icons/Brightness7';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import GitHubIcon from '@material-ui/icons/GitHub';
+import MenuIcon from '@material-ui/icons/Menu';
 import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined';
+import clsx from 'clsx';
 import React, { MouseEvent, MouseEventHandler } from 'react';
 import { getLinkReference } from '../shared/Element';
 
@@ -33,6 +37,7 @@ const styles: StyleRulesCallback<Theme, HeaderPanelOwnProps, StyleClass> = (them
     paddingRight: 24, // keep right padding when drawer closed
   },
   appBar: {
+    backgroundColor: theme.palette.type === 'dark' ? theme.palette.primary.dark : undefined,
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
@@ -65,6 +70,8 @@ export interface HeaderPanelOwnProps {
   isLoggedIn: boolean;
   isOpen: boolean;
   onMenuOpen: MouseEventHandler<HTMLButtonElement>;
+  isDarkMode: boolean;
+  onDarkModeToggle: MouseEventHandler<HTMLButtonElement>;
 }
 
 type HeaderPanelProps = HeaderPanelOwnProps & StyledComponentProps<StyleClass>;
@@ -154,18 +161,21 @@ class HeaderPanel extends React.Component<HeaderPanelProps, HeaderPanelState> {
       )}
     >
       <Toolbar className={this.props.classes?.toolbar}>
-        <IconButton
-          edge="start"
-          color="inherit"
-          aria-label="menu"
-          onClick={this.props.onMenuOpen}
-          className={clsx(
-            this.props.classes?.menuButton,
-            this.props.isOpen && this.props.classes?.menuButtonHidden,
-          )}
-        >
-          <MenuIcon />
-        </IconButton>
+        <Tooltip title="Expand/collapse shelf">
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            onClick={this.props.onMenuOpen}
+            className={clsx(
+              this.props.classes?.menuButton,
+              this.props.isOpen && this.props.classes?.menuButtonHidden,
+            )}
+          >
+            <MenuIcon />
+          </IconButton>
+        </Tooltip>
+
         <Typography variant="h6" color="inherit" className={this.props.classes?.title}>
           Road Wave FM
         </Typography>
@@ -175,6 +185,24 @@ class HeaderPanel extends React.Component<HeaderPanelProps, HeaderPanelState> {
         {
           //this.renderMenu()}
         }
+        <Tooltip title="GitHub Repository">
+          <IconButton
+            aria-label="GitHub Repository"
+            color="inherit"
+            href="https://github.com/LinkedMink/road-wave-fm-web"
+          >
+            <GitHubIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Toggle light/dark mode">
+          <IconButton
+            aria-label="Toggle light/dark mode"
+            color="inherit"
+            onClick={this.props.onDarkModeToggle}
+          >
+            {this.props.isDarkMode ? <Brightness7Icon /> : <Brightness4Icon />}
+          </IconButton>
+        </Tooltip>
       </Toolbar>
     </AppBar>
   );
