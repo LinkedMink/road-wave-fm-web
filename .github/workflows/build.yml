@@ -10,7 +10,7 @@ on:
     outputs:
       uploadedBuildName:
         description: "If a build is uploaded, this name will be output"
-        value: ${{ jobs.build.outputs.output1 }}
+        value: ${{ jobs.build.outputs.uploadedBuildName }}
 
 jobs:
   build:
