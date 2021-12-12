@@ -23,12 +23,12 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: ${{ inputs.uploadedBuildName }}
-        path: ''
+        path: archive
     - name: Associate with Github Release Assets
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: ${{ inputs.uploadedBuildName }}
+        file: archive/*
         tag: ${{ inputs.uploadToTag }}
         overwrite: true
         file_glob: true
