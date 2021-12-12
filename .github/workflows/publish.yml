@@ -18,6 +18,10 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
+    - name: Debug Output
+      run: |
+        echo '::echo::on'
+        echo "${{ inputs.uploadedBuildName }}"
     - name: Download Artifacts
       id: download
       uses: actions/download-artifact@v2

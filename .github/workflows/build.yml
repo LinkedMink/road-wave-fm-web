@@ -16,7 +16,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     outputs:
-      uploadedBuildName: ${{ steps.package.outputs.uploadedBuildName }}
+      uploadedBuildName: ${{ steps.package-artifacts.outputs.uploadedBuildName }}
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v2
@@ -31,10 +31,12 @@ jobs:
       run: yarn test || true
     - name: Build
       run: yarn build
-    - name: Package Artifacts
-      id: package
+    - id: package-artifacts
+      name: Package Artifacts
+      
       if: inputs.uploadBuild
       run: |
+        echo '::echo::on'
         echo "PACKAGE_FILE=$(npm pack | tail -1)" >> $GITHUB_ENV
         echo "::set-output name=uploadedBuildName::${{ env.PACKAGE_FILE }}"
     - name: Upload Artifacts

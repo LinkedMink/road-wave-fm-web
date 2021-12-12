@@ -15,7 +15,7 @@ jobs:
       uploadBuild: true
   publish:
     if: github.ref == 'refs/heads/main'
-    needs: [build]
+    needs: build
     uses: LinkedMink/road-wave-fm-web/.github/workflows/publish.yml@main
     with:
       uploadToTag: ${{ github.ref_name }}
