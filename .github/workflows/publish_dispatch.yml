@@ -20,5 +20,6 @@ jobs:
     uses: LinkedMink/road-wave-fm-web/.github/workflows/publish.yml@main
     with:
       uploadToTag: ${{ github.event.inputs.uploadToTag }}
+      uploadedBuildName: ${{ needs.build.outputs.uploadedBuildName }} 
     secrets:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

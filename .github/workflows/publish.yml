@@ -6,10 +6,9 @@ on:
         type: string
         required: true
         description: 'Upload built Bundle to Github tag'
-      appBundleName:
+      uploadedBuildName:
         type: string
-        required: false
-        default: app-bundle
+        required: true
         description: 'Name associated with actions/upload-artifact'
     secrets:
       GITHUB_TOKEN:
@@ -19,22 +18,16 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-    - name: Download App Bundle
+    - name: Download Artifacts
       id: download
       uses: actions/download-artifact@v2
       with:
-        name: ${{ inputs.appBundleName }}
-        path: archive
-    - name: Compress Artifacts
-      run: |
-        cd ./archive
-        tar -czvf ../${{ github.event.repository.name }}-${{ inputs.uploadToTag }}.tar.gz ./
-        cd ../
-    - name: Upload Packages to Github
+        name: ${{ inputs.uploadedBuildName }}
+    - name: Associate with Github Release Assets
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: ${{ github.event.repository.name }}-${{ inputs.uploadToTag }}.tar.gz
+        file: ${{steps.download.outputs.download-path}}
         tag: ${{ inputs.uploadToTag }}
         overwrite: true
         file_glob: true
