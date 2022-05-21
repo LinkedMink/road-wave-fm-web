@@ -1,3 +1,5 @@
+import { JWTPayload } from 'jose';
+
 export enum Claim {
   Settings = 'UserSettings',
 }
@@ -21,7 +23,7 @@ export interface JwtPayload {
 
 export interface SessionTokens {
   jwtToken: string;
-  decodedToken: JwtPayload;
+  decodedToken: JWTPayload;
 }
 
 export interface AccountModel {

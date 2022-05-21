@@ -58,6 +58,7 @@ const responseToJson = <TResponse>() => {
 };
 
 export const handleGenericCatch = (dispatch: Dispatch) => {
+  // eslint-disable-next-line react/display-name
   return (error: Error): null => {
     logger.error({
       stack: error.stack,
