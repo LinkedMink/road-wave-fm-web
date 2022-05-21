@@ -1,17 +1,9 @@
-import { Action } from 'redux';
-import { FormatState } from '../reducers/FormatReducer';
-import { FormatViewModel } from '../types/Format';
-
-export enum FormatActionType {
-  Save = 'FORMAT_SAVE',
-  Select = 'FORMAT_SELECT',
-  Restore = 'FORMAT_RESTORE',
-}
-
-export interface FormatAction extends Action<FormatActionType> {
-  type: FormatActionType;
-  payload: FormatViewModel[] | string[] | Partial<FormatState>;
-}
+import { FormatAction, FormatActionType } from '../definitions/Actions';
+import { Services, Routes, LocalStorageKey } from '../definitions/AppConstants';
+import { FormatViewModel, ResponseData } from '../definitions/ResponseModels';
+import { FormatState } from '../definitions/State';
+import { getJsonResponse } from '../shared/RequestFactory';
+import { AppThunkAction } from '../store';
 
 export function formatSave(formats: FormatViewModel[]): FormatAction {
   return {
@@ -33,3 +25,19 @@ export function formatRestore(state: Partial<FormatState>): FormatAction {
     payload: state,
   };
 }
+
+export const fetchFormats: AppThunkAction = async (dispatch, _getState) => {
+  const formatData = localStorage.getItem(LocalStorageKey.FormatState);
+  if (formatData) {
+    const formatState = JSON.parse(formatData);
+    dispatch(formatRestore(formatState));
+    return;
+  }
+
+  const formats = await getJsonResponse<ResponseData<FormatViewModel[]>>(
+    Services.RoadWave,
+    Routes[Services.RoadWave].FORMATS,
+  );
+
+  dispatch(formatSave(formats.data));
+};

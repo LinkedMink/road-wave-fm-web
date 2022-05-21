@@ -1,25 +1,15 @@
-import { Action } from 'redux';
 import urlJoin from 'url-join';
 import { getJsonResponse, handleGenericCatch, HttpMethods } from '../shared/RequestFactory';
 import { AppThunkAction } from '../store';
-import { AccountModel } from '../types/Account';
-import { AccountMessage } from '../types/Message';
-import { ResponseData, Services, Routes } from '../types/Service';
+import { AccountMessage } from '../definitions/Message';
 import { alertInfo, alertRedirect } from './AlertAction';
 import { confirmClearKey } from './ConfirmAction';
 import { loadingEnd, loadingStart } from './LoadingAction';
+import { AccountAction, AccountActionType } from '../definitions/Actions';
+import { Services, Routes } from '../definitions/AppConstants';
+import { AccountModel, ResponseData } from '../definitions/ResponseModels';
 
 const CONFIRM_DELETE_KEY = 'AccountContainerDelete';
-
-export enum AccountActionType {
-  Store = 'ACCOUNT_STORE',
-  Clear = 'ACCOUNT_CLEAR',
-}
-
-export interface AccountAction extends Action<AccountActionType> {
-  type: AccountActionType;
-  payload: null | AccountModel;
-}
 
 export function storeAccount(data: AccountModel): AccountAction {
   return {
@@ -39,7 +29,6 @@ export const fetchAccountAction = (): AppThunkAction<AccountAction> => {
   return (async (dispatch, _getState) => {
     dispatch(loadingStart());
     const response = await getJsonResponse<ResponseData<AccountModel>>(
-      dispatch,
       Services.User,
       Routes[Services.User].ACCOUNT,
       HttpMethods.GET,
@@ -58,7 +47,6 @@ export const saveAccountAction = (
   return (async (dispatch, _getState) => {
     dispatch(loadingStart());
     const response = await getJsonResponse<ResponseData<AccountModel>>(
-      dispatch,
       Services.User,
       Routes[Services.User].ACCOUNT,
       HttpMethods.PUT,
@@ -85,7 +73,6 @@ export const deleteAccountAction = (): AppThunkAction<AccountAction> => {
     dispatch(confirmClearKey(CONFIRM_DELETE_KEY));
 
     const response = await getJsonResponse<ResponseData>(
-      dispatch,
       Services.User,
       Routes[Services.User].ACCOUNT,
       HttpMethods.DELETE,
@@ -104,7 +91,6 @@ export const fetchPasswordResetAction = (email: string): AppThunkAction<AccountA
   return (async (dispatch, _getState) => {
     dispatch(loadingStart());
     const response = await getJsonResponse(
-      dispatch,
       Services.User,
       urlJoin(Routes[Services.User].PASSWORD, encodeURIComponent(email)),
     ).catch(handleGenericCatch(dispatch));
@@ -124,7 +110,6 @@ export const savePasswordResetAction = (
   return (async (dispatch, _getState) => {
     dispatch(loadingStart());
     const response = await getJsonResponse(
-      dispatch,
       Services.User,
       Routes[Services.User].PASSWORD,
       HttpMethods.PUT,
@@ -149,7 +134,6 @@ export const saveRegisterAction = (
   return (async (dispatch, _getState) => {
     dispatch(loadingStart());
     const response = await getJsonResponse(
-      dispatch,
       Services.User,
       Routes[Services.User].REGISTER,
       HttpMethods.POST,

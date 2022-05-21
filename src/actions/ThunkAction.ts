@@ -1,19 +1,17 @@
 import { AppThunkAction } from '../store';
 
-export const retryThunkAction = (
-  action: AppThunkAction,
-  retryCount = 1,
-  interval = 1000,
-): AppThunkAction => {
-  return (async (dispatch, getState) => {
-    try {
-      await action(dispatch, getState, undefined);
-    } catch (e) {
-      if (retryCount > 0) {
-        setTimeout(async () => {
-          await retryThunkAction(action, retryCount - 1, interval);
-        }, interval);
-      }
+export const retryThunkAction = (action: AppThunkAction): AppThunkAction => {
+  return async (dispatch, getState) => {
+    const timeout = getState().loading.retryTimeout;
+    if (timeout === null) {
+      return action(dispatch, getState, undefined);
     }
-  }) as AppThunkAction;
+
+    return new Promise((resolve, _reject) => {
+      setTimeout(async () => {
+        await action(dispatch, getState, undefined);
+        resolve();
+      }, timeout);
+    });
+  };
 };

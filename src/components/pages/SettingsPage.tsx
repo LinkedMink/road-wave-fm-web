@@ -1,9 +1,9 @@
 import React from 'react';
 import Container from '@material-ui/core/Container';
 import { SharedStyleProps, withSharedStyles } from '../../shared/Style';
-import { StationViewModel } from '../../types/Station';
 import PreferenceCard from '../location/PreferenceCard';
 import { StyledComponentProps, StyleRulesCallback, Theme } from '@material-ui/core';
+import { StationViewModel } from '../../definitions/ResponseModels';
 
 type StyleClass = 'fullscreen';
 type StyleProps = StyledComponentProps<StyleClass>;

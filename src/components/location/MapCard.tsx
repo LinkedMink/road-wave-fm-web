@@ -10,9 +10,9 @@ import React, { FunctionComponent, useEffect, useState } from 'react';
 import { indexToChar } from '../../shared/Collection';
 import { areEqualMapPos } from '../../shared/Math';
 import { SharedStyleProps, withSharedStyles } from '../../shared/Style';
-import { Coordinates } from '../../types/Map';
-import { StationViewModel } from '../../types/Station';
+import { Coordinates } from '../../definitions/Map';
 import SearchBar from './SearchBar';
+import { StationViewModel } from '../../definitions/ResponseModels';
 
 // TODO find better way to import raw SVG
 // import PersonPinCircleIcon from '@material-ui/icons/PersonPinCircle';

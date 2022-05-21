@@ -20,7 +20,7 @@ import MyLocationIcon from '@material-ui/icons/MyLocation';
 import React, { ChangeEvent, FunctionComponent } from 'react';
 import { getEarthDistance } from '../../shared/Math';
 import { SharedStyleProps, withSharedStyles } from '../../shared/Style';
-import { Coordinates } from '../../types/Map';
+import { Coordinates } from '../../definitions/Map';
 
 const UPDATE_DISTANCE_KM = 10;
 

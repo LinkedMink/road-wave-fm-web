@@ -8,7 +8,7 @@ import AlertDialog, {
 import { alertClear } from '../actions/AlertAction';
 import { RootState } from '../reducers/RootReducer';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { AlertSeverity } from '../reducers/AlertReducer';
+import { AlertSeverity } from '../definitions/StateModels';
 
 const mapStateToProps: MapStateToProps<AlertDialogStateProps, RouteComponentProps, RootState> = (
   state: RootState,

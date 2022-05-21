@@ -8,7 +8,7 @@ import AlertSnackbar, {
 import { alertClear } from '../actions/AlertAction';
 import { RootState } from '../reducers/RootReducer';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { AlertSeverity } from '../reducers/AlertReducer';
+import { AlertSeverity } from '../definitions/StateModels';
 
 const DEFAULT_AUTO_HIDE_MS = 6000;
 

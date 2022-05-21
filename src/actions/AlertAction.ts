@@ -1,25 +1,5 @@
-import { Action } from 'redux';
-import { AlertSeverity } from '../reducers/AlertReducer';
-
-export enum AlertActionType {
-  Clear = 'ALERT_CLEAR',
-  Redirect = 'ALERT_REDIRECT',
-  Error = 'ALERT_ERROR',
-  Info = 'ALERT_INFO',
-  Warn = 'ALERT_WARN',
-  Success = 'ALERT_SUCCESS',
-}
-
-export interface AlertRedirect {
-  message: string;
-  path: string;
-  severity?: AlertSeverity;
-}
-
-export interface AlertAction extends Action<AlertActionType> {
-  type: AlertActionType;
-  payload: AlertRedirect | string | null;
-}
+import { AlertAction, AlertActionType } from '../definitions/Actions';
+import { AlertSeverity } from '../definitions/StateModels';
 
 export function alertClear(): AlertAction {
   return {

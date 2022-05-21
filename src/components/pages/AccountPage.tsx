@@ -5,7 +5,6 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
-import { AccountModel, MIN_PASSWORD_LENGTH } from '../../types/Account';
 import {
   FormComponentState,
   ValidationRules,
@@ -14,6 +13,8 @@ import {
 } from '../../shared/Validator';
 import { SharedStyleProps, withSharedStyles } from '../../shared/Style';
 import { handleFieldChange } from '../../shared/Form';
+import { MIN_PASSWORD_LENGTH } from '../../definitions/AppConstants';
+import { AccountModel } from '../../definitions/ResponseModels';
 
 export interface AccountPageStateProps {
   profile?: AccountModel;

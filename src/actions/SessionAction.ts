@@ -1,19 +1,13 @@
 import { JWTPayload } from 'jose';
-import { Action } from 'redux';
 import { getJsonResponse, handleGenericCatch, HttpMethods } from '../shared/RequestFactory';
 import { decodeToken } from '../shared/Token';
 import { AppThunkAction } from '../store';
-import { AuthenticateResponse, SessionActionType, SessionTokens } from '../types/Account';
-import { AccountMessage } from '../types/Message';
-import { ResponseData, Services, Routes } from '../types/Service';
-import { StorageKey } from '../types/Storage';
+import { SessionAction, SessionActionType } from '../definitions/Actions';
+import { AccountMessage } from '../definitions/Message';
 import { alertError } from './AlertAction';
 import { loadingStart, loadingEnd } from './LoadingAction';
-
-export interface SessionAction extends Action<SessionActionType> {
-  type: SessionActionType;
-  payload: null | SessionTokens;
-}
+import { Services, Routes, LocalStorageKey } from '../definitions/AppConstants';
+import { ResponseData, AuthenticateResponse } from '../definitions/ResponseModels';
 
 export function saveSession(jwtToken: string, decodedToken: JWTPayload): SessionAction {
   return {
@@ -29,6 +23,20 @@ export function destroySession(): SessionAction {
   };
 }
 
+export const restoreSessionAction: AppThunkAction = async (dispatch, getState) => {
+  const token = localStorage.getItem(LocalStorageKey.AuthToken);
+  if (getState().session.jwtToken || !token) {
+    return;
+  }
+
+  const decoded = decodeToken(token);
+  if (decoded !== null) {
+    dispatch(saveSession(token, decoded));
+  } else {
+    localStorage.removeItem(LocalStorageKey.AuthToken);
+  }
+};
+
 export const loginRequestAction = (
   email: string,
   password: string,
@@ -38,7 +46,6 @@ export const loginRequestAction = (
     dispatch(loadingStart());
 
     const response = await getJsonResponse<ResponseData<AuthenticateResponse>>(
-      dispatch,
       Services.User,
       Routes[Services.User].AUTHENTICATE,
       HttpMethods.POST,
@@ -49,9 +56,9 @@ export const loginRequestAction = (
     ).catch(handleGenericCatch(dispatch));
 
     if (response) {
-      localStorage.removeItem(StorageKey.AuthToken);
+      localStorage.removeItem(LocalStorageKey.AuthToken);
       if (rememberMe) {
-        localStorage.setItem(StorageKey.AuthToken, response.data.token);
+        localStorage.setItem(LocalStorageKey.AuthToken, response.data.token);
       }
 
       const decoded = decodeToken(response.data.token);

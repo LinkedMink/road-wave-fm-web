@@ -2,9 +2,9 @@ import Alert, { Color } from '@material-ui/lab/Alert';
 import { Grow, Snackbar } from '@material-ui/core';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { AlertSeverity } from '../reducers/AlertReducer';
 import { TransitionProps } from '@material-ui/core/transitions';
 import { useEffect } from 'react';
+import { AlertSeverity } from '../definitions/StateModels';
 
 const GROW_TIMEOUT = 300;
 

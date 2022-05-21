@@ -1,13 +1,7 @@
 import { Reducer } from 'redux';
-import { LocationAction, LocationActionType } from '../actions/LocationAction';
-import { Coordinates } from '../types/Map';
-
-export interface LocationState {
-  watchId?: number;
-  user?: Coordinates;
-  search?: Coordinates;
-  hasFailedGetLocation: boolean;
-}
+import { LocationAction, LocationActionType } from '../definitions/Actions';
+import { Coordinates } from '../definitions/Map';
+import { LocationState } from '../definitions/State';
 
 const defaultState: LocationState = {
   hasFailedGetLocation: false,

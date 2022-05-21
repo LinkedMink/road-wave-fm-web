@@ -23,9 +23,10 @@ import SignalWifi4BarIcon from '@material-ui/icons/SignalWifi4Bar';
 import SignalWifiOffIcon from '@material-ui/icons/SignalWifiOff';
 import clsx from 'clsx';
 import React, { FunctionComponent, useEffect } from 'react';
+import { StationRequest } from '../../definitions/RequestModels';
+import { StationViewModel } from '../../definitions/ResponseModels';
 import { indexToChar } from '../../shared/Collection';
 import { SharedStyleProps, withSharedStyles } from '../../shared/Style';
-import { StationRequest, StationViewModel } from '../../types/Station';
 import LoadingSpinner from '../LoadingSpinner';
 
 type StyleClass = 'avatar' | 'container' | 'list';

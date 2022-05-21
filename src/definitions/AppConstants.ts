@@ -1,3 +1,14 @@
+export const Defaults = {
+  RETRY_TIMEOUT: 5_000,
+};
+
+export const MIN_PASSWORD_LENGTH = 8;
+
+export enum LocalStorageKey {
+  AuthToken = 'AuthToken',
+  FormatState = 'FormatState',
+}
+
 export enum Services {
   Self = '',
   User = 'user',
@@ -22,15 +33,3 @@ export const Routes: ServiceRouteMap = {
     STATIONS: 'stations',
   },
 };
-
-export enum ResponseCode {
-  Success = 0,
-  Failed = 1,
-  RequestValidation = 10,
-  DataValidation = 11,
-}
-
-export interface ResponseData<T = string> {
-  status: ResponseCode;
-  data: T;
-}

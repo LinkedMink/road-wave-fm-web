@@ -1,6 +1,5 @@
 import { connect, MapDispatchToPropsFunction, MapStateToProps } from 'react-redux';
 import { initializeAction } from './actions/InitializeAction';
-
 import App, { AppDispatchProps, AppStateProps } from './App';
 import { RootState } from './reducers/RootReducer';
 import { AppThunkDispatch } from './store';
@@ -10,7 +9,7 @@ const mapStateToProps: MapStateToProps<AppStateProps, Record<string, never>, Roo
 ) => {
   return {
     isLoggedIn: state.session.jwtToken ? true : false,
-    isInitialized: state.config.isInitialized,
+    isInitialized: state.config.isLoaded && state.map.isInitialized && !!state.format.list.length,
   };
 };
 

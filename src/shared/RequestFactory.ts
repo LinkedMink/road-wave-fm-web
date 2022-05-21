@@ -5,7 +5,7 @@ import urlJoin from 'url-join';
 import store from '../store';
 import { alertError } from '../actions/AlertAction';
 import { LogService } from './LogService';
-import { Services } from '../types/Service';
+import { Services } from '../definitions/AppConstants';
 
 const logger = LogService.get('RequestFactory');
 const GENERIC_REQUEST_ERROR =
@@ -79,7 +79,6 @@ export const getServiceActionUrl = (targetService: Services, path: string): stri
 };
 
 export const getJsonResponse = <TResponse = unknown, TRequest = unknown>(
-  dispatch: Dispatch,
   targetService: Services,
   path: string,
   method = HttpMethods.GET,

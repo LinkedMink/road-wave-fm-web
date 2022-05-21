@@ -5,11 +5,11 @@ import ListCard, {
   ListCardOwnProps,
   ListCardStateProps,
 } from '../../components/location/ListCard';
+import { StationRequest } from '../../definitions/RequestModels';
 import { RootState } from '../../reducers/RootReducer';
 import { isArrayContentsEqual } from '../../shared/Collection';
 import { areEqualCoordinates } from '../../shared/Math';
 import { AppThunkDispatch } from '../../store';
-import { StationRequest } from '../../types/Station';
 
 const mapStateToProps: MapStateToProps<ListCardStateProps, ListCardOwnProps, RootState> = (
   state: RootState,

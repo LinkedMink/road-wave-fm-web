@@ -10,8 +10,8 @@ import {
   saveAccountAction,
 } from '../../actions/AccountAction';
 import { confirmClearKey, confirmOpenDialog } from '../../actions/ConfirmAction';
-import { AccountModel } from '../../types/Account';
 import { AppThunkDispatch } from '../../store';
+import { AccountModel } from '../../definitions/ResponseModels';
 
 const CONFIRM_DELETE_KEY = 'AccountContainerDelete';
 const CONFIRM_DELETE_MESSAGE =

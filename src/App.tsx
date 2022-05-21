@@ -80,7 +80,7 @@ const App: FunctionComponent<AppProps> = (props) => {
 
   useEffect(() => {
     if (!props.isInitialized) {
-      props.initialize();
+      return props.initialize();
     }
   });
 

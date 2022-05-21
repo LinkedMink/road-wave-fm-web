@@ -1,10 +1,7 @@
 import { Reducer } from 'redux';
-import { AccountAction, AccountActionType } from '../actions/AccountAction';
-import { AccountModel } from '../types/Account';
-
-export interface AccountState {
-  profile?: AccountModel;
-}
+import { AccountAction, AccountActionType } from '../definitions/Actions';
+import { AccountModel } from '../definitions/ResponseModels';
+import { AccountState } from '../definitions/State';
 
 const defaultState: AccountState = {};
 

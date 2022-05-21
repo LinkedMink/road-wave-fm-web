@@ -1,4 +1,4 @@
-import { Coordinates } from '../types/Map';
+import { Coordinates } from '../definitions/Map';
 
 const EARTH_RADIUS = 6371;
 

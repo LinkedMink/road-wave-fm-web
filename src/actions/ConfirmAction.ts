@@ -1,21 +1,4 @@
-import { Action } from 'redux';
-
-export enum ConfirmActionType {
-  ClearKey = 'CONFIRM_CLEAR_KEY',
-  OpenDialog = 'CONFIRM_OPEN_DIALOG',
-  SetValue = 'CONFIRM_SET_VALUE',
-}
-
-export interface ConfirmData {
-  key?: string;
-  message?: string;
-  value?: unknown;
-}
-
-export interface ConfirmAction extends Action<ConfirmActionType> {
-  type: ConfirmActionType;
-  payload: ConfirmData;
-}
+import { ConfirmAction, ConfirmActionType } from '../definitions/Actions';
 
 export function confirmOpenDialog(key: string, message: string): ConfirmAction {
   return {

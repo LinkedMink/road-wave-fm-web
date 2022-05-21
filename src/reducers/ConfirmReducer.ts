@@ -1,12 +1,5 @@
-import { ConfirmAction, ConfirmActionType } from '../actions/ConfirmAction';
-
-export interface ConfirmState {
-  active?: {
-    key: string;
-    message: string;
-  };
-  inactive: Record<string, unknown>;
-}
+import { ConfirmAction, ConfirmActionType } from '../definitions/Actions';
+import { ConfirmState } from '../definitions/State';
 
 const defaultState: ConfirmState = {
   inactive: {},
