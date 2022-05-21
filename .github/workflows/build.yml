@@ -27,7 +27,7 @@ jobs:
     - name: Lint
       run: npm run lint
     - name: Test
-      run: npm run test || true
+      run: npm run test:ci || true
     - name: Build
       run: npm run build
     - name: Package Artifacts
