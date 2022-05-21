@@ -104,7 +104,7 @@ const mapStateToProps: MapStateToProps<
   };
 };
 
-const container = connect(mapStateToProps, null, null, { pure: false })(NavigationMenu);
+const container = connect(mapStateToProps, { pure: false })(NavigationMenu);
 const NavigationMenuContainer = withRouter(container);
 
 export default NavigationMenuContainer;

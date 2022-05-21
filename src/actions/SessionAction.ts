@@ -1,13 +1,9 @@
+import { JWTPayload } from 'jose';
 import { Action } from 'redux';
 import { getJsonResponse, handleGenericCatch, HttpMethods } from '../shared/RequestFactory';
 import { decodeToken } from '../shared/Token';
 import { AppThunkAction } from '../store';
-import {
-  AuthenticateResponse,
-  JwtPayload,
-  SessionActionType,
-  SessionTokens,
-} from '../types/Account';
+import { AuthenticateResponse, SessionActionType, SessionTokens } from '../types/Account';
 import { AccountMessage } from '../types/Message';
 import { ResponseData, Services, Routes } from '../types/Service';
 import { StorageKey } from '../types/Storage';
@@ -19,7 +15,7 @@ export interface SessionAction extends Action<SessionActionType> {
   payload: null | SessionTokens;
 }
 
-export function saveSession(jwtToken: string, decodedToken: JwtPayload): SessionAction {
+export function saveSession(jwtToken: string, decodedToken: JWTPayload): SessionAction {
   return {
     type: SessionActionType.Save,
     payload: { jwtToken, decodedToken },

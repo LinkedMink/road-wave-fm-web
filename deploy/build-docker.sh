@@ -31,7 +31,7 @@ if [ "$2" = "prod" ]; then
   DOCKER_ARGS="--build-arg ENVIRONMENT=production"
 fi
 
-yarn build
+npm run build
 
 if [ "$1" = "deploy" ]; then
   kubectl set image \

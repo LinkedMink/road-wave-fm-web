@@ -22,15 +22,14 @@ jobs:
     - uses: actions/setup-node@v2
       with:
         node-version: '16'
-        cache: 'yarn'
     - name: Install
-      run: yarn install --immutable
+      run: npm ci
     - name: Lint
-      run: yarn lint
+      run: npm run lint
     - name: Test
-      run: yarn test || true
+      run: npm run test || true
     - name: Build
-      run: yarn build
+      run: npm run build
     - name: Package Artifacts
       if: inputs.uploadBuild
       run: |
