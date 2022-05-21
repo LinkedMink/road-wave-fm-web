@@ -3,7 +3,6 @@ import { Redirect } from 'react-router-dom';
 import { connect, MapDispatchToPropsFunction, MapStateToProps } from 'react-redux';
 import { Dispatch } from 'redux';
 
-import { StorageKey } from '../types/Storage';
 import { RootState } from '../reducers/RootReducer';
 import { destroySession } from '../actions/SessionAction';
 
@@ -29,10 +28,7 @@ const mapDispatchToProps: MapDispatchToPropsFunction<LogoutDispatchProps, Record
   dispatch: Dispatch,
 ) => {
   return {
-    logout: () => {
-      localStorage.removeItem(StorageKey.AuthToken);
-      dispatch(destroySession());
-    },
+    logout: () => dispatch(destroySession()),
   };
 };
 

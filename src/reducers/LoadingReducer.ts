@@ -1,14 +1,11 @@
 import { Reducer } from 'redux';
-import { LoadingAction, LoadingActionType, LoadingInit } from '../actions/LoadingAction';
-
-export interface LoadingState {
-  isLoading: boolean;
-  percentComplete?: number | null;
-  message?: string;
-}
+import { LoadingAction, LoadingActionType, LoadingInit } from '../definitions/Actions';
+import { LoadingState } from '../definitions/State';
 
 const defaultState: LoadingState = {
   isLoading: true,
+  retryTimeout: null,
+  retryCount: null,
 };
 
 const loadingReducer: Reducer<LoadingState, LoadingAction> = (
@@ -16,25 +13,36 @@ const loadingReducer: Reducer<LoadingState, LoadingAction> = (
   action: LoadingAction,
 ): LoadingState => {
   if (action.type === LoadingActionType.Start) {
-    if (state && state.isLoading) {
+    if (state?.isLoading) {
       return state;
     }
 
     const init = action.payload as LoadingInit;
-    return Object.assign({}, state, {
+    return {
+      ...state,
       isLoading: true,
       percentComplete: init.isProgressable ? 0 : null,
       message: init.message,
-    });
+    };
   } else if (action.type === LoadingActionType.Report) {
-    const copyState = Object.assign({}, state);
-    copyState.percentComplete = action.payload as number | null;
-    return copyState;
+    return {
+      ...state,
+      percentComplete: action.payload as number | null,
+    };
+  } else if (action.type === LoadingActionType.Failed) {
+    return {
+      ...state,
+      retryTimeout: action.payload as number | null,
+      retryCount: state.retryCount !== null ? state.retryCount++ : 1,
+    };
   } else if (action.type === LoadingActionType.End) {
-    return Object.assign({}, state, {
+    return {
+      ...state,
       isLoading: false,
       percentComplete: null,
-    });
+      retryTimeout: null,
+      retryCount: null,
+    };
   } else {
     return state;
   }

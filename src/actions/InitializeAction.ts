@@ -1,76 +1,32 @@
-import { Loader } from '@googlemaps/js-api-loader';
-import { ConfigData, saveConfig, setInitialized } from './ConfigAction';
-import { formatRestore, formatSave } from './FormatAction';
-import { loadingEnd } from './LoadingAction';
-import { mapInit } from './MapAction';
-import { saveSession } from './SessionAction';
-import { retryThunkAction } from './ThunkAction';
-import { getJsonResponse, handleGenericCatch } from '../shared/RequestFactory';
-import { decodeToken } from '../shared/Token';
 import { AppThunkAction } from '../store';
-import { FormatViewModel } from '../types/Format';
-import { ResponseData, Services, Routes } from '../types/Service';
-import { StorageKey } from '../types/Storage';
-
-const fetchConfigAction: AppThunkAction = async (dispatch, _getState) => {
-  const config = await getJsonResponse<ConfigData>(
-    dispatch,
-    Services.Self,
-    Routes[Services.Self].CONFIG,
-  ).catch(handleGenericCatch(dispatch));
-
-  if (config) {
-    dispatch(saveConfig(config));
-  } else {
-    throw new Error('Failed to get config.json');
-  }
-};
-
-const fetchMapsApi: AppThunkAction = async (dispatch, getState) => {
-  const apiKey = getState().config.googleMapsApiKey;
-  const mapsLoader = new Loader({ apiKey, libraries: ['places'] });
-  await mapsLoader.load();
-  dispatch(mapInit());
-};
-
-const fetchFormats: AppThunkAction = async (dispatch, _getState) => {
-  const formatData = localStorage.getItem(StorageKey.FormatState);
-  if (formatData) {
-    const formatState = JSON.parse(formatData);
-    dispatch(formatRestore(formatState));
-    return;
-  }
-
-  const formats = await getJsonResponse<ResponseData<FormatViewModel[]>>(
-    dispatch,
-    Services.RoadWave,
-    Routes[Services.RoadWave].FORMATS,
-  ).catch(handleGenericCatch(dispatch));
-
-  if (formats) {
-    dispatch(formatSave(formats.data));
-  }
-};
+import { fetchConfigAction } from './ConfigAction';
+import { fetchFormats } from './FormatAction';
+import { loadingEnd, loadingStart } from './LoadingAction';
+import { fetchMapsApi } from './MapAction';
+import { restoreSessionAction } from './SessionAction';
+import { retryThunkAction } from './ThunkAction';
 
 export const initializeAction: AppThunkAction = async (dispatch, getState) => {
-  dispatch(setInitialized());
-
-  // Restore session token
-  const token = localStorage.getItem(StorageKey.AuthToken);
-  if (token) {
-    const decoded = decodeToken(token);
-    if (decoded !== null) {
-      dispatch(saveSession(token, decoded));
-    } else {
-      localStorage.removeItem(StorageKey.AuthToken);
-    }
+  const state = getState();
+  if (!state.loading.isLoading) {
+    dispatch(loadingStart());
   }
 
-  await retryThunkAction(fetchConfigAction)(dispatch, getState, undefined);
+  if (!state.config.isLoaded) {
+    return retryThunkAction(fetchConfigAction)(dispatch, getState, undefined);
+  }
 
-  const mapsPromise = retryThunkAction(fetchMapsApi)(dispatch, getState, undefined);
-  const formatsPromise = retryThunkAction(fetchFormats)(dispatch, getState, undefined);
-  await Promise.all([mapsPromise, formatsPromise]);
+  restoreSessionAction(dispatch, getState, undefined);
+
+  const pendingDependencies: Promise<void>[] = [];
+  if (!state.map.isInitialized) {
+    pendingDependencies.push(retryThunkAction(fetchMapsApi)(dispatch, getState, undefined));
+  }
+  if (!state.format.list.length) {
+    pendingDependencies.push(retryThunkAction(fetchFormats)(dispatch, getState, undefined));
+  }
+
+  await Promise.all(pendingDependencies);
 
   dispatch(loadingEnd());
 };

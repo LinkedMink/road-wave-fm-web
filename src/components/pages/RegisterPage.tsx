@@ -8,7 +8,6 @@ import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 
-import { MIN_PASSWORD_LENGTH } from '../../types/Account';
 import {
   FormComponentState,
   ValidationRules,
@@ -18,6 +17,7 @@ import {
 import { SharedStyleProps, withSharedStyles } from '../../shared/Style';
 import { getLinkReference } from '../../shared/Element';
 import { handleDefaultFormSubmit, handleFieldChange } from '../../shared/Form';
+import { MIN_PASSWORD_LENGTH } from '../../definitions/AppConstants';
 
 export interface RegisterPageStateProps {
   isLoggedIn: boolean;

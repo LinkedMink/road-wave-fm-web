@@ -1,11 +1,7 @@
-import { FormatAction, FormatActionType } from '../actions/FormatAction';
-import { FormatViewModel } from '../types/Format';
-import { StorageKey } from '../types/Storage';
-
-export interface FormatState {
-  list: FormatViewModel[];
-  selected: string[];
-}
+import { FormatAction, FormatActionType } from '../definitions/Actions';
+import { LocalStorageKey } from '../definitions/AppConstants';
+import { FormatViewModel } from '../definitions/ResponseModels';
+import { FormatState } from '../definitions/State';
 
 const defaultState: FormatState = {
   list: [],
@@ -19,14 +15,14 @@ const formatReducer = (state: FormatState = defaultState, action: FormatAction):
       ...state,
       list: formats.sort((a, b) => a.name.localeCompare(b.name)),
     };
-    localStorage.setItem(StorageKey.FormatState, JSON.stringify(nextState));
+    localStorage.setItem(LocalStorageKey.FormatState, JSON.stringify(nextState));
     return nextState;
   } else if (action.type === FormatActionType.Select) {
     const nextState = {
       ...state,
       selected: action.payload as string[],
     };
-    localStorage.setItem(StorageKey.FormatState, JSON.stringify(nextState));
+    localStorage.setItem(LocalStorageKey.FormatState, JSON.stringify(nextState));
     return nextState;
   } else if (action.type === FormatActionType.Restore) {
     return {

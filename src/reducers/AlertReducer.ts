@@ -1,18 +1,7 @@
 import { Reducer } from 'redux';
-import { AlertAction, AlertActionType, AlertRedirect } from '../actions/AlertAction';
-
-export enum AlertSeverity {
-  Success = 'Success',
-  Info = 'Info',
-  Warn = 'Warning',
-  Error = 'Error',
-}
-
-export interface AlertState {
-  severity?: AlertSeverity;
-  message?: string;
-  redirect?: string;
-}
+import { AlertAction, AlertActionType } from '../definitions/Actions';
+import { AlertState } from '../definitions/State';
+import { AlertRedirect, AlertSeverity } from '../definitions/StateModels';
 
 const defaultState: AlertState = {};
 

@@ -1,8 +1,5 @@
-import { MapAction, MapActionType } from '../actions/MapAction';
-
-export interface MapState {
-  isInitialized: boolean;
-}
+import { MapAction, MapActionType } from '../definitions/Actions';
+import { MapState } from '../definitions/State';
 
 const defaultState: MapState = {
   isInitialized: false,

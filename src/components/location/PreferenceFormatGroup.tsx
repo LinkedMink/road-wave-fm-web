@@ -12,8 +12,8 @@ import {
   Typography,
 } from '@material-ui/core';
 import React, { FunctionComponent } from 'react';
+import { FormatViewModel } from '../../definitions/ResponseModels';
 import { SharedStyleProps, withSharedStyles } from '../../shared/Style';
-import { FormatViewModel } from '../../types/Format';
 
 const LABEL_PREFIX = 'format-label-';
 

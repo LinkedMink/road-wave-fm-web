@@ -1,11 +1,8 @@
 import { Reducer } from 'redux';
-import { SessionAction } from '../actions/SessionAction';
-import { JwtPayload, SessionActionType, SessionTokens } from '../types/Account';
-
-export interface SessionState {
-  jwtToken?: string;
-  decodedToken?: JwtPayload;
-}
+import { SessionAction, SessionActionType } from '../definitions/Actions';
+import { LocalStorageKey } from '../definitions/AppConstants';
+import { SessionState } from '../definitions/State';
+import { SessionTokens } from '../definitions/StateModels';
 
 const defaultState: SessionState = {};
 
@@ -20,6 +17,7 @@ const sessionReducer: Reducer<SessionState, SessionAction> = (
       decodedToken: tokens.decodedToken,
     });
   } else if (action.type === SessionActionType.Destroy) {
+    localStorage.removeItem(LocalStorageKey.AuthToken);
     return Object.assign({}, state, {
       jwtToken: undefined,
       decodedToken: undefined,

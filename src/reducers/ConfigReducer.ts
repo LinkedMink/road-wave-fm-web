@@ -1,19 +1,12 @@
 import { Reducer } from 'redux';
-import { ConfigAction, ConfigActionType, ConfigData } from '../actions/ConfigAction';
 import { LogLevel } from '../shared/LogService';
-import { Services } from '../types/Service';
-
-export interface ConfigState {
-  isInitialized: boolean;
-  urls: Record<Services, string>;
-  signerKey: string | null;
-  googleMapsApiKey: string;
-  logLevelConsole: LogLevel;
-  logLevelPersist: LogLevel;
-}
+import { ConfigAction, ConfigActionType } from '../definitions/Actions';
+import { ConfigData } from '../definitions/ResponseModels';
+import { ConfigState } from '../definitions/State';
+import { Services } from '../definitions/AppConstants';
 
 const defaultState: ConfigState = {
-  isInitialized: false,
+  isLoaded: false,
   urls: {
     [Services.Self]: '',
     [Services.User]: '',
@@ -33,6 +26,7 @@ const configReducer: Reducer<ConfigState, ConfigAction> = (
     const config = action.payload as ConfigData;
     return {
       ...state,
+      isLoaded: true,
       urls: {
         ...state.urls,
         ...config.urls,
@@ -41,11 +35,6 @@ const configReducer: Reducer<ConfigState, ConfigAction> = (
       googleMapsApiKey: config.googleMapsApiKey,
       logLevelConsole: config.logLevelConsole,
       logLevelPersist: config.logLevelPersist,
-    };
-  } else if (action.type === ConfigActionType.Initialize) {
-    return {
-      ...state,
-      isInitialized: true,
     };
   } else {
     return state;

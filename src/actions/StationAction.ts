@@ -1,30 +1,12 @@
-import { Action } from 'redux';
+import { StationAction, StationActionType } from '../definitions/Actions';
+import { Services, Routes } from '../definitions/AppConstants';
+import { StationRequest } from '../definitions/RequestModels';
+import { StationViewModel, ResponseData } from '../definitions/ResponseModels';
 import { getJsonResponse, HttpMethods } from '../shared/RequestFactory';
 import { AppThunkAction } from '../store';
-import { ResponseData, Services, Routes } from '../types/Service';
-import { StationRequest, StationViewModel } from '../types/Station';
 import { alertWarn } from './AlertAction';
 
 const RETRY_INTERVAL = 15000;
-
-export enum StationActionType {
-  Store = 'STATION_STORE',
-  Select = 'STATION_SELECT',
-  LoadStart = 'STATION_LOAD_START',
-  LoadEnd = 'STATION_LOAD_END',
-  SetFailed = 'STATION_SET_FAILED',
-  SetReady = 'STATION_SET_READY',
-}
-
-export interface StationRequestResult {
-  params: StationRequest;
-  data: StationViewModel[];
-}
-
-export interface StationAction extends Action<StationActionType> {
-  type: StationActionType;
-  payload: StationRequestResult | StationViewModel | null;
-}
 
 export function stationStore(params: StationRequest, data: StationViewModel[]): StationAction {
   return {
@@ -76,7 +58,6 @@ export const fetchStationAction = (criteria: StationRequest): AppThunkAction<Sta
     dispatch(stationLoadStart());
     try {
       const response = await getJsonResponse<ResponseData<StationViewModel[]>>(
-        dispatch,
         Services.RoadWave,
         Routes[Services.RoadWave].STATIONS,
         HttpMethods.GET,

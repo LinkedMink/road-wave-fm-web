@@ -4,9 +4,9 @@ import Grid from '@material-ui/core/Grid';
 import { SharedStyleProps, withSharedStyles } from '../../shared/Style';
 import ListCardContainer from '../../containers/location/ListCardContainer';
 import MapCardContainer from '../../containers/location/MapCardContainer';
-import { StationViewModel } from '../../types/Station';
 import PreferenceCard from '../location/PreferenceCard';
 import { StyledComponentProps, StyleRulesCallback, Theme } from '@material-ui/core';
+import { StationViewModel } from '../../definitions/ResponseModels';
 
 type StyleClass = 'fullscreen';
 type StyleProps = StyledComponentProps<StyleClass>;

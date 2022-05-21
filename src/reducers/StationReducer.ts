@@ -1,13 +1,7 @@
-import { StationAction, StationActionType, StationRequestResult } from '../actions/StationAction';
-import { StationRequest, StationViewModel } from '../types/Station';
-
-export interface StationState {
-  list?: StationViewModel[];
-  selected?: StationViewModel;
-  isLoading: boolean;
-  lastRequest?: StationRequest;
-  hasLastRequestFailed: boolean;
-}
+import { StationAction, StationActionType } from '../definitions/Actions';
+import { StationViewModel } from '../definitions/ResponseModels';
+import { StationState } from '../definitions/State';
+import { StationRequestResult } from '../definitions/StateModels';
 
 const defaultState: StationState = {
   isLoading: false,
