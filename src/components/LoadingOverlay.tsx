@@ -8,7 +8,7 @@ import {
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { Backdrop, Box } from '@material-ui/core';
 
-type StyleClass = 'overlay' | 'animationContainer';
+type StyleClass = 'overlay' | 'animationContainer' | 'progress';
 
 const styles: StyleRulesCallback<Theme, LoadingOverlayStateProps, StyleClass> = (theme: Theme) => ({
   overlay: {
@@ -18,8 +18,12 @@ const styles: StyleRulesCallback<Theme, LoadingOverlayStateProps, StyleClass> = 
     display: 'flex',
     maxWidth: theme.breakpoints.values.sm,
     height: '100%',
+    width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  progress: {
+    width: '80%',
   },
 });
 
@@ -34,9 +38,15 @@ type LoadingOverlayProps = LoadingOverlayStateProps & StyledComponentProps<Style
 class LoadingOverlay extends React.Component<LoadingOverlayProps> {
   renderLoadingAnimation() {
     if (Number.isInteger(this.props.percentComplete)) {
-      return <LinearProgress variant="determinate" value={this.props.percentComplete} />;
+      return (
+        <LinearProgress
+          className={this.props.classes?.progress}
+          variant="determinate"
+          value={this.props.percentComplete}
+        />
+      );
     } else {
-      return <LinearProgress />;
+      return <LinearProgress className={this.props.classes?.progress} />;
     }
   }
 

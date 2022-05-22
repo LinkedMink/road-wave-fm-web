@@ -38,3 +38,8 @@ export interface StationRequestResult {
   params: StationRequest;
   data: StationViewModel[];
 }
+
+export interface LoadingInit {
+  isProgressable: boolean;
+  message: string;
+}

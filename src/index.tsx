@@ -1,11 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import './index.css';
+import { initialize } from './actions/InitializeAction';
 import AppContainer from './AppContainer';
+import './index.css';
 import reportWebVitals from './reportWebVitals';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import store from './store';
+
+initialize(store.dispatch);
 
 ReactDOM.render(
   <React.StrictMode>

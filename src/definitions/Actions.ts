@@ -2,7 +2,7 @@ import { Action } from 'redux';
 import { Coordinates } from './Map';
 import { AccountModel, ConfigData, FormatViewModel, StationViewModel } from './ResponseModels';
 import { FormatState } from './State';
-import { AlertRedirect, SessionTokens, StationRequestResult } from './StateModels';
+import { AlertRedirect, LoadingInit, SessionTokens, StationRequestResult } from './StateModels';
 
 export enum AccountActionType {
   Store = 'ACCOUNT_STORE',
@@ -70,11 +70,6 @@ export enum LoadingActionType {
   Report = 'LOADING_REPORT',
   Failed = 'LOADING_FAILED',
   End = 'LOADING_END',
-}
-
-export interface LoadingInit {
-  isProgressable: boolean;
-  message: string;
 }
 
 export interface LoadingAction extends Action<LoadingActionType> {

@@ -25,7 +25,7 @@ export function clearAccount(): AccountAction {
   };
 }
 
-export const fetchAccountAction = (): AppThunkAction<AccountAction> => {
+export const fetchAccountAction = (): AppThunkAction => {
   return (async (dispatch, _getState) => {
     dispatch(loadingStart());
     const response = await getJsonResponse<ResponseData<AccountModel>>(
@@ -41,9 +41,7 @@ export const fetchAccountAction = (): AppThunkAction<AccountAction> => {
   }) as AppThunkAction;
 };
 
-export const saveAccountAction = (
-  properties: Partial<AccountModel>,
-): AppThunkAction<AccountAction> => {
+export const saveAccountAction = (properties: Partial<AccountModel>): AppThunkAction => {
   return (async (dispatch, _getState) => {
     dispatch(loadingStart());
     const response = await getJsonResponse<ResponseData<AccountModel>>(
@@ -67,7 +65,7 @@ export const saveAccountAction = (
   }) as AppThunkAction;
 };
 
-export const deleteAccountAction = (): AppThunkAction<AccountAction> => {
+export const deleteAccountAction = (): AppThunkAction => {
   return (async (dispatch, _getState) => {
     dispatch(loadingStart());
     dispatch(confirmClearKey(CONFIRM_DELETE_KEY));
@@ -87,7 +85,7 @@ export const deleteAccountAction = (): AppThunkAction<AccountAction> => {
   }) as AppThunkAction;
 };
 
-export const fetchPasswordResetAction = (email: string): AppThunkAction<AccountAction> => {
+export const fetchPasswordResetAction = (email: string): AppThunkAction => {
   return (async (dispatch, _getState) => {
     dispatch(loadingStart());
     const response = await getJsonResponse(
@@ -106,7 +104,7 @@ export const savePasswordResetAction = (
   email: string,
   resetToken: string,
   password: string,
-): AppThunkAction<AccountAction> => {
+): AppThunkAction => {
   return (async (dispatch, _getState) => {
     dispatch(loadingStart());
     const response = await getJsonResponse(
@@ -127,10 +125,7 @@ export const savePasswordResetAction = (
   }) as AppThunkAction;
 };
 
-export const saveRegisterAction = (
-  email: string,
-  password: string,
-): AppThunkAction<AccountAction> => {
+export const saveRegisterAction = (email: string, password: string): AppThunkAction => {
   return (async (dispatch, _getState) => {
     dispatch(loadingStart());
     const response = await getJsonResponse(

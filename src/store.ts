@@ -15,7 +15,7 @@ export type AppThunkDispatch<TAction extends Action = Action> = ThunkDispatch<
   undefined,
   TAction
 >;
-export type AppThunkAction<TAction extends Action = Action, TResult = void> = ThunkAction<
+export type AppThunkAction<TResult = void, TAction extends Action = Action> = ThunkAction<
   Promise<TResult>,
   RootState,
   undefined,

@@ -23,9 +23,9 @@ export function destroySession(): SessionAction {
   };
 }
 
-export const restoreSessionAction: AppThunkAction = async (dispatch, getState) => {
+export const restoreSessionAction: AppThunkAction = async (dispatch, _getState) => {
   const token = localStorage.getItem(LocalStorageKey.AuthToken);
-  if (getState().session.jwtToken || !token) {
+  if (!token) {
     return;
   }
 
@@ -41,7 +41,7 @@ export const loginRequestAction = (
   email: string,
   password: string,
   rememberMe: boolean,
-): AppThunkAction<SessionAction> => {
+): AppThunkAction => {
   return (async (dispatch, _getState) => {
     dispatch(loadingStart());
 

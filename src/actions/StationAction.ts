@@ -53,7 +53,7 @@ export function stationSetReady(): StationAction {
   };
 }
 
-export const fetchStationAction = (criteria: StationRequest): AppThunkAction<StationAction> => {
+export const fetchStationAction = (criteria: StationRequest): AppThunkAction => {
   return (async (dispatch, _getState) => {
     dispatch(stationLoadStart());
     try {

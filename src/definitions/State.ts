@@ -42,8 +42,6 @@ export interface LoadingState {
   isLoading: boolean;
   percentComplete?: number | null;
   message?: string;
-  retryTimeout: number | null;
-  retryCount: number | null;
 }
 
 export interface LocationState {

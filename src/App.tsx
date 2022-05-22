@@ -24,11 +24,14 @@ type StyleClass = 'root' | 'appBarSpacer' | 'content' | 'container';
 
 export interface AppStateProps {
   isLoggedIn: boolean;
+  isConfigLoaded: boolean;
+  isDependenciesLoaded: boolean;
   isInitialized: boolean;
 }
 
 export interface AppDispatchProps {
-  initialize(): void;
+  loadDependencies(): void;
+  completeInit(): void;
 }
 
 export type AppProps = AppStateProps & AppDispatchProps & StyledComponentProps<StyleClass>;
@@ -79,8 +82,11 @@ const App: FunctionComponent<AppProps> = (props) => {
   );
 
   useEffect(() => {
-    if (!props.isInitialized) {
-      return props.initialize();
+    if (props.isConfigLoaded && !props.isDependenciesLoaded) {
+      return props.loadDependencies();
+    }
+    if (props.isInitialized) {
+      return props.completeInit();
     }
   });
 

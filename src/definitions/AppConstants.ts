@@ -1,5 +1,6 @@
 export const Defaults = {
   RETRY_TIMEOUT: 5_000,
+  RETRY_LIMIT: 5,
 };
 
 export const MIN_PASSWORD_LENGTH = 8;
