@@ -12,8 +12,9 @@ WIP
 ### Branches
 
 - fix/\*: Changes to address bugs
-- feature/\*: Changes to add new or alter existing functionality
+- feat/\*: Changes to add new or alter existing functionality
 - main: Changes that are destined for the next release
+- beta: Pushes deploy to the staging environment
 
 ### Release
 

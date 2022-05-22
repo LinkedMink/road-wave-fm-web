@@ -1,10 +1,10 @@
 import { connect, MapStateToProps } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-// import LockOpenIcon from '@material-ui/icons/LockOpen';
-import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
-// import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
-import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
-// import SettingsIcon from '@material-ui/icons/Settings';
+// import LockOpenIcon from '@mui/icons-material/LockOpen';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+// import PersonAddOutlinedIcon from '@mui/icons-material/PersonAddOutlined';
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+// import SettingsIcon from '@mui/icons-material/Settings';
 import NavigationMenu, {
   NavigationMenuLink,
   NavigationMenuOwnProps,

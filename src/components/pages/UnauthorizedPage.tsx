@@ -1,29 +1,28 @@
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
 import React from 'react';
-import Container from '@material-ui/core/Container';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import { SharedStyleProps, withSharedStyles } from '../../shared/Style';
 import { RouteComponentProps } from 'react-router';
+import { PagePaper } from '../../shared/Style';
 
 interface ClaimsParams {
   claims: string;
 }
 
-type UnauthorizedPageProps = RouteComponentProps<ClaimsParams> & SharedStyleProps;
+type UnauthorizedPageProps = RouteComponentProps<ClaimsParams>;
 
 class UnauthorizedPage extends React.Component<UnauthorizedPageProps> {
   render() {
     return (
       <Container maxWidth="lg">
-        <Paper className={this.props.classes?.paper}>
+        <PagePaper>
           <Typography variant="h3">Unauthorized</Typography>
           <Typography variant="body1">
             The requested page requires a user claim: {this.props.match.params.claims}
           </Typography>
-        </Paper>
+        </PagePaper>
       </Container>
     );
   }
 }
 
-export default withSharedStyles()(UnauthorizedPage);
+export default UnauthorizedPage;

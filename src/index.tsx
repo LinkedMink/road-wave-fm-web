@@ -1,12 +1,19 @@
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+import './index.css';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { initialize } from './actions/InitializeAction';
-import AppContainer from './AppContainer';
-import './index.css';
+import AppContainer from './containers/AppContainer';
 import reportWebVitals from './reportWebVitals';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import store from './store';
+import { BuildEnvVars } from './definitions/AppConstants';
+import { toBoolean } from './shared/Convert';
 
 initialize(store.dispatch);
 
@@ -22,9 +29,13 @@ ReactDOM.render(
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://cra.link/PWA
-serviceWorkerRegistration.register();
+if (toBoolean(process.env[BuildEnvVars.DisableServiceWorker])) {
+  serviceWorkerRegistration.unregister();
+} else {
+  serviceWorkerRegistration.register();
+}
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+reportWebVitals(toBoolean(process.env[BuildEnvVars.EnableWebVitals]) ? console.log : undefined);

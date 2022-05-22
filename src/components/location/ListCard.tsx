@@ -1,6 +1,12 @@
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import SignalWifi0BarIcon from '@mui/icons-material/SignalWifi0Bar';
+import SignalWifi1BarIcon from '@mui/icons-material/SignalWifi1Bar';
+import SignalWifi2BarIcon from '@mui/icons-material/SignalWifi2Bar';
+import SignalWifi3BarIcon from '@mui/icons-material/SignalWifi3Bar';
+import SignalWifi4BarIcon from '@mui/icons-material/SignalWifi4Bar';
+import SignalWifiOffIcon from '@mui/icons-material/SignalWifiOff';
 import {
   Accordion,
-  AccordionDetails,
   AccordionSummary,
   Avatar,
   Collapse,
@@ -9,43 +15,14 @@ import {
   ListItemAvatar,
   ListItemSecondaryAction,
   ListItemText,
-  StyledComponentProps,
-  StyleRulesCallback,
-  Theme,
   Typography,
-} from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import SignalWifi0BarIcon from '@material-ui/icons/SignalWifi0Bar';
-import SignalWifi1BarIcon from '@material-ui/icons/SignalWifi1Bar';
-import SignalWifi2BarIcon from '@material-ui/icons/SignalWifi2Bar';
-import SignalWifi3BarIcon from '@material-ui/icons/SignalWifi3Bar';
-import SignalWifi4BarIcon from '@material-ui/icons/SignalWifi4Bar';
-import SignalWifiOffIcon from '@material-ui/icons/SignalWifiOff';
-import clsx from 'clsx';
+} from '@mui/material';
 import React, { FunctionComponent, useEffect } from 'react';
 import { StationRequest } from '../../definitions/RequestModels';
 import { StationViewModel } from '../../definitions/ResponseModels';
 import { indexToChar } from '../../shared/Collection';
-import { SharedStyleProps, withSharedStyles } from '../../shared/Style';
+import { DividedAccordianDetails } from '../../shared/Style';
 import LoadingSpinner from '../LoadingSpinner';
-
-type StyleClass = 'avatar' | 'container' | 'list';
-type StyleProps = StyledComponentProps<StyleClass>;
-
-const styles: StyleRulesCallback<Theme, Record<string, unknown>, StyleClass> = (theme: Theme) => ({
-  container: {
-    width: '100%',
-    alignItems: 'stretch',
-  },
-  list: {
-    maxHeight: theme.spacing(50),
-    overflow: 'auto',
-  },
-  avatar: {
-    backgroundColor: theme.palette.secondary.main,
-    color: theme.palette.secondary.contrastText,
-  },
-});
 
 export interface ListCardOwnProps {
   selected?: StationViewModel;
@@ -62,11 +39,7 @@ export interface ListCardDispatchProps {
   retrieveStations(criteria: StationRequest): void;
 }
 
-type ListCardProps = ListCardOwnProps &
-  ListCardStateProps &
-  ListCardDispatchProps &
-  SharedStyleProps &
-  StyleProps;
+type ListCardProps = ListCardOwnProps & ListCardStateProps & ListCardDispatchProps;
 
 const ListCard: FunctionComponent<ListCardProps> = (props) => {
   useEffect(() => {
@@ -101,7 +74,14 @@ const ListCard: FunctionComponent<ListCardProps> = (props) => {
         onClick={(event) => props.onStationClick(station, event)}
       >
         <ListItemAvatar>
-          <Avatar className={props.classes?.avatar}>{indexToChar(index)}</Avatar>
+          <Avatar
+            sx={(theme) => ({
+              backgroundColor: theme.palette.secondary.main,
+              color: theme.palette.secondary.contrastText,
+            })}
+          >
+            {indexToChar(index)}
+          </Avatar>
         </ListItemAvatar>
         <ListItemText
           primary={`${station.callSign} ${station.protocol} ${station.frequency}`}
@@ -121,10 +101,23 @@ const ListCard: FunctionComponent<ListCardProps> = (props) => {
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <Typography variant="h5">Station List</Typography>
       </AccordionSummary>
-      <AccordionDetails className={clsx(props.classes?.accordionDetails, props.classes?.container)}>
+      <DividedAccordianDetails sx={{ width: '100%', alignItems: 'stretch' }}>
         <LoadingSpinner isLoading={props.isLoading} message="Refreshing..." />
-        <Collapse className={props.classes?.container} in={!props.isLoading}>
-          <List className={clsx(props.classes?.container, props.classes?.list)}>
+        <Collapse
+          sx={{
+            width: '100%',
+            alignItems: 'stretch',
+          }}
+          in={!props.isLoading}
+        >
+          <List
+            sx={(theme) => ({
+              width: '100%',
+              alignItems: 'stretch',
+              maxHeight: theme.spacing(50),
+              overflow: 'auto',
+            })}
+          >
             {props.stations && props.stations.length > 0 ? (
               props.stations.map(renderStation)
             ) : (
@@ -134,9 +127,9 @@ const ListCard: FunctionComponent<ListCardProps> = (props) => {
             )}
           </List>
         </Collapse>
-      </AccordionDetails>
+      </DividedAccordianDetails>
     </Accordion>
   );
 };
 
-export default withSharedStyles(styles)(ListCard);
+export default ListCard;

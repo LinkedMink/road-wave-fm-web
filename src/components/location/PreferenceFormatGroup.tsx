@@ -1,31 +1,17 @@
 import {
-  Box,
   Checkbox,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
-  StyledComponentProps,
-  StyleRulesCallback,
-  Theme,
   Tooltip,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import React, { FunctionComponent } from 'react';
 import { FormatViewModel } from '../../definitions/ResponseModels';
-import { SharedStyleProps, withSharedStyles } from '../../shared/Style';
+import { ColumnBox } from '../../shared/Style';
 
 const LABEL_PREFIX = 'format-label-';
-
-type StyleClass = 'list';
-type StyleProps = StyledComponentProps<StyleClass>;
-
-const styles: StyleRulesCallback<Theme, Record<string, unknown>, StyleClass> = (theme: Theme) => ({
-  list: {
-    maxHeight: theme.spacing(42),
-    overflow: 'auto',
-  },
-});
 
 export interface PreferenceFormatGroupStateProps {
   formats: FormatViewModel[];
@@ -37,9 +23,7 @@ export interface PreferenceFormatGroupDispatchProps {
 }
 
 type PreferenceFormatGroupProps = PreferenceFormatGroupStateProps &
-  PreferenceFormatGroupDispatchProps &
-  SharedStyleProps &
-  StyleProps;
+  PreferenceFormatGroupDispatchProps;
 
 const PreferenceFormatGroup: FunctionComponent<PreferenceFormatGroupProps> = (props) => {
   const selected = new Set(props.selected);
@@ -80,13 +64,20 @@ const PreferenceFormatGroup: FunctionComponent<PreferenceFormatGroupProps> = (pr
   };
 
   return (
-    <Box className={props.classes?.columnBox}>
+    <ColumnBox>
       <Tooltip title="Find stations by the selected formats. If none are selected, the closest will be found.">
         <Typography variant="h6">Filter by Format</Typography>
       </Tooltip>
-      <List className={props.classes?.list}>{props.formats.map(renderFormat)}</List>
-    </Box>
+      <List
+        sx={(theme) => ({
+          maxHeight: theme.spacing(42),
+          overflow: 'auto',
+        })}
+      >
+        {props.formats.map(renderFormat)}
+      </List>
+    </ColumnBox>
   );
 };
 
-export default withSharedStyles(styles)(PreferenceFormatGroup);
+export default PreferenceFormatGroup;

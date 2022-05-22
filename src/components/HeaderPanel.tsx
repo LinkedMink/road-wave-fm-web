@@ -1,70 +1,22 @@
-import { Tooltip } from '@material-ui/core';
-import AppBar from '@material-ui/core/AppBar';
-import IconButton from '@material-ui/core/IconButton';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import MenuIcon from '@mui/icons-material/Menu';
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import {
-  StyledComponentProps,
-  StyleRulesCallback,
-  Theme,
-  withStyles,
-} from '@material-ui/core/styles';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import Brightness4Icon from '@material-ui/icons/Brightness4';
-import Brightness7Icon from '@material-ui/icons/Brightness7';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import GitHubIcon from '@material-ui/icons/GitHub';
-import MenuIcon from '@material-ui/icons/Menu';
-import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined';
-import clsx from 'clsx';
+  AppBar,
+  IconButton,
+  ListItemIcon,
+  Menu,
+  MenuItem,
+  Toolbar,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import React, { MouseEvent, MouseEventHandler } from 'react';
 import { getLinkReference } from '../shared/Element';
-
-type StyleClass =
-  | 'toolbar'
-  | 'appBar'
-  | 'appBarShift'
-  | 'menuButton'
-  | 'menuButtonHidden'
-  | 'title'
-  | 'menuIcon';
-
-const styles: StyleRulesCallback<Theme, HeaderPanelOwnProps, StyleClass> = (theme: Theme) => ({
-  toolbar: {
-    paddingRight: 24, // keep right padding when drawer closed
-  },
-  appBar: {
-    backgroundColor: theme.palette.type === 'dark' ? theme.palette.primary.dark : undefined,
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
-    marginLeft: 240,
-    width: `calc(100% - 240px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  menuButton: {
-    marginRight: 36,
-  },
-  menuButtonHidden: {
-    display: 'none',
-  },
-  title: {
-    flexGrow: 1,
-  },
-  menuIcon: {
-    minWidth: 20 + theme.spacing(2),
-  },
-});
 
 export interface HeaderPanelOwnProps {
   isLoggedIn: boolean;
@@ -74,7 +26,7 @@ export interface HeaderPanelOwnProps {
   onDarkModeToggle: MouseEventHandler<HTMLButtonElement>;
 }
 
-type HeaderPanelProps = HeaderPanelOwnProps & StyledComponentProps<StyleClass>;
+type HeaderPanelProps = HeaderPanelOwnProps;
 
 type HeaderPanelState = {
   menuAnchor: HTMLElement | null;
@@ -136,13 +88,21 @@ class HeaderPanel extends React.Component<HeaderPanelProps, HeaderPanelState> {
           onClose={this.handleMenuClose}
         >
           <MenuItem component={getLinkReference('/account')}>
-            <ListItemIcon className={this.props.classes?.menuIcon}>
+            <ListItemIcon
+              sx={(theme) => ({
+                minWidth: 20 + theme.spacing(2),
+              })}
+            >
               <SettingsOutlinedIcon fontSize="small" />
             </ListItemIcon>
             <Typography variant="inherit">Settings</Typography>
           </MenuItem>
           <MenuItem component={getLinkReference('/logout')}>
-            <ListItemIcon className={this.props.classes?.menuIcon}>
+            <ListItemIcon
+              sx={(theme) => ({
+                minWidth: 20 + theme.spacing(2),
+              })}
+            >
               <ExitToAppIcon fontSize="small" />
             </ListItemIcon>
             <Typography variant="inherit">Logout</Typography>
@@ -155,28 +115,56 @@ class HeaderPanel extends React.Component<HeaderPanelProps, HeaderPanelState> {
   render = () => (
     <AppBar
       position="absolute"
-      className={clsx(
-        this.props.classes?.appBar,
-        this.props.isOpen && this.props.classes?.appBarShift,
-      )}
+      sx={(theme) => ({
+        backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.dark : undefined,
+        zIndex: theme.zIndex.drawer + 1,
+        transition: theme.transitions.create(['width', 'margin'], {
+          easing: theme.transitions.easing.sharp,
+          duration: theme.transitions.duration.leavingScreen,
+        }),
+        ...(this.props.isOpen
+          ? {
+              marginLeft: 240,
+              width: `calc(100% - 240px)`,
+              transition: theme.transitions.create(['width', 'margin'], {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.enteringScreen,
+              }),
+            }
+          : undefined),
+      })}
     >
-      <Toolbar className={this.props.classes?.toolbar}>
+      <Toolbar
+        sx={{
+          paddingRight: 24, // keep right padding when drawer closed
+        }}
+      >
         <Tooltip title="Expand/collapse shelf">
           <IconButton
             edge="start"
             color="inherit"
             aria-label="menu"
             onClick={this.props.onMenuOpen}
-            className={clsx(
-              this.props.classes?.menuButton,
-              this.props.isOpen && this.props.classes?.menuButtonHidden,
-            )}
+            sx={{
+              marginRight: 36,
+              ...(this.props.isOpen
+                ? {
+                    display: 'none',
+                  }
+                : undefined),
+            }}
           >
             <MenuIcon />
           </IconButton>
         </Tooltip>
 
-        <Typography variant="h6" color="inherit" className={this.props.classes?.title}>
+        <Typography
+          variant="h6"
+          color="inherit"
+          sx={{
+            flexGrow: 1,
+          }}
+        >
           Road Wave FM
         </Typography>
         {
@@ -208,4 +196,4 @@ class HeaderPanel extends React.Component<HeaderPanelProps, HeaderPanelState> {
   );
 }
 
-export default withStyles(styles)(HeaderPanel);
+export default HeaderPanel;

@@ -5,9 +5,6 @@ import { Route, Redirect, Switch } from 'react-router-dom';
 // import RouteAuthContainer from '../containers/RouteAuthContainer';
 import LoginContainer from '../containers/pages/LoginContainer';
 import LogoutContainer from '../containers/LogoutContainer';
-import PasswordResetContainer from '../containers/pages/PasswordResetContainer';
-import SetPasswordContainer from '../containers/pages/SetPasswordContainer';
-import RegisterContainer from '../containers/pages/RegisterContainer';
 import HomeContainer from '../containers/pages/HomeContainer';
 // import SettingsContainer from '../containers/pages/SettingsContainer';
 import AboutPage from './pages/AboutPage';
@@ -24,9 +21,6 @@ class RouterOutlet extends React.Component<RouterOutletOwnProps> {
     <Switch>
       <Route exact path="/login" component={LoginContainer} />
       <Route exact path="/logout" component={LogoutContainer} />
-      <Route exact path="/register" component={RegisterContainer} />
-      <Route exact path="/password-reset" component={PasswordResetContainer} />
-      <Route exact path="/set-password/:email/:token" component={SetPasswordContainer} />
       <Route exact path="/about" component={AboutPage} />
       <Route exact path="/document/:documentName" component={MarkdownPage} />
       <Route exact path="/unauthorized/:claims" component={UnauthorizedPage} />

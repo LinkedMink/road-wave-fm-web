@@ -1,5 +1,6 @@
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import MyLocationIcon from '@mui/icons-material/MyLocation';
 import {
-  Box,
   Chip,
   CircularProgress,
   Collapse,
@@ -8,30 +9,16 @@ import {
   ListItemIcon,
   ListItemSecondaryAction,
   ListItemText,
-  StyledComponentProps,
-  StyleRulesCallback,
   Switch,
-  Theme,
   Tooltip,
   Typography,
-} from '@material-ui/core';
-import LocationOnIcon from '@material-ui/icons/LocationOn';
-import MyLocationIcon from '@material-ui/icons/MyLocation';
+} from '@mui/material';
 import React, { ChangeEvent, FunctionComponent } from 'react';
-import { getEarthDistance } from '../../shared/Math';
-import { SharedStyleProps, withSharedStyles } from '../../shared/Style';
 import { Coordinates } from '../../definitions/Map';
+import { getEarthDistance } from '../../shared/Math';
+import { ColumnBox } from '../../shared/Style';
 
 const UPDATE_DISTANCE_KM = 10;
-
-type StyleClass = 'list';
-type StyleProps = StyledComponentProps<StyleClass>;
-
-const styles: StyleRulesCallback<Theme, Record<string, unknown>, StyleClass> = (theme: Theme) => ({
-  list: {
-    maxWidth: theme.spacing(50),
-  },
-});
 
 export interface PreferenceLocationGroupStateProps {
   isLocationWatchEnabled: boolean;
@@ -47,9 +34,7 @@ export interface PreferenceLocationGroupDispatchProps {
 }
 
 type PreferenceLocationGroupProps = PreferenceLocationGroupStateProps &
-  PreferenceLocationGroupDispatchProps &
-  SharedStyleProps &
-  StyleProps;
+  PreferenceLocationGroupDispatchProps;
 
 const PreferenceLocationGroup: FunctionComponent<PreferenceLocationGroupProps> = (props) => {
   const [isTrackingEnabled, setIsTrackingEnabled] = React.useState(props.isLocationWatchEnabled);
@@ -77,9 +62,14 @@ const PreferenceLocationGroup: FunctionComponent<PreferenceLocationGroupProps> =
   });
 
   return (
-    <Box className={props.classes?.columnBox}>
+    <ColumnBox>
       <Typography variant="h6">Location</Typography>
-      <List className={props.classes?.list} dense={true}>
+      <List
+        dense={true}
+        sx={(theme) => ({
+          maxWidth: theme.spacing(50),
+        })}
+      >
         <Tooltip title="Enable tracking to automatically update nearby stations based on your location">
           <ListItem>
             <ListItemIcon>
@@ -105,8 +95,8 @@ const PreferenceLocationGroup: FunctionComponent<PreferenceLocationGroupProps> =
           </Tooltip>
         </Collapse>
       </List>
-    </Box>
+    </ColumnBox>
   );
 };
 
-export default withSharedStyles(styles)(PreferenceLocationGroup);
+export default PreferenceLocationGroup;

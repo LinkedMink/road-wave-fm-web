@@ -1,9 +1,9 @@
 import { connect, MapDispatchToPropsFunction, MapStateToProps } from 'react-redux';
-import { loadDependencies } from './actions/InitializeAction';
-import { loadingEnd } from './actions/LoadingAction';
-import App, { AppDispatchProps, AppStateProps } from './App';
-import { RootState } from './reducers/RootReducer';
-import { AppThunkDispatch } from './store';
+import { loadDependencies } from '../actions/InitializeAction';
+import { loadingEnd } from '../actions/LoadingAction';
+import App, { AppDispatchProps, AppStateProps } from '../components/App';
+import { RootState } from '../reducers/RootReducer';
+import { AppThunkDispatch } from '../store';
 
 const mapStateToProps: MapStateToProps<AppStateProps, Record<string, never>, RootState> = (
   state: RootState,

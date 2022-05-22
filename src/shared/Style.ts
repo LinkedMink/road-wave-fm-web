@@ -1,39 +1,27 @@
-import {
-  StyledComponentProps,
-  StyleRulesCallback,
-  Theme,
-  WithStyles,
-  withStyles,
-} from '@material-ui/core';
-import { PropInjector } from '@material-ui/types';
+import { AccordionDetails, Box, Paper, Theme } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
-export type SharedStyleClass =
-  | 'paper'
-  | 'accordionDetails'
-  | 'form'
-  | 'submit'
-  | 'vSpace2'
-  | 'columnBox';
-export type SharedStyleProps = StyledComponentProps<SharedStyleClass>;
+export const PagePaper = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(2),
+  display: 'flex',
+  overflow: 'auto',
+  flexDirection: 'column',
+  '& a': {
+    color: theme.palette.mode === 'dark' ? theme.palette.secondary.light : undefined,
+  },
+}));
 
-export const sharedStyleCallback: StyleRulesCallback<
-  Theme,
-  Record<string, unknown>,
-  SharedStyleClass
-> = (theme: Theme) => ({
-  paper: {
-    padding: theme.spacing(2),
-    display: 'flex',
-    overflow: 'auto',
-    flexDirection: 'column',
-    '& a': {
-      color: theme.palette.type === 'dark' ? theme.palette.secondary.light : undefined,
-    },
-  },
-  accordionDetails: {
-    borderTop: `1px solid ${theme.palette.divider}`,
-    paddingTop: theme.spacing(2),
-  },
+export const DividedAccordianDetails = styled(AccordionDetails)(({ theme }) => ({
+  borderTop: `1px solid ${theme.palette.divider}`,
+  paddingTop: theme.spacing(2),
+}));
+
+export const ColumnBox = styled(Box)({
+  display: 'flex',
+  flexDirection: 'column',
+});
+
+(theme: Theme) => ({
   vSpace2: {
     marginBottom: theme.spacing(2),
   },
@@ -44,27 +32,4 @@ export const sharedStyleCallback: StyleRulesCallback<
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
-  columnBox: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
 });
-
-export const withSharedStyles = <
-  TProps extends Record<string, unknown> = Record<string, unknown>,
-  TStyleClass extends string = SharedStyleClass,
->(
-  styleCallback?: StyleRulesCallback<Theme, TProps, TStyleClass>,
-): PropInjector<
-  WithStyles<TStyleClass & SharedStyleClass, false>,
-  StyledComponentProps<TStyleClass & SharedStyleClass> & TProps
-> => {
-  const combinedCallback = (theme: Theme) =>
-    styleCallback
-      ? {
-          ...sharedStyleCallback(theme),
-          ...styleCallback(theme),
-        }
-      : sharedStyleCallback(theme);
-  return withStyles(combinedCallback);
-};

@@ -1,15 +1,16 @@
-import Alert, { Color } from '@material-ui/lab/Alert';
-import { Grow, Snackbar } from '@material-ui/core';
+import { Grow, Snackbar, Alert, AlertColor } from '@mui/material';
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { TransitionProps } from '@material-ui/core/transitions';
+import { TransitionProps } from '@mui/material/transitions';
 import { useEffect } from 'react';
 import { AlertSeverity } from '../definitions/StateModels';
 
 const GROW_TIMEOUT = 300;
 
-const GrowTransition: React.FunctionComponent<TransitionProps> = (props: TransitionProps) => {
-  return <Grow timeout={GROW_TIMEOUT} {...props} />;
+const GrowTransition: React.JSXElementConstructor<
+  TransitionProps & { children: React.ReactElement }
+> = (props: TransitionProps & { children: React.ReactElement }) => {
+  return <Grow timeout={GROW_TIMEOUT}>{props.children}</Grow>;
 };
 
 export interface AlertSnackbarStateProps {
@@ -30,12 +31,15 @@ type AlertSnackbarProps = RouteComponentProps &
 const AlertSnackbar: React.FunctionComponent<AlertSnackbarProps> = (props) => {
   const [state, setState] = React.useState({
     text: undefined as string | undefined,
-    severity: undefined as Color | undefined,
+    severity: undefined as AlertColor | undefined,
   });
 
   useEffect(() => {
     if (props.isActive && !state.text) {
-      setState({ text: props.text as string, severity: props.severity?.toLowerCase() as Color });
+      setState({
+        text: props.text as string,
+        severity: props.severity?.toLowerCase() as AlertColor,
+      });
     } else if (!props.isActive && state.text) {
       setTimeout(() => {
         setState({ text: undefined, severity: undefined });

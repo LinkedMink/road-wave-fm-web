@@ -1,9 +1,8 @@
-import Container from '@material-ui/core/Container';
-import Paper from '@material-ui/core/Paper';
+import Container from '@mui/material/Container';
 import { marked } from 'marked';
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import { SharedStyleProps, withSharedStyles } from '../../shared/Style';
+import { PagePaper } from '../../shared/Style';
 import LoadingSpinner from '../LoadingSpinner';
 
 interface MarkdownPageOwnRouteParams {
@@ -15,7 +14,7 @@ interface MarkdownPageState {
   markdown?: string;
 }
 
-const MarkdownPage: FunctionComponent<SharedStyleProps> = (props) => {
+const MarkdownPage: FunctionComponent = (_props) => {
   const [state, setState] = useState<MarkdownPageState>({});
   const { documentName } = useParams<MarkdownPageOwnRouteParams>();
 
@@ -41,12 +40,12 @@ const MarkdownPage: FunctionComponent<SharedStyleProps> = (props) => {
 
   return (
     <Container maxWidth="lg">
-      <Paper className={props.classes?.paper}>
+      <PagePaper>
         <article dangerouslySetInnerHTML={{ __html: state.markdown ?? '' }}></article>
         <LoadingSpinner isLoading={!state.markdown} message="" />
-      </Paper>
+      </PagePaper>
     </Container>
   );
 };
 
-export default withSharedStyles()(MarkdownPage);
+export default MarkdownPage;

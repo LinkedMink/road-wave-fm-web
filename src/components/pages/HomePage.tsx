@@ -1,23 +1,11 @@
+import { Container, Grid } from '@mui/material';
 import React from 'react';
-import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import { SharedStyleProps, withSharedStyles } from '../../shared/Style';
 import ListCardContainer from '../../containers/location/ListCardContainer';
 import MapCardContainer from '../../containers/location/MapCardContainer';
-import PreferenceCard from '../location/PreferenceCard';
-import { StyledComponentProps, StyleRulesCallback, Theme } from '@material-ui/core';
 import { StationViewModel } from '../../definitions/ResponseModels';
+import PreferenceCard from '../location/PreferenceCard';
 
-type StyleClass = 'fullscreen';
-type StyleProps = StyledComponentProps<StyleClass>;
-
-const styles: StyleRulesCallback<Theme, Record<string, unknown>, StyleClass> = (_theme: Theme) => ({
-  fullscreen: {},
-});
-
-type HomePageProps = SharedStyleProps & StyleProps;
-
-class HomePage extends React.Component<HomePageProps> {
+class HomePage extends React.Component {
   state = {
     selectedStation: undefined as StationViewModel | undefined,
   };
@@ -29,7 +17,7 @@ class HomePage extends React.Component<HomePageProps> {
   render = () => {
     return (
       <Container maxWidth="xl">
-        <Grid container spacing={2} className={this.props.classes?.fullscreen}>
+        <Grid container spacing={2}>
           <Grid item xs={12} md={4}>
             <PreferenceCard />
             <ListCardContainer
@@ -37,7 +25,7 @@ class HomePage extends React.Component<HomePageProps> {
               selected={this.state.selectedStation}
             />
           </Grid>
-          <Grid item xs={12} md={8} className={this.props.classes?.fullscreen}>
+          <Grid item xs={12} md={8}>
             <MapCardContainer
               onMarkerClick={this.selectStation}
               selected={this.state.selectedStation}
@@ -49,4 +37,4 @@ class HomePage extends React.Component<HomePageProps> {
   };
 }
 
-export default withSharedStyles(styles)(HomePage);
+export default HomePage;

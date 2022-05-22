@@ -1,13 +1,13 @@
 import { connect, MapDispatchToPropsFunction, MapStateToProps } from 'react-redux';
-import { RootState } from '../../reducers/RootReducer';
-import LoginScreen, {
+import { loginRequestAction } from '../../actions/SessionAction';
+import LoginPage, {
   LoginPageDispatchProps,
   LoginPageStateProps,
 } from '../../components/pages/LoginPage';
-import { loginRequestAction } from '../../actions/SessionAction';
+import { RootState } from '../../reducers/RootReducer';
 import { AppThunkDispatch } from '../../store';
 
-const mapStateToProps: MapStateToProps<LoginPageStateProps, unknown, RootState> = (
+const mapStateToProps: MapStateToProps<LoginPageStateProps, Record<string, never>, RootState> = (
   state: RootState,
 ) => {
   return {
@@ -15,15 +15,16 @@ const mapStateToProps: MapStateToProps<LoginPageStateProps, unknown, RootState> 
   };
 };
 
-const mapDispatchToProps: MapDispatchToPropsFunction<LoginPageDispatchProps, unknown> = (
-  dispatch: AppThunkDispatch,
-) => {
+const mapDispatchToProps: MapDispatchToPropsFunction<
+  LoginPageDispatchProps,
+  Record<string, never>
+> = (dispatch: AppThunkDispatch) => {
   return {
     login: (email: string, password: string, rememberMe: boolean) =>
       dispatch(loginRequestAction(email, password, rememberMe)),
   };
 };
 
-const LoginContainer = connect(mapStateToProps, mapDispatchToProps)(LoginScreen);
+const LoginContainer = connect(mapStateToProps, mapDispatchToProps)(LoginPage);
 
 export default LoginContainer;

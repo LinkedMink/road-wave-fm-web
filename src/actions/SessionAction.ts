@@ -23,7 +23,7 @@ export function destroySession(): SessionAction {
   };
 }
 
-export const restoreSessionAction: AppThunkAction = async (dispatch, _getState) => {
+export const restoreSession: AppThunkAction = async (dispatch, _getState) => {
   const token = localStorage.getItem(LocalStorageKey.AuthToken);
   if (!token) {
     return;

@@ -1,51 +1,20 @@
-import {
-  Paper,
-  StyledComponentProps,
-  StyleRulesCallback,
-  Theme,
-  useTheme,
-} from '@material-ui/core';
-import clsx from 'clsx';
+import { Box, useTheme } from '@mui/material';
 import React, { FunctionComponent, useEffect, useState } from 'react';
+import { Coordinates } from '../../definitions/Map';
+import { StationViewModel } from '../../definitions/ResponseModels';
 import { indexToChar } from '../../shared/Collection';
 import { areEqualMapPos } from '../../shared/Math';
-import { SharedStyleProps, withSharedStyles } from '../../shared/Style';
-import { Coordinates } from '../../definitions/Map';
+import { PagePaper } from '../../shared/Style';
 import SearchBar from './SearchBar';
-import { StationViewModel } from '../../definitions/ResponseModels';
 
 // TODO find better way to import raw SVG
-// import PersonPinCircleIcon from '@material-ui/icons/PersonPinCircle';
+// import PersonPinCircleIcon from '@mui/icons-material/PersonPinCircle';
 const PersonPinCircleIconPath =
   'M12 2C8.14 2 5 5.14 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.86-3.14-7-7-7zm0 2c1.1 0 2 .9 2 2 0 1.11-.9 2-2 2s-2-.89-2-2c0-1.1.9-2 2-2zm0 10c-1.67 0-3.14-.85-4-2.15.02-1.32 2.67-2.05 4-2.05s3.98.73 4 2.05c-.86 1.3-2.33 2.15-4 2.15z';
 
 const INITIAL_MAP_CENTER = { lat: 39.8283, lng: -98.5795 }; // Center of US
 const INITIAL_ZOOM = 4;
 const FOCUS_ZOOM_MIN = 10;
-
-type StyleClass = 'map' | 'search' | 'panel';
-type StyleProps = StyledComponentProps<StyleClass>;
-
-const styles: StyleRulesCallback<Theme, Record<string, unknown>, StyleClass> = (theme: Theme) => ({
-  panel: {
-    minHeight: '580px',
-    display: 'flex',
-    alignItems: 'stretch',
-    flexDirection: 'column',
-    [theme.breakpoints.up('md')]: {
-      height: '100%',
-    },
-  },
-  search: {
-    flex: '0 0 auto',
-    marginBottom: theme.spacing(1),
-  },
-  map: {
-    display: 'flex',
-    flex: '1 1',
-    width: '100%',
-  },
-});
 
 export interface MapCardOwnProps {
   selected?: StationViewModel;
@@ -63,11 +32,7 @@ export interface MapCardDispatchProps {
   selectLocation(lat: number, lng: number): void;
 }
 
-type MapCardProps = MapCardOwnProps &
-  MapCardStateProps &
-  MapCardDispatchProps &
-  SharedStyleProps &
-  StyleProps;
+type MapCardProps = MapCardOwnProps & MapCardStateProps & MapCardDispatchProps;
 
 interface MarkersFor {
   for: StationViewModel[];
@@ -176,16 +141,39 @@ const MapCard: FunctionComponent<MapCardProps> = (props) => {
   });
 
   return (
-    <Paper className={clsx(props.classes?.paper, props.classes?.panel)}>
-      <SearchBar
-        className={props.classes?.search}
-        map={mapRef}
-        disabled={props.isTrackingUser}
-        onPlaceChanged={placeChangedHandler}
-      />
-      <div className={props.classes?.map} ref={mapDivRef}></div>
-    </Paper>
+    <PagePaper
+      sx={(theme) => ({
+        minHeight: '580px',
+        display: 'flex',
+        alignItems: 'stretch',
+        flexDirection: 'column',
+        [theme.breakpoints.up('md')]: {
+          height: '100%',
+        },
+      })}
+    >
+      <Box
+        sx={(theme) => ({
+          flex: '0 0 auto',
+          marginBottom: theme.spacing(1),
+        })}
+      >
+        <SearchBar
+          map={mapRef}
+          disabled={props.isTrackingUser}
+          onPlaceChanged={placeChangedHandler}
+        />
+      </Box>
+      <Box
+        ref={mapDivRef}
+        sx={{
+          display: 'flex',
+          flex: '1 1',
+          width: '100%',
+        }}
+      ></Box>
+    </PagePaper>
   );
 };
 
-export default withSharedStyles(styles)(MapCard);
+export default MapCard;

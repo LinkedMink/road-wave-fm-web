@@ -1,31 +1,6 @@
-import {
-  FilledInput,
-  FormControl,
-  InputAdornment,
-  InputLabel,
-  StyledComponentProps,
-  StyleRulesCallback,
-  Theme,
-  Tooltip,
-} from '@material-ui/core';
-import SearchIcon from '@material-ui/icons/Search';
+import SearchIcon from '@mui/icons-material/Search';
+import { FilledInput, FormControl, InputAdornment, InputLabel, Tooltip } from '@mui/material';
 import React, { FunctionComponent, useEffect } from 'react';
-import { SharedStyleProps, withSharedStyles } from '../../shared/Style';
-
-type StyleClass = 'search';
-type StyleProps = StyledComponentProps<StyleClass>;
-
-const styles: StyleRulesCallback<Theme, Record<string, unknown>, StyleClass> = (_theme: Theme) => ({
-  search: {
-    display: 'flex',
-    '& > :first-child': {
-      flex: '1 1',
-    },
-    '& > :last-child': {
-      flex: '0 0 auto',
-    },
-  },
-});
 
 export interface SearchBarOwnProps {
   map?: google.maps.Map;
@@ -33,7 +8,7 @@ export interface SearchBarOwnProps {
   onPlaceChanged: (autocomplete: google.maps.places.Autocomplete) => void;
 }
 
-type SearchBarProps = SearchBarOwnProps & SharedStyleProps & StyleProps;
+type SearchBarProps = SearchBarOwnProps;
 
 const SearchBar: FunctionComponent<SearchBarProps> = (props) => {
   const inputRef = React.createRef<HTMLInputElement>();
@@ -74,4 +49,4 @@ const SearchBar: FunctionComponent<SearchBarProps> = (props) => {
   );
 };
 
-export default withSharedStyles(styles)(SearchBar);
+export default SearchBar;

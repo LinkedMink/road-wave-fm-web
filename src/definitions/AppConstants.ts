@@ -1,3 +1,17 @@
+/**
+ * @see https://create-react-app.dev/docs/adding-custom-environment-variables/
+ */
+export enum BuildEnv {
+  Dev = 'development',
+  Test = 'test',
+  Prod = 'production',
+}
+
+export enum BuildEnvVars {
+  DisableServiceWorker = 'REACT_APP_DISABLE_SERVICE_WORKER',
+  EnableWebVitals = 'REACT_APP_ENABLE_WEB_VITALS',
+}
+
 export const Defaults = {
   RETRY_TIMEOUT: 5_000,
   RETRY_LIMIT: 5,

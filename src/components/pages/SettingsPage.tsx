@@ -1,22 +1,9 @@
+import Container from '@mui/material/Container';
 import React from 'react';
-import Container from '@material-ui/core/Container';
-import { SharedStyleProps, withSharedStyles } from '../../shared/Style';
-import PreferenceCard from '../location/PreferenceCard';
-import { StyledComponentProps, StyleRulesCallback, Theme } from '@material-ui/core';
 import { StationViewModel } from '../../definitions/ResponseModels';
+import PreferenceCard from '../location/PreferenceCard';
 
-type StyleClass = 'fullscreen';
-type StyleProps = StyledComponentProps<StyleClass>;
-
-const styles: StyleRulesCallback<Theme, Record<string, unknown>, StyleClass> = (_theme: Theme) => ({
-  fullscreen: {
-    height: '100%',
-  },
-});
-
-type SettingsPageProps = SharedStyleProps & StyleProps;
-
-class SettingsPage extends React.Component<SettingsPageProps> {
+class SettingsPage extends React.Component {
   state = {
     selectedStation: undefined as StationViewModel | undefined,
   };
@@ -34,4 +21,4 @@ class SettingsPage extends React.Component<SettingsPageProps> {
   };
 }
 
-export default withSharedStyles(styles)(SettingsPage);
+export default SettingsPage;

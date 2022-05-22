@@ -1,58 +1,18 @@
-import clsx from 'clsx';
-import React, { JSXElementConstructor, MouseEventHandler } from 'react';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import {
-  StyledComponentProps,
-  StyleRulesCallback,
-  Theme,
-  withStyles,
-} from '@material-ui/core/styles';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import Divider from '@material-ui/core/Divider';
-import Drawer from '@material-ui/core/Drawer';
-import IconButton from '@material-ui/core/IconButton';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Tooltip from '@material-ui/core/Tooltip';
-import { getLinkReference } from '../shared/Element';
+  Box,
+  Divider,
+  Drawer,
+  IconButton,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Tooltip,
+} from '@mui/material';
+import React, { JSXElementConstructor, MouseEventHandler } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-
-type StyleClass = 'toolbarIcon' | 'drawerPaper' | 'drawerPaperClose';
-
-const styles: StyleRulesCallback<Theme, NavigationMenuOwnProps, StyleClass> = (theme: Theme) => ({
-  toolbarIcon: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: '0 8px',
-    ...theme.mixins.toolbar,
-  },
-  drawerPaper: {
-    position: 'relative',
-    whiteSpace: 'nowrap',
-    width: 240,
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  drawerPaperClose: {
-    overflowX: 'hidden',
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    // width: theme.spacing(7),
-    width: 0,
-    [theme.breakpoints.up('sm')]: {
-      width: theme.spacing(7),
-    },
-    [theme.breakpoints.up('md')]: {
-      width: theme.spacing(8),
-    },
-  },
-});
+import { getLinkReference } from '../shared/Element';
 
 export interface NavigationMenuLink {
   path?: string;
@@ -71,9 +31,7 @@ export interface NavigationMenuOwnProps extends RouteComponentProps {
   onMenuClose: MouseEventHandler<HTMLButtonElement>;
 }
 
-type NavigationMenuProps = NavigationMenuStateProps &
-  NavigationMenuOwnProps &
-  StyledComponentProps<StyleClass>;
+type NavigationMenuProps = NavigationMenuStateProps & NavigationMenuOwnProps;
 
 class NavigationMenu extends React.Component<NavigationMenuProps> {
   getLinkItem = (link: NavigationMenuLink, index: number) => {
@@ -104,18 +62,51 @@ class NavigationMenu extends React.Component<NavigationMenuProps> {
       <Drawer
         variant="permanent"
         open={this.props.isOpen}
-        classes={{
-          paper: clsx(
-            this.props.classes?.drawerPaper,
-            !this.props.isOpen && this.props.classes?.drawerPaperClose,
-          ),
+        PaperProps={{
+          sx: (theme) => {
+            const closedStyles = !this.props.isOpen
+              ? {
+                  overflowX: 'hidden',
+                  transition: theme.transitions.create('width', {
+                    easing: theme.transitions.easing.sharp,
+                    duration: theme.transitions.duration.leavingScreen,
+                  }),
+                  // width: theme.spacing(7),
+                  width: 0,
+                  [theme.breakpoints.up('sm')]: {
+                    width: theme.spacing(7),
+                  },
+                  [theme.breakpoints.up('md')]: {
+                    width: theme.spacing(8),
+                  },
+                }
+              : undefined;
+            return {
+              position: 'relative',
+              whiteSpace: 'nowrap',
+              width: 240,
+              transition: theme.transitions.create('width', {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.enteringScreen,
+              }),
+              ...closedStyles,
+            };
+          },
         }}
       >
-        <div className={this.props.classes?.toolbarIcon}>
+        <Box
+          sx={(theme) => ({
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-end',
+            padding: '0 8px',
+            ...theme.mixins.toolbar,
+          })}
+        >
           <IconButton onClick={this.props.onMenuClose}>
             <ChevronLeftIcon />
           </IconButton>
-        </div>
+        </Box>
         <Divider />
         <List>{this.props.links.map(this.getLinkItem)}</List>
       </Drawer>
@@ -123,4 +114,4 @@ class NavigationMenu extends React.Component<NavigationMenuProps> {
   };
 }
 
-export default withStyles(styles)(NavigationMenu);
+export default NavigationMenu;

@@ -1,32 +1,23 @@
-import { StyledComponentProps, StyleRulesCallback, Theme } from '@material-ui/core';
-import Container from '@material-ui/core/Container';
-import Link from '@material-ui/core/Link';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
+import { Container, Link, List, ListItem, Typography } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { Box } from '@mui/system';
 import React from 'react';
-import { SharedStyleProps, withSharedStyles } from '../../shared/Style';
+import { PagePaper } from '../../shared/Style';
 
-type StyleClass = 'contentSection';
-type StyleProps = StyledComponentProps<StyleClass>;
+const AboutContentBox = styled(Box)(({ theme }) => ({
+  marginBottom: theme.spacing(4),
+}));
 
-const styles: StyleRulesCallback<Theme, Record<string, never>, StyleClass> = (theme: Theme) => ({
-  contentSection: {
-    marginBottom: theme.spacing(4),
-  },
-  linkText: {
-    color: theme.palette.type === 'dark' ? theme.palette.secondary.light : undefined,
-  },
-});
+// TODO
+// const AboutListItem = styled(ListItem)(({theme})=> ({
+//   color: theme.palette.mode === 'dark' ? theme.palette.secondary.light : undefined,
+// }))
 
-type AboutPageProps = StyleProps & SharedStyleProps;
-
-const AboutPage: React.FunctionComponent<AboutPageProps> = (props) => {
+const AboutPage: React.FunctionComponent = (_props) => {
   return (
     <Container maxWidth="lg">
-      <Paper className={props.classes?.paper}>
-        <section className={props.classes?.contentSection}>
+      <PagePaper>
+        <AboutContentBox component="section">
           <Typography variant="h3">About</Typography>
           <Typography variant="body1">
             Development on this project has stalled in favor of focusing on a mobile app front-end.
@@ -34,8 +25,8 @@ const AboutPage: React.FunctionComponent<AboutPageProps> = (props) => {
             integration on mobile devices. If someone&apos;s interested in picking this project up
             feel free to reach out on our Github page.
           </Typography>
-        </section>
-        <section className={props.classes?.contentSection}>
+        </AboutContentBox>
+        <AboutContentBox component="section">
           <Typography variant="h4">Related Projects</Typography>
           <List>
             <Link href="https://github.com/LinkedMink/road_wave_fm_ui">
@@ -51,10 +42,10 @@ const AboutPage: React.FunctionComponent<AboutPageProps> = (props) => {
               <ListItem button>Node User Service</ListItem>
             </Link>
           </List>
-        </section>
-      </Paper>
+        </AboutContentBox>
+      </PagePaper>
     </Container>
   );
 };
 
-export default withSharedStyles(styles)(AboutPage);
+export default AboutPage;
