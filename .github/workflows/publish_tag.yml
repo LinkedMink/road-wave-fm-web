@@ -21,4 +21,4 @@ jobs:
       uploadToTag: ${{ github.ref_name }}
       uploadedBuildName: ${{ needs.build.outputs.uploadedBuildName }} 
     secrets:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}

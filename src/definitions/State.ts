@@ -18,7 +18,7 @@ export interface AlertState {
 
 export interface ConfigState {
   isLoaded: boolean;
-  urls: Record<Services, string>;
+  urls: Record<Services, URL>;
   signerKey: string | null;
   googleMapsApiKey: string;
   logLevelConsole: LogLevel;

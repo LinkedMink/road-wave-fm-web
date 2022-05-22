@@ -1,13 +1,12 @@
-import urlJoin from 'url-join';
+import { AccountAction, AccountActionType } from '../definitions/Actions';
+import { Routes, Services } from '../definitions/AppConstants';
+import { AccountMessage } from '../definitions/Message';
+import { AccountModel, ResponseData } from '../definitions/ResponseModels';
 import { getJsonResponse, handleGenericCatch, HttpMethods } from '../shared/RequestFactory';
 import { AppThunkAction } from '../store';
-import { AccountMessage } from '../definitions/Message';
 import { alertInfo, alertRedirect } from './AlertAction';
 import { confirmClearKey } from './ConfirmAction';
 import { loadingEnd, loadingStart } from './LoadingAction';
-import { AccountAction, AccountActionType } from '../definitions/Actions';
-import { Services, Routes } from '../definitions/AppConstants';
-import { AccountModel, ResponseData } from '../definitions/ResponseModels';
 
 const CONFIRM_DELETE_KEY = 'AccountContainerDelete';
 
@@ -90,7 +89,7 @@ export const fetchPasswordResetAction = (email: string): AppThunkAction => {
     dispatch(loadingStart());
     const response = await getJsonResponse(
       Services.User,
-      urlJoin(Routes[Services.User].PASSWORD, encodeURIComponent(email)),
+      `${Routes[Services.User].PASSWORD}/${encodeURIComponent(email)}`,
     ).catch(handleGenericCatch(dispatch));
 
     if (response) {

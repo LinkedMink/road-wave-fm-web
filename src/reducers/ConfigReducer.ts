@@ -5,12 +5,14 @@ import { ConfigData } from '../definitions/ResponseModels';
 import { ConfigState } from '../definitions/State';
 import { Services } from '../definitions/AppConstants';
 
+const INITIAL_URL = new URL(window.location.href);
+
 const defaultState: ConfigState = {
   isLoaded: false,
   urls: {
-    [Services.Self]: '',
-    [Services.User]: '',
-    [Services.RoadWave]: '',
+    [Services.Self]: INITIAL_URL,
+    [Services.User]: INITIAL_URL,
+    [Services.RoadWave]: INITIAL_URL,
   },
   signerKey: null,
   googleMapsApiKey: '',
@@ -24,12 +26,16 @@ const configReducer: Reducer<ConfigState, ConfigAction> = (
 ): ConfigState => {
   if (action.type === ConfigActionType.Save) {
     const config = action.payload as ConfigData;
+    const urls = Object.entries(config.urls).reduce((allSvcs, [svcKey, baseUrl]) => {
+      allSvcs[svcKey as Services] = new URL(baseUrl);
+      return allSvcs;
+    }, {} as Record<Services, URL>);
     return {
       ...state,
       isLoaded: true,
       urls: {
         ...state.urls,
-        ...config.urls,
+        ...urls,
       },
       signerKey: config.jwtPublicKey ? atob(config.jwtPublicKey) : null,
       googleMapsApiKey: config.googleMapsApiKey,

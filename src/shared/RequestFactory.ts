@@ -1,11 +1,9 @@
 import queryString from 'query-string';
 import { Action, Dispatch } from 'redux';
-import urlJoin from 'url-join';
-
-import store from '../store';
 import { alertError } from '../actions/AlertAction';
-import { LogService } from './LogService';
 import { Services } from '../definitions/AppConstants';
+import store from '../store';
+import { LogService } from './LogService';
 
 const logger = LogService.get('RequestFactory');
 const GENERIC_REQUEST_ERROR =
@@ -68,13 +66,13 @@ export const handleGenericCatch = (dispatch: Dispatch) => {
   };
 };
 
-export const getServiceActionUrl = (targetService: Services, path: string): string => {
+export const getServiceActionUrl = (targetService: Services, path: string): URL => {
   const state = store.getState();
 
   if (state.config.urls && state.config.urls[targetService]) {
-    return urlJoin(state.config.urls[targetService], path);
+    return new URL(path, state.config.urls[targetService]);
   } else {
-    return path;
+    return new URL(path);
   }
 };
 
@@ -85,13 +83,14 @@ export const getJsonResponse = <TResponse = unknown, TRequest = unknown>(
   requestData: TRequest | null = null,
   isAuthorized = true,
 ): Promise<TResponse> => {
-  let url = getServiceActionUrl(targetService, path);
+  const url = getServiceActionUrl(targetService, path);
 
+  let urlString = url.toString();
   if (requestData && method === HttpMethods.GET) {
     const query = queryString.stringify(requestData, {
       skipEmptyString: true,
     });
-    url += '?' + query;
+    urlString += '?' + query;
   }
 
   const options = getRequestOptions(
@@ -100,5 +99,5 @@ export const getJsonResponse = <TResponse = unknown, TRequest = unknown>(
     isAuthorized,
   );
 
-  return fetch(url, options).then(responseToJson<TResponse>());
+  return fetch(urlString, options).then(responseToJson<TResponse>());
 };
