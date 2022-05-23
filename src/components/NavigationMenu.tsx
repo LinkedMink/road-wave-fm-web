@@ -95,13 +95,17 @@ class NavigationMenu extends React.Component<NavigationMenuProps> {
         }}
       >
         <Box
-          sx={(theme) => ({
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'flex-end',
-            padding: '0 8px',
-            ...theme.mixins.toolbar,
-          })}
+          sx={(theme) => {
+            const smRule = theme.breakpoints.up('sm');
+            return {
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+              padding: '0 8px',
+              minHeight: theme.mixins.toolbar.minHeight,
+              [smRule]: theme.mixins.toolbar[smRule],
+            };
+          }}
         >
           <IconButton onClick={this.props.onMenuClose}>
             <ChevronLeftIcon />

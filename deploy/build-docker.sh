@@ -8,6 +8,8 @@ DOCKER_ARGS=""
 # PUBLIC_URL=
 CI=true
 GENERATE_SOURCEMAP=true
+REACT_APP_ENABLE_WEB_VITALS=true
+REACT_APP_DISABLE_SERVICE_WORKER=true
 
 if [ -z "$DOCKER_SCOPE" ]; then
   DOCKER_SCOPE="linkedmink/" 
@@ -27,11 +29,14 @@ echo "---------- Build Started: $startTime ----------"
 cd ../
 
 if [ "$2" = "prod" ]; then
+  REACT_APP_DISABLE_SERVICE_WORKER=false
   GENERATE_SOURCEMAP=false
   DOCKER_ARGS="--build-arg ENVIRONMENT=production"
-fi
 
-npm run build
+  npm run build
+else
+  npm run build -- --profile
+fi
 
 if [ "$1" = "deploy" ]; then
   kubectl set image \

@@ -18,9 +18,10 @@ export interface AlertState {
 
 export interface ConfigState {
   isLoaded: boolean;
-  urls: Record<Services, URL>;
+  urls: Record<Services, string>;
   signerKey: string | null;
   googleMapsApiKey: string;
+  googleOAuthClientId: string | null;
   logLevelConsole: LogLevel;
   logLevelPersist: LogLevel;
 }
@@ -56,6 +57,7 @@ export interface MapState {
 }
 
 export interface SessionState {
+  isDestroyed: boolean;
   jwtToken?: string;
   decodedToken?: JWTPayload;
 }

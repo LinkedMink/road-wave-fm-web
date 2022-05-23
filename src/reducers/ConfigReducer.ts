@@ -5,17 +5,16 @@ import { ConfigData } from '../definitions/ResponseModels';
 import { ConfigState } from '../definitions/State';
 import { Services } from '../definitions/AppConstants';
 
-const INITIAL_URL = new URL(window.location.href);
-
 const defaultState: ConfigState = {
   isLoaded: false,
   urls: {
-    [Services.Self]: INITIAL_URL,
-    [Services.User]: INITIAL_URL,
-    [Services.RoadWave]: INITIAL_URL,
+    [Services.Self]: '',
+    [Services.User]: '',
+    [Services.RoadWave]: '',
   },
   signerKey: null,
   googleMapsApiKey: '',
+  googleOAuthClientId: null,
   logLevelConsole: LogLevel.Info,
   logLevelPersist: LogLevel.Warn,
 };
@@ -26,19 +25,16 @@ const configReducer: Reducer<ConfigState, ConfigAction> = (
 ): ConfigState => {
   if (action.type === ConfigActionType.Save) {
     const config = action.payload as ConfigData;
-    const urls = Object.entries(config.urls).reduce((allSvcs, [svcKey, baseUrl]) => {
-      allSvcs[svcKey as Services] = new URL(baseUrl);
-      return allSvcs;
-    }, {} as Record<Services, URL>);
     return {
       ...state,
       isLoaded: true,
       urls: {
         ...state.urls,
-        ...urls,
+        ...config.urls,
       },
-      signerKey: config.jwtPublicKey ? atob(config.jwtPublicKey) : null,
+      signerKey: config.jwtPublicKey,
       googleMapsApiKey: config.googleMapsApiKey,
+      googleOAuthClientId: config.googleOAuthClientId,
       logLevelConsole: config.logLevelConsole,
       logLevelPersist: config.logLevelPersist,
     };

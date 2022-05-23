@@ -2,7 +2,7 @@ import { Action } from 'redux';
 import { Coordinates } from './Map';
 import { AccountModel, ConfigData, FormatViewModel, StationViewModel } from './ResponseModels';
 import { FormatState } from './State';
-import { AlertRedirect, LoadingInit, SessionTokens, StationRequestResult } from './StateModels';
+import { AlertRedirect, LoadingInit, StationRequestResult } from './StateModels';
 
 export enum AccountActionType {
   Store = 'ACCOUNT_STORE',
@@ -103,11 +103,12 @@ export interface MapAction extends Action<MapActionType> {
 export enum SessionActionType {
   Save = 'SESSION_SAVE',
   Destroy = 'SESSION_DESTROY',
+  Restore = 'SESSION_RESTORE',
 }
 
 export interface SessionAction extends Action<SessionActionType> {
   type: SessionActionType;
-  payload: null | SessionTokens;
+  payload: null | string;
 }
 
 export enum StationActionType {

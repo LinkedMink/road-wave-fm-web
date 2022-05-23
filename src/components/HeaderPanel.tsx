@@ -16,6 +16,7 @@ import {
   Typography,
 } from '@mui/material';
 import React, { MouseEvent, MouseEventHandler } from 'react';
+import { Link } from 'react-router-dom';
 import { getLinkReference } from '../shared/Element';
 
 export interface HeaderPanelOwnProps {
@@ -145,14 +146,17 @@ class HeaderPanel extends React.Component<HeaderPanelProps, HeaderPanelState> {
             color="inherit"
             aria-label="menu"
             onClick={this.props.onMenuOpen}
-            sx={{
-              marginRight: 36,
+            sx={(theme) => ({
+              color: theme.palette.common.white,
+              marginRight: theme.spacing(2),
               ...(this.props.isOpen
                 ? {
-                    display: 'none',
+                    visibility: 'hidden',
+                    marginRight: '0',
+                    width: '0',
                   }
                 : undefined),
-            }}
+            })}
           >
             <MenuIcon />
           </IconButton>
@@ -176,8 +180,10 @@ class HeaderPanel extends React.Component<HeaderPanelProps, HeaderPanelState> {
         <Tooltip title="GitHub Repository">
           <IconButton
             aria-label="GitHub Repository"
-            color="inherit"
             href="https://github.com/LinkedMink/road-wave-fm-web"
+            sx={(theme) => ({
+              color: theme.palette.common.white,
+            })}
           >
             <GitHubIcon />
           </IconButton>
@@ -185,12 +191,28 @@ class HeaderPanel extends React.Component<HeaderPanelProps, HeaderPanelState> {
         <Tooltip title="Toggle light/dark mode">
           <IconButton
             aria-label="Toggle light/dark mode"
-            color="inherit"
             onClick={this.props.onDarkModeToggle}
+            sx={(theme) => ({
+              color: theme.palette.common.white,
+            })}
           >
             {this.props.isDarkMode ? <Brightness7Icon /> : <Brightness4Icon />}
           </IconButton>
         </Tooltip>
+        {this.props.isLoggedIn && (
+          <Tooltip title="Close the current session">
+            <Link to="/logout">
+              <IconButton
+                aria-label="Close the current session"
+                sx={(theme) => ({
+                  color: theme.palette.common.white,
+                })}
+              >
+                <ExitToAppIcon />
+              </IconButton>
+            </Link>
+          </Tooltip>
+        )}
       </Toolbar>
     </AppBar>
   );

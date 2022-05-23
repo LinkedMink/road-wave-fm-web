@@ -6,7 +6,7 @@ import { restoreSession } from './SessionAction';
 import { retryThunkAction } from './ThunkAction';
 
 export const initialize = (dispatch: AppThunkDispatch) => {
-  dispatch(restoreSession);
+  dispatch(restoreSession());
   dispatch(retryThunkAction(fetchConfigAction));
 };
 

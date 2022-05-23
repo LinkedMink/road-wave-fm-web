@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import AlertDialogContainer from '../containers/AlertDialogContainer';
 import AlertSnackbarContainer from '../containers/AlertSnackbarContainer';
 import ConfirmDialogContainer from '../containers/ConfirmDialogContainer';
+import GoogleOAuthContainer from '../containers/GoogleOAuthContainer';
 import LoadingOverlayContainer from '../containers/LoadingOverlayContainer';
 import NavigationMenuContainer from '../containers/NavigationMenuContainer';
 import FooterPanel from './FooterPanel';
@@ -60,6 +61,7 @@ const App: FunctionComponent<AppProps> = (props) => {
         <AlertDialogContainer />
         <AlertSnackbarContainer />
         <ConfirmDialogContainer />
+        <GoogleOAuthContainer />
         <Box
           sx={{
             display: 'flex',
@@ -98,7 +100,7 @@ const App: FunctionComponent<AppProps> = (props) => {
                 },
               }}
             >
-              <RouterOutlet defaultRedirect={'/home'} />
+              <RouterOutlet isAuthenticated={props.isLoggedIn} />
             </Box>
             <FooterPanel />
           </Box>

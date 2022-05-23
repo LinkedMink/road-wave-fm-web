@@ -71,7 +71,7 @@ const PreferenceLocationGroup: FunctionComponent<PreferenceLocationGroupProps> =
         })}
       >
         <Tooltip title="Enable tracking to automatically update nearby stations based on your location">
-          <ListItem>
+          <ListItem component="li">
             <ListItemIcon>
               <LocationOnIcon />
             </ListItemIcon>

@@ -4,6 +4,7 @@
     "roadWave": "http://localhost:8080"
   },
   "googleMapsApiKey": "<My Key>",
+  "googleOAuthClientId": "<My ID>",
   "jwtPublicKey": "<My base64 key>",
   "logLevelConsole": 0,
   "logLevelPersist": 0

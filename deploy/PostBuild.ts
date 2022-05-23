@@ -46,6 +46,7 @@ const main = async (): Promise<number> => {
         roadWave: process.env.URL_ROAD_WAVE_API,
       },
       googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY,
+      googleOAuthClientId: process.env.GOOGLE_OAUTH_CLIENT_ID,
       jwtPublicKey: process.env.USER_API_JWT_PUBLIC_KEY,
       logLevelConsole: logLevel,
       logLevelPersist: logLevel,

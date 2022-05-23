@@ -15,20 +15,6 @@ export interface AlertRedirect {
   severity?: AlertSeverity;
 }
 
-export enum Claim {
-  Settings = 'UserSettings',
-}
-
-export interface JwtPayload {
-  aud: string;
-  claims: Set<Claim>;
-  email: string;
-  exp: number;
-  iat: number;
-  iss: string;
-  sub: string;
-}
-
 export interface SessionTokens {
   jwtToken: string;
   decodedToken: JWTPayload;

@@ -1,41 +1,42 @@
+import { Box } from '@mui/material';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import { default as React, useEffect } from 'react';
 import { PagePaper } from '../../shared/Style';
 
 export interface LoginPageStateProps {
-  isLoggedIn: boolean;
+  googleOAuthClientId: string | null;
 }
 
-export interface LoginPageDispatchProps {
-  login: (email: string, password: string, rememberMe: boolean) => void;
-}
+type LoginPageProps = LoginPageStateProps;
 
-type LoginPageProps = LoginPageStateProps & LoginPageDispatchProps;
-
-const LoginPage: React.FunctionComponent<LoginPageProps> = (_props) => {
+const LoginPage: React.FunctionComponent<LoginPageProps> = (props) => {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   useEffect(() => {});
 
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="sm">
       <PagePaper>
         <Typography variant="h3">Login</Typography>
-        <div
-          id="g_id_onload"
-          data-client_id="210926201801-nupifpbh3f9bop7mre0192npe6as1kgi.apps.googleusercontent.com"
-          data-login_uri={`${window.location.origin}/login`}
-          data-auto_prompt="false"
-        ></div>
-        <div
-          className="g_id_signin"
-          data-type="standard"
-          data-size="large"
-          data-theme="outline"
-          data-text="sign_in_with"
-          data-shape="rectangular"
-          data-logo_alignment="left"
-        ></div>
+        <Box
+          sx={(theme) => ({
+            display: 'flex',
+            justifyContent: 'center',
+            margin: theme.spacing(4, 0),
+          })}
+        >
+          {props.googleOAuthClientId && (
+            <Box
+              className="g_id_signin"
+              data-type="standard"
+              data-size="large"
+              data-theme="outline"
+              data-text="sign_in_with"
+              data-shape="rectangular"
+              data-logo_alignment="left"
+            ></Box>
+          )}
+        </Box>
       </PagePaper>
     </Container>
   );

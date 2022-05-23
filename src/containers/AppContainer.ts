@@ -12,9 +12,8 @@ const mapStateToProps: MapStateToProps<AppStateProps, Record<string, never>, Roo
     isLoggedIn: state.session.jwtToken ? true : false,
     isConfigLoaded: state.config.isLoaded,
     isDependenciesLoaded: state.map.isInitialized && !!state.format.list.length,
-    isInitialized: state.config.isLoaded && state.map.isInitialized,
-    // TODO add condition back
-    // && !!state.format.list.length
+    isInitialized: state.config.isLoaded && state.map.isInitialized && !!state.format.list.length,
+    googleOAuthClientId: state.config.googleOAuthClientId,
   };
 };
 

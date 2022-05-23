@@ -66,13 +66,13 @@ export const handleGenericCatch = (dispatch: Dispatch) => {
   };
 };
 
-export const getServiceActionUrl = (targetService: Services, path: string): URL => {
+export const getServiceActionUrl = (targetService: Services, path: string): string => {
   const state = store.getState();
 
   if (state.config.urls && state.config.urls[targetService]) {
-    return new URL(path, state.config.urls[targetService]);
+    return new URL(path, state.config.urls[targetService]).toString();
   } else {
-    return new URL(path);
+    return path;
   }
 };
 

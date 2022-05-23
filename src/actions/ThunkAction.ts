@@ -11,10 +11,11 @@ export const retryThunkAction = <TResult>(
     try {
       const result = await action(dispatch, getState, undefined);
       return result;
-    } catch (_e) {
+    } catch (e) {
+      console.error(e);
       const retries = retryCount + 1;
       if (retries > retryLimit) {
-        throw Error(`Failed to load after retrying: ${retryCount}`);
+        throw Error(`Failed to load after retrying ${retryCount} times`);
       }
 
       return new Promise((resolve, _reject) => {

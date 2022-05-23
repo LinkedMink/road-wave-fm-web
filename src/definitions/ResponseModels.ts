@@ -31,6 +31,7 @@ export interface ConfigData {
   urls: Record<Services, string>;
   jwtPublicKey: string;
   googleMapsApiKey: string;
+  googleOAuthClientId: string;
   logLevelConsole: number;
   logLevelPersist: number;
 }
