@@ -1,10 +1,10 @@
-import React from 'react';
-import { Redirect } from 'react-router-dom';
+import { LinearProgress } from '@mui/material';
+import React, { useEffect } from 'react';
 import { connect, MapDispatchToPropsFunction, MapStateToProps } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { Dispatch } from 'redux';
-
-import { RootState } from '../reducers/RootReducer';
 import { destroySession } from '../actions/SessionAction';
+import { RootState } from '../reducers/RootReducer';
 
 interface LogoutStateProps {
   isLoggedIn: boolean;
@@ -15,6 +15,26 @@ interface LogoutDispatchProps {
 }
 
 type LogoutProps = LogoutStateProps & LogoutDispatchProps;
+
+const Logout: React.FunctionComponent<LogoutProps> = (props) => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (props.isLoggedIn) {
+      props.logout();
+    } else {
+      navigate('/');
+    }
+  });
+
+  return (
+    <LinearProgress
+      sx={{
+        width: '80%',
+      }}
+    />
+  );
+};
 
 const mapStateToProps: MapStateToProps<LogoutStateProps, Record<string, never>, RootState> = (
   state: RootState,
@@ -31,16 +51,6 @@ const mapDispatchToProps: MapDispatchToPropsFunction<LogoutDispatchProps, Record
     logout: () => dispatch(destroySession()),
   };
 };
-
-class Logout extends React.Component<LogoutProps> {
-  render() {
-    if (this.props.isLoggedIn && this.props.logout) {
-      this.props.logout();
-    }
-
-    return <Redirect to="/" />;
-  }
-}
 
 const LogoutContainer = connect(mapStateToProps, mapDispatchToProps)(Logout);
 

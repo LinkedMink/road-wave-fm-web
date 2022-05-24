@@ -1,9 +1,8 @@
 import { Grow, Snackbar, Alert, AlertColor } from '@mui/material';
 import React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
 import { TransitionProps } from '@mui/material/transitions';
 import { useEffect } from 'react';
-import { AlertSeverity } from '../definitions/StateModels';
+import { AlertSeverity } from '../../definitions/StateModels';
 
 const GROW_TIMEOUT = 300;
 
@@ -24,9 +23,7 @@ export interface AlertSnackbarDispatchProps {
   close: () => void;
 }
 
-type AlertSnackbarProps = RouteComponentProps &
-  AlertSnackbarStateProps &
-  AlertSnackbarDispatchProps;
+type AlertSnackbarProps = AlertSnackbarStateProps & AlertSnackbarDispatchProps;
 
 const AlertSnackbar: React.FunctionComponent<AlertSnackbarProps> = (props) => {
   const [state, setState] = React.useState({

@@ -5,10 +5,6 @@ import { useParams } from 'react-router';
 import { PagePaper } from '../../shared/Style';
 import LoadingSpinner from '../LoadingSpinner';
 
-interface MarkdownPageOwnRouteParams {
-  documentName: string;
-}
-
 interface MarkdownPageState {
   document?: string;
   markdown?: string;
@@ -16,7 +12,7 @@ interface MarkdownPageState {
 
 const MarkdownPage: FunctionComponent = (_props) => {
   const [state, setState] = useState<MarkdownPageState>({});
-  const { documentName } = useParams<MarkdownPageOwnRouteParams>();
+  const { documentName } = useParams<'documentName'>();
 
   useEffect(() => {
     if (state.markdown && documentName === state.document) {

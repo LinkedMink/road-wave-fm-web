@@ -13,7 +13,7 @@ export const getLinkReference = (
   const ref: ForwardRefRenderFunction<HTMLAnchorElement, Record<string, never>> = (
     props: PropsWithChildren<Record<string, never>>,
     ref: ForwardedRef<HTMLAnchorElement>,
-  ) => <Link innerRef={ref} to={path} {...props} />;
+  ) => <Link ref={ref} to={path} {...props} />;
 
   return React.forwardRef<HTMLAnchorElement>(ref);
 };

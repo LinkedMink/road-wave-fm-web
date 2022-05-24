@@ -1,7 +1,6 @@
 import { connect, MapStateToProps } from 'react-redux';
-
-import LoadingOverlay, { LoadingOverlayStateProps } from '../components/LoadingOverlay';
-import { RootState } from '../reducers/RootReducer';
+import LoadingOverlay, { LoadingOverlayStateProps } from '../../components/layout/LoadingOverlay';
+import { RootState } from '../../reducers/RootReducer';
 
 const mapStateToProps: MapStateToProps<
   LoadingOverlayStateProps,

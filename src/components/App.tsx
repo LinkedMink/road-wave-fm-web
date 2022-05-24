@@ -1,16 +1,12 @@
-import { Box, CssBaseline, PaletteMode, ThemeProvider, useMediaQuery } from '@mui/material';
-import { createTheme } from '@mui/material/styles';
-import React, { FunctionComponent, useEffect, useState } from 'react';
-import { BrowserRouter } from 'react-router-dom';
-import AlertDialogContainer from '../containers/AlertDialogContainer';
-import AlertSnackbarContainer from '../containers/AlertSnackbarContainer';
-import ConfirmDialogContainer from '../containers/ConfirmDialogContainer';
-import GoogleOAuthContainer from '../containers/GoogleOAuthContainer';
-import LoadingOverlayContainer from '../containers/LoadingOverlayContainer';
-import NavigationMenuContainer from '../containers/NavigationMenuContainer';
-import FooterPanel from './FooterPanel';
-import HeaderPanel from './HeaderPanel';
-import RouterOutlet from './RouterOutlet';
+import React, { FunctionComponent, useEffect } from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import LayoutContainer from '../containers/layout/LayoutContainer';
+import LogoutContainer from '../containers/LogoutContainer';
+import HomeContainer from '../containers/pages/HomeContainer';
+import LoginContainer from '../containers/pages/LoginContainer';
+import AboutPage from './pages/AboutPage';
+import MarkdownPage from './pages/MarkdownPage';
+import SettingsPage from './pages/SettingsPage';
 
 export interface AppStateProps {
   isLoggedIn: boolean;
@@ -26,24 +22,24 @@ export interface AppDispatchProps {
 
 export type AppProps = AppStateProps & AppDispatchProps;
 
+const commontRoutes = [
+  <Route key={0} path="about" element={<AboutPage />} />,
+  <Route key={1} path="document/:documentName" element={<MarkdownPage />} />,
+];
+
+const authenticatedRoutes = [
+  <Route key={2} index element={<HomeContainer />} />,
+  <Route key={3} path="logout" element={<LogoutContainer />} />,
+  <Route key={4} path="settings" element={<SettingsPage />} />,
+  <Route key={5} path="*" element={<HomeContainer />} />,
+];
+
+const unauthenticatedRoutes = [
+  <Route key={2} index element={<LoginContainer />} />,
+  <Route key={3} path="*" element={<LoginContainer />} />,
+];
+
 const App: FunctionComponent<AppProps> = (props) => {
-  const isDarkModePrefered = useMediaQuery('(prefers-color-scheme: dark)');
-
-  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-  const [paletteType, setPaletteType] = React.useState<PaletteMode>(
-    isDarkModePrefered ? 'dark' : 'light',
-  );
-
-  const theme = React.useMemo(
-    () =>
-      createTheme({
-        palette: {
-          mode: paletteType,
-        },
-      }),
-    [paletteType],
-  );
-
   useEffect(() => {
     if (props.isConfigLoaded && !props.isDependenciesLoaded) {
       return props.loadDependencies();
@@ -53,59 +49,18 @@ const App: FunctionComponent<AppProps> = (props) => {
     }
   });
 
+  const allRoutes = [
+    ...commontRoutes,
+    ...(props.isLoggedIn ? authenticatedRoutes : unauthenticatedRoutes),
+  ];
+
   return (
     <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <LoadingOverlayContainer />
-        <AlertDialogContainer />
-        <AlertSnackbarContainer />
-        <ConfirmDialogContainer />
-        <GoogleOAuthContainer />
-        <Box
-          sx={{
-            display: 'flex',
-            overflow: 'auto',
-          }}
-        >
-          <HeaderPanel
-            isLoggedIn={props.isLoggedIn}
-            isOpen={isMenuOpen}
-            onMenuOpen={() => setIsMenuOpen(true)}
-            isDarkMode={paletteType === 'dark'}
-            onDarkModeToggle={() => setPaletteType(paletteType === 'dark' ? 'light' : 'dark')}
-          />
-          <NavigationMenuContainer isOpen={isMenuOpen} onMenuClose={() => setIsMenuOpen(false)} />
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              flex: `1 1`,
-              minHeight: `100vh`,
-              alignItems: 'stretch',
-              overflow: 'hidden',
-            }}
-          >
-            <Box sx={theme.mixins.toolbar} />
-            <Box
-              sx={{
-                display: 'flex',
-                flex: '1 1 auto',
-                alignItems: 'stretch',
-                paddingTop: theme.spacing(2),
-                paddingBottom: theme.spacing(2),
-                [theme.breakpoints.up('md')]: {
-                  paddingTop: theme.spacing(4),
-                  paddingBottom: theme.spacing(4),
-                },
-              }}
-            >
-              <RouterOutlet isAuthenticated={props.isLoggedIn} />
-            </Box>
-            <FooterPanel />
-          </Box>
-        </Box>
-      </ThemeProvider>
+      <Routes>
+        <Route path="/" element={<LayoutContainer />}>
+          {allRoutes}
+        </Route>
+      </Routes>
     </BrowserRouter>
   );
 };

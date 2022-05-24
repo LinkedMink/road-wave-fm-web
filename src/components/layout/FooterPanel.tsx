@@ -1,7 +1,7 @@
 import { Box, Link, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import React from 'react';
-import { getLinkReference } from '../shared/Element';
+import { getLinkReference } from '../../shared/Element';
 
 const FooterTypography = styled(Typography)(({ theme }) => ({
   padding: theme.spacing(0, 2),

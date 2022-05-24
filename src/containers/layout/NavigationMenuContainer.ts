@@ -1,16 +1,16 @@
 import { connect, MapStateToProps } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 // import LockOpenIcon from '@mui/icons-material/LockOpen';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 // import PersonAddOutlinedIcon from '@mui/icons-material/PersonAddOutlined';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
-// import SettingsIcon from '@mui/icons-material/Settings';
 import NavigationMenu, {
   NavigationMenuLink,
-  NavigationMenuOwnProps,
   NavigationMenuStateProps,
-} from '../components/NavigationMenu';
-import { RootState } from '../reducers/RootReducer';
+  NavigationMenuOwnProps,
+} from '../../components/layout/NavigationMenu';
+import { RootState } from '../../reducers/RootReducer';
+// import SettingsIcon from '@mui/icons-material/Settings';
+//import { useLocation } from 'react-router-dom';
 
 const getGuestLinks = () => {
   return [
@@ -80,7 +80,7 @@ const mapStateToProps: MapStateToProps<
   NavigationMenuStateProps,
   NavigationMenuOwnProps,
   RootState
-> = (state: RootState, ownProps: NavigationMenuOwnProps) => {
+> = (state: RootState) => {
   let links;
   if (state.session.jwtToken) {
     links = getAuthenticatedLinks();
@@ -88,23 +88,11 @@ const mapStateToProps: MapStateToProps<
     links = getGuestLinks();
   }
 
-  const location = ownProps.location;
-  if (location) {
-    links.forEach((link) => {
-      if (link.path && location.pathname.startsWith(link.path)) {
-        link.active = true;
-      } else {
-        link.active = false;
-      }
-    });
-  }
-
   return {
     links: links,
   };
 };
 
-const container = connect(mapStateToProps, { pure: false })(NavigationMenu);
-const NavigationMenuContainer = withRouter(container);
+const NavigationMenuContainer = connect(mapStateToProps, { pure: false })(NavigationMenu);
 
 export default NavigationMenuContainer;

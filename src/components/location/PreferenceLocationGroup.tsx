@@ -39,6 +39,16 @@ type PreferenceLocationGroupProps = PreferenceLocationGroupStateProps &
 const PreferenceLocationGroup: FunctionComponent<PreferenceLocationGroupProps> = (props) => {
   const [isTrackingEnabled, setIsTrackingEnabled] = React.useState(props.isLocationWatchEnabled);
 
+  React.useEffect(() => {
+    if (
+      props.userLocation &&
+      (!props.searchLocation ||
+        getEarthDistance(props.userLocation, props.searchLocation) > UPDATE_DISTANCE_KM)
+    ) {
+      props.selectLocation(props.userLocation.lat, props.userLocation.lng);
+    }
+  });
+
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setIsTrackingEnabled(event.target.checked);
     if (event.target.checked) {
@@ -50,16 +60,6 @@ const PreferenceLocationGroup: FunctionComponent<PreferenceLocationGroupProps> =
 
   const location = props.userLocation;
   const latLng = location ? `${location?.lat.toFixed(5)}, ${location?.lng.toFixed(5)}` : '';
-
-  React.useEffect(() => {
-    if (
-      props.userLocation &&
-      (!props.searchLocation ||
-        getEarthDistance(props.userLocation, props.searchLocation) > UPDATE_DISTANCE_KM)
-    ) {
-      props.selectLocation(props.userLocation.lat, props.userLocation.lng);
-    }
-  });
 
   return (
     <ColumnBox>

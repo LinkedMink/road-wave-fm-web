@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import { default as React, useEffect } from 'react';
+import React from 'react';
 import { PagePaper } from '../../shared/Style';
 
 export interface LoginPageStateProps {
@@ -11,9 +11,6 @@ export interface LoginPageStateProps {
 type LoginPageProps = LoginPageStateProps;
 
 const LoginPage: React.FunctionComponent<LoginPageProps> = (props) => {
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  useEffect(() => {});
-
   return (
     <Container maxWidth="sm">
       <PagePaper>

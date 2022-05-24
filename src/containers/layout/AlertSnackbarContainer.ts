@@ -1,20 +1,20 @@
 import { connect, MapDispatchToPropsFunction, MapStateToProps } from 'react-redux';
 import { Dispatch } from 'redux';
-
+import { alertClear } from '../../actions/AlertAction';
 import AlertSnackbar, {
   AlertSnackbarDispatchProps,
   AlertSnackbarStateProps,
-} from '../components/AlertSnackbar';
-import { alertClear } from '../actions/AlertAction';
-import { RootState } from '../reducers/RootReducer';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { AlertSeverity } from '../definitions/StateModels';
+} from '../../components/layout/AlertSnackbar';
+import { AlertSeverity } from '../../definitions/StateModels';
+import { RootState } from '../../reducers/RootReducer';
 
 const DEFAULT_AUTO_HIDE_MS = 6000;
 
-const mapStateToProps: MapStateToProps<AlertSnackbarStateProps, RouteComponentProps, RootState> = (
-  state: RootState,
-) => {
+const mapStateToProps: MapStateToProps<
+  AlertSnackbarStateProps,
+  Record<string, never>,
+  RootState
+> = (state: RootState) => {
   return {
     isActive:
       !!state.alert.severity &&
@@ -28,7 +28,7 @@ const mapStateToProps: MapStateToProps<AlertSnackbarStateProps, RouteComponentPr
 
 const mapDispatchToProps: MapDispatchToPropsFunction<
   AlertSnackbarDispatchProps,
-  RouteComponentProps
+  Record<string, never>
 > = (dispatch: Dispatch) => {
   return {
     close: () => {
@@ -37,7 +37,6 @@ const mapDispatchToProps: MapDispatchToPropsFunction<
   };
 };
 
-const connected = connect(mapStateToProps, mapDispatchToProps)(AlertSnackbar);
-const AlertSnackbarContainer = withRouter(connected);
+const AlertSnackbarContainer = connect(mapStateToProps, mapDispatchToProps)(AlertSnackbar);
 
 export default AlertSnackbarContainer;

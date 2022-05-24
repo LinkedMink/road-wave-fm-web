@@ -44,14 +44,6 @@ const MapCard: FunctionComponent<MapCardProps> = (props) => {
   const [userMarker, setUserMarker] = useState<google.maps.Marker>();
   const [markers, setMarkers] = useState<MarkersFor>();
   const [mapRef, setMapRef] = useState<google.maps.Map>();
-  const mapDivRef = React.createRef<HTMLDivElement>();
-
-  const placeChangedHandler = (autocomplate: google.maps.places.Autocomplete) => {
-    const location = autocomplate.getPlace().geometry?.location;
-    if (location) {
-      props.selectLocation(location.lat(), location.lng());
-    }
-  };
 
   useEffect(() => {
     if (props.isMapsApiLoaded && mapDivRef.current && !mapRef) {
@@ -139,6 +131,15 @@ const MapCard: FunctionComponent<MapCardProps> = (props) => {
       }
     }
   });
+
+  const mapDivRef = React.createRef<HTMLDivElement>();
+
+  const placeChangedHandler = (autocomplate: google.maps.places.Autocomplete) => {
+    const location = autocomplate.getPlace().geometry?.location;
+    if (location) {
+      props.selectLocation(location.lat(), location.lng());
+    }
+  };
 
   return (
     <PagePaper

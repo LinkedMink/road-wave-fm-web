@@ -11,8 +11,6 @@ export interface SearchBarOwnProps {
 type SearchBarProps = SearchBarOwnProps;
 
 const SearchBar: FunctionComponent<SearchBarProps> = (props) => {
-  const inputRef = React.createRef<HTMLInputElement>();
-
   useEffect(() => {
     if (props.map && inputRef.current) {
       const autocomplete = new google.maps.places.Autocomplete(inputRef.current, {
@@ -27,9 +25,11 @@ const SearchBar: FunctionComponent<SearchBarProps> = (props) => {
     }
   });
 
+  const inputRef = React.createRef<HTMLInputElement>();
   const tooltip = props.disabled
     ? 'Search is disabled when location tracking is enabled'
     : 'Search by nearby landmarks';
+
   return (
     <Tooltip title={tooltip}>
       <FormControl variant="filled" fullWidth={true}>

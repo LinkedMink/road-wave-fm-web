@@ -1,16 +1,14 @@
 import { connect, MapDispatchToPropsFunction, MapStateToProps } from 'react-redux';
 import { Dispatch } from 'redux';
-
+import { alertClear } from '../../actions/AlertAction';
 import AlertDialog, {
   AlertDialogDispatchProps,
   AlertDialogStateProps,
-} from '../components/AlertDialog';
-import { alertClear } from '../actions/AlertAction';
-import { RootState } from '../reducers/RootReducer';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { AlertSeverity } from '../definitions/StateModels';
+} from '../../components/layout/AlertDialog';
+import { AlertSeverity } from '../../definitions/StateModels';
+import { RootState } from '../../reducers/RootReducer';
 
-const mapStateToProps: MapStateToProps<AlertDialogStateProps, RouteComponentProps, RootState> = (
+const mapStateToProps: MapStateToProps<AlertDialogStateProps, Record<string, never>, RootState> = (
   state: RootState,
 ) => {
   return {
@@ -23,7 +21,7 @@ const mapStateToProps: MapStateToProps<AlertDialogStateProps, RouteComponentProp
 
 const mapDispatchToProps: MapDispatchToPropsFunction<
   AlertDialogDispatchProps,
-  RouteComponentProps
+  Record<string, never>
 > = (dispatch: Dispatch) => {
   return {
     close: () => {
@@ -32,7 +30,6 @@ const mapDispatchToProps: MapDispatchToPropsFunction<
   };
 };
 
-const connected = connect(mapStateToProps, mapDispatchToProps)(AlertDialog);
-const AlertDialogPanel = withRouter(connected);
+const AlertDialogPanel = connect(mapStateToProps, mapDispatchToProps)(AlertDialog);
 
 export default AlertDialogPanel;
