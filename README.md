@@ -39,15 +39,23 @@ This package creates static files that can be served by any web server. Some tes
 
 ##### Environment Config
 
-- deploy/build-docker.sh
-- deploy/kube-deploy.yaml
+- [k8s-build.sh](deploy/container/k8s-build.sh)
+- [k8s-deployment.yaml](deploy/container/k8s-deployment.yaml)
+
+```sh
+./deploy/container/k8s-build.sh
+```
 
 #### AWS
 
 - Serving Files: AWS Amplify
-- Orchestratio with Dependencies : AWS EKS (amd64 and arm64 images)
+- Orchestration with Dependencies : AWS EKS (amd64 and arm64 images)
 - Database: AWS MongoDB Atlas
 
 ##### Environment Config
 
-- deploy/aws.amplify.env
+- [aws.amplify.env](deploy/aws.amplify.env)
+
+```sh
+cp deploy/aws.amplify.env .env
+```

@@ -1,7 +1,7 @@
 import { StationAction, StationActionType } from '../definitions/Actions';
 import { Services, Routes } from '../definitions/AppConstants';
 import { StationRequest } from '../definitions/RequestModels';
-import { StationViewModel, ResponseData } from '../definitions/ResponseModels';
+import { StationViewModel } from '../definitions/ResponseModels';
 import { getJsonResponse, HttpMethods } from '../shared/RequestFactory';
 import { AppThunkAction } from '../store';
 import { alertWarn } from './AlertAction';
@@ -57,15 +57,15 @@ export const fetchStationAction = (criteria: StationRequest): AppThunkAction => 
   return (async (dispatch, _getState) => {
     dispatch(stationLoadStart());
     try {
-      const response = await getJsonResponse<ResponseData<StationViewModel[]>>(
+      const response = await getJsonResponse<StationViewModel[]>(
         Services.RoadWave,
         Routes[Services.RoadWave].STATIONS,
         HttpMethods.GET,
-        criteria,
+        criteria
       );
 
-      if (response.data.length > 0) {
-        dispatch(stationStore(criteria, response.data));
+      if (response.length > 0) {
+        dispatch(stationStore(criteria, response));
       } else {
         dispatch(stationStore(criteria, []));
       }
@@ -75,8 +75,8 @@ export const fetchStationAction = (criteria: StationRequest): AppThunkAction => 
         alertWarn(
           `Failed to get stations, retry in ${
             RETRY_INTERVAL / 1000
-          } seconds. Check your network connection.`,
-        ),
+          } seconds. Check your network connection.`
+        )
       );
       setTimeout(() => {
         dispatch(stationSetReady());

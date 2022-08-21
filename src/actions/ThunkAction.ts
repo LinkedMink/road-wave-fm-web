@@ -5,7 +5,7 @@ export const retryThunkAction = <TResult>(
   action: AppThunkAction<TResult>,
   retryCount = 0,
   retryInMs = Defaults.RETRY_TIMEOUT,
-  retryLimit = Defaults.RETRY_LIMIT,
+  retryLimit = Defaults.RETRY_LIMIT
 ): AppThunkAction<TResult> => {
   return async (dispatch, getState) => {
     try {
@@ -19,6 +19,7 @@ export const retryThunkAction = <TResult>(
       }
 
       return new Promise((resolve, _reject) => {
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
         setTimeout(async () => {
           const nextRetryAction = retryThunkAction(action, retries, retryInMs, retryLimit);
           const result = await nextRetryAction(dispatch, getState, undefined);

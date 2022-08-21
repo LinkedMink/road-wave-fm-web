@@ -7,10 +7,10 @@ import { retryThunkAction } from './ThunkAction';
 
 export const initialize = (dispatch: AppThunkDispatch) => {
   dispatch(restoreSession());
-  dispatch(retryThunkAction(fetchConfigAction));
+  void dispatch(retryThunkAction(fetchConfigAction));
 };
 
 export const loadDependencies = (dispatch: AppThunkDispatch) => {
-  dispatch(retryThunkAction(fetchMapsApi));
-  dispatch(retryThunkAction(fetchFormats));
+  void dispatch(retryThunkAction(fetchMapsApi));
+  void dispatch(retryThunkAction(fetchFormats));
 };

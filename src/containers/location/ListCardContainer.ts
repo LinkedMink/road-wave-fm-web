@@ -12,7 +12,7 @@ import { areEqualCoordinates } from '../../shared/Math';
 import { AppThunkDispatch } from '../../store';
 
 const mapStateToProps: MapStateToProps<ListCardStateProps, ListCardOwnProps, RootState> = (
-  state: RootState,
+  state: RootState
 ) => {
   const hasNewCriteria =
     !state.station.hasLastRequestFailed &&
@@ -34,10 +34,10 @@ const mapStateToProps: MapStateToProps<ListCardStateProps, ListCardOwnProps, Roo
 };
 
 const mapDispatchToProps: MapDispatchToPropsFunction<ListCardDispatchProps, ListCardOwnProps> = (
-  dispatch: AppThunkDispatch,
+  dispatch: AppThunkDispatch
 ) => {
   return {
-    retrieveStations: (criteria: StationRequest) => dispatch(fetchStationAction(criteria)),
+    retrieveStations: (criteria: StationRequest) => void dispatch(fetchStationAction(criteria)),
   };
 };
 

@@ -1,6 +1,6 @@
 import { FormatAction, FormatActionType } from '../definitions/Actions';
 import { Services, Routes, LocalStorageKey } from '../definitions/AppConstants';
-import { FormatViewModel, ResponseData } from '../definitions/ResponseModels';
+import { FormatViewModel } from '../definitions/ResponseModels';
 import { FormatState } from '../definitions/State';
 import { getJsonResponse } from '../shared/RequestFactory';
 import { AppThunkAction } from '../store';
@@ -29,15 +29,15 @@ export function formatRestore(state: Partial<FormatState>): FormatAction {
 export const fetchFormats: AppThunkAction = async (dispatch, _getState) => {
   const formatData = localStorage.getItem(LocalStorageKey.FormatState);
   if (formatData) {
-    const formatState = JSON.parse(formatData);
+    const formatState = JSON.parse(formatData) as Partial<FormatState>;
     dispatch(formatRestore(formatState));
     return;
   }
 
-  const formats = await getJsonResponse<ResponseData<FormatViewModel[]>>(
+  const formats = await getJsonResponse<FormatViewModel[]>(
     Services.RoadWave,
-    Routes[Services.RoadWave].FORMATS,
+    Routes[Services.RoadWave].FORMATS
   );
 
-  dispatch(formatSave(formats.data));
+  dispatch(formatSave(formats));
 };

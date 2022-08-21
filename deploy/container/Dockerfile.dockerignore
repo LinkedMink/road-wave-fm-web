@@ -1,23 +1,17 @@
 .husky
 .vscode
 deploy/*
-!deploy/nginx.conf
+!deploy/container/nginx.conf
 node_modules
 coverage
 public
 src
 
-.babelrc
-.dockerignore
 .env
 .eslintignore
-.eslintrc.js
+.eslintrc.cjs
 .gitignoore
-.prettierrc.js
-build.sh
-deployment.yaml
-Dockerfile
-jest.config.js
+.prettierrc.cjs
 README.md
 screenshot.png
 tsconfig*.json

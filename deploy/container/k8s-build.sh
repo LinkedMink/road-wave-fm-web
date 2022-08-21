@@ -16,7 +16,7 @@ if [ -z "$DOCKER_SCOPE" ]; then
 fi
 
 if [ -z "$DOCKER_REGISTRY" ]; then
-  DOCKER_REGISTRY="registry.linkedmink.space/" 
+  DOCKER_REGISTRY="registry.linkedmink.net/" 
 fi
 
 if [ -z "$KUBERNETES_NAMESPACE" ]; then
@@ -25,8 +25,6 @@ fi
 
 startTime=$(date +"%s")
 echo "---------- Build Started: $startTime ----------"
-
-cd ../
 
 if [ "$2" = "prod" ]; then
   REACT_APP_DISABLE_SERVICE_WORKER=false
@@ -45,10 +43,13 @@ if [ "$1" = "deploy" ]; then
     --namespace="${KUBERNETES_NAMESPACE}"
 fi
 
-docker buildx build ${DOCKER_ARGS} \
+docker buildx build . \
+  ${DOCKER_ARGS} \
+  --file "deploy/container/Dockerfile" \
   --platform "${ARCHITECTURES}" \
-  -t "${DOCKER_REGISTRY}${DOCKER_SCOPE}${IMAGE_NAME}:latest" \
-  --push .
+  --tag "${DOCKER_REGISTRY}${DOCKER_SCOPE}${IMAGE_NAME}:latest" \
+  --progress "plain" \
+  --push \
 
 if [ "$1" = "deploy" ]; then
   sleep 1

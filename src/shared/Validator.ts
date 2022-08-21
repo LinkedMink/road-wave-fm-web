@@ -48,8 +48,8 @@ export enum Comparison {
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export const hasValidationErrors = <TField extends string = string>(
-  errors: Record<TField, FieldResult | never>,
-): boolean => Object.keys(errors).some((e) => errors[e as TField].isInvalid);
+  errors: Record<TField, FieldResult | never>
+): boolean => Object.keys(errors).some(e => errors[e as TField].isInvalid);
 
 export class Validator<TField extends string = string> {
   constructor(private readonly rules: ValidationRules<TField>) {}
@@ -71,7 +71,7 @@ export class Validator<TField extends string = string> {
 
     for (const [property, fieldRules] of Object.entries(this.rules)) {
       const field = fieldRules as FieldRules;
-      const invalidRule = field.rules.find((rule) => {
+      const invalidRule = field.rules.find(rule => {
         const error = this.validateRule(property as TField, rule, fields);
         if (error) {
           errors[property as TField] = { isInvalid: true, message: error };
@@ -91,7 +91,7 @@ export class Validator<TField extends string = string> {
   validateRule = (
     property: TField,
     rule: ValidationRule,
-    fields: Record<TField, unknown>,
+    fields: Record<TField, unknown>
   ): string | void => {
     const label = this.rules[property].label;
     const value = fields[property];
@@ -175,7 +175,7 @@ export class Validator<TField extends string = string> {
         return validateFunction();
       }
       default: {
-        logger.warn(`Validation rule not supported: ${ruleType}`);
+        logger.warn(`Validation rule not supported: ${ruleType as string}`);
         return;
       }
     }
