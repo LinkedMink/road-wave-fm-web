@@ -1,4 +1,6 @@
 import chalk from 'chalk';
+import { basename } from 'path';
+import { fileURLToPath } from 'url';
 
 export class ChalkCliLogger {
   constructor(private readonly context: string) {}
@@ -16,8 +18,14 @@ export class ChalkCliLogger {
 }
 
 const loggerContextMap = new Map<string, ChalkCliLogger>();
-export const getLogger = (context: string): ChalkCliLogger =>
-  loggerContextMap.get(context) ??
-  (loggerContextMap
-    .set(context, new ChalkCliLogger(context))
-    .get(context) as ChalkCliLogger);
+export const getLogger = (moduleUrl: string): ChalkCliLogger => {
+  const context = basename(fileURLToPath(moduleUrl));
+  const existing = loggerContextMap.get(context);
+  if (existing) {
+    return existing;
+  }
+
+  const logger = new ChalkCliLogger(context);
+  loggerContextMap.set(context, logger);
+  return logger;
+};

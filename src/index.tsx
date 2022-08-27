@@ -5,7 +5,7 @@ import '@fontsource/roboto/700.css';
 import './index.css';
 
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { initialize } from './actions/InitializeAction';
 import AppContainer from './containers/AppContainer';
@@ -15,15 +15,22 @@ import store from './store';
 import { BuildEnvVars } from './definitions/AppConstants';
 import { toBoolean } from './shared/Convert';
 
+const ROOT_ELEMENT_ID = 'root';
+
 initialize(store.dispatch);
 
-ReactDOM.render(
+const container = document.getElementById(ROOT_ELEMENT_ID);
+if (!container) {
+  throw new Error(`An HTML element with id '${ROOT_ELEMENT_ID}' must exist to initialize`);
+}
+
+const root = createRoot(container);
+root.render(
   <React.StrictMode>
     <Provider store={store}>
       <AppContainer />
     </Provider>
-  </React.StrictMode>,
-  document.getElementById('root'),
+  </React.StrictMode>
 );
 
 // If you want your app to work offline and load faster, you can change
