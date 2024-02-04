@@ -1,30 +1,30 @@
 #!/usr/bin/env node
 
-import fs from 'fs/promises';
-import { getLogger } from './ChalkCliLogger.mjs';
+import fs from "node:fs/promises";
+import { getLogger } from "./ChalkCliLogger.mjs";
 
 const logger = getLogger(import.meta.url);
-logger.info('Start Post-Build');
+logger.info("Start Post-Build");
 
-await fs.copyFile('LICENSE.md', 'build/docs/LICENSE.md');
-logger.info('Removed: build/config.sample.json');
+await fs.copyFile("LICENSE.md", "dist/docs/LICENSE.md");
+logger.info("Removed: dist/config.sample.json");
 
 try {
-  await fs.rm('build/config.sample.json');
-  logger.info('Removed: build/config.sample.json');
+  await fs.rm("dist/config.sample.json");
+  logger.info("Removed: dist/config.sample.json");
 } catch (e) {
-  logger.warn('No File: build/config.sample.json');
+  logger.warn("No File: dist/config.sample.json");
 }
 
 try {
-  await fs.rm('build/config.json');
-  logger.info('Removed: build/config.json');
+  await fs.rm("dist/config.json");
+  logger.info("Removed: dist/config.json");
 } catch (e) {
-  logger.warn('No File: build/config.json');
+  logger.warn("No File: dist/config.json");
 }
 
 if (Boolean(process.env.DEPLOY_TO_AWS_AMPLIFY) === true) {
-  logger.debug('Writting deployed config.json');
+  logger.debug("Writting deployed config.json");
 
   if (
     !process.env.URL_USER_API ||
@@ -32,7 +32,7 @@ if (Boolean(process.env.DEPLOY_TO_AWS_AMPLIFY) === true) {
     !process.env.GOOGLE_MAPS_API_KEY ||
     !process.env.USER_API_JWT_PUBLIC_KEY
   ) {
-    logger.error('Must set environment variables when deploying with AWS Amplify');
+    logger.error("Must set environment variables when deploying with AWS Amplify");
     process.exit(1);
   }
 
@@ -50,10 +50,10 @@ if (Boolean(process.env.DEPLOY_TO_AWS_AMPLIFY) === true) {
     logLevelPersist: logLevel,
   };
 
-  await fs.writeFile('build/config.json', JSON.stringify(config));
-  logger.info('Write: build/config.json');
+  await fs.writeFile("dist/config.json", JSON.stringify(config));
+  logger.info("Write: dist/config.json");
 } else {
-  logger.debug('Target environment does not require prebuilt config.json');
+  logger.debug("Target environment does not require prebuilt config.json");
 }
 
 logger.success(`End Post-Build Success!`);

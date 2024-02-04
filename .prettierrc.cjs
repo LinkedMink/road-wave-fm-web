@@ -1,3 +1,5 @@
+// @ts-check
+
 /**
  * @type {import("prettier").Config}
  */
@@ -6,13 +8,18 @@ const config = {
   tabWidth: 2,
   useTabs: false,
   semi: true,
-  singleQuote: true,
-  quoteProps: 'as-needed',
+  singleQuote: false,
   jsxSingleQuote: false,
-  trailingComma: 'es5',
+  trailingComma: "es5",
   bracketSpacing: true,
-  arrowParens: 'avoid',
-  endOfLine: 'lf',
+  bracketSameLine: false,
+  proseWrap: "preserve",
+  arrowParens: "avoid",
+  htmlWhitespaceSensitivity: "css",
+  endOfLine: "lf",
+  quoteProps: "as-needed",
+  embeddedLanguageFormatting: "auto",
+  singleAttributePerLine: true,
 };
 
 module.exports = config;

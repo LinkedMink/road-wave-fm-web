@@ -6,12 +6,12 @@ import {
   ListItemText,
   Tooltip,
   Typography,
-} from '@mui/material';
-import React, { FunctionComponent } from 'react';
-import { FormatViewModel } from '../../definitions/ResponseModels';
-import { ColumnBox } from '../../shared/Style';
+} from "@mui/material";
+import { FunctionComponent } from "react";
+import { FormatViewModel } from "../../definitions/ResponseModels";
+import { ColumnBox } from "../../shared/Style";
 
-const LABEL_PREFIX = 'format-label-';
+const LABEL_PREFIX = "format-label-";
 
 export interface PreferenceFormatGroupStateProps {
   formats: FormatViewModel[];
@@ -25,7 +25,7 @@ export interface PreferenceFormatGroupDispatchProps {
 type PreferenceFormatGroupProps = PreferenceFormatGroupStateProps &
   PreferenceFormatGroupDispatchProps;
 
-const PreferenceFormatGroup: FunctionComponent<PreferenceFormatGroupProps> = (props) => {
+const PreferenceFormatGroup: FunctionComponent<PreferenceFormatGroupProps> = props => {
   const selected = new Set(props.selected);
 
   const handleChange = (formatId: string) => {
@@ -55,10 +55,13 @@ const PreferenceFormatGroup: FunctionComponent<PreferenceFormatGroupProps> = (pr
             checked={checked}
             tabIndex={-1}
             disableRipple
-            inputProps={{ 'aria-labelledby': labelId }}
+            inputProps={{ "aria-labelledby": labelId }}
           />
         </ListItemIcon>
-        <ListItemText id={labelId} primary={format.name} />
+        <ListItemText
+          id={labelId}
+          primary={format.name}
+        />
       </ListItem>
     );
   };
@@ -69,9 +72,9 @@ const PreferenceFormatGroup: FunctionComponent<PreferenceFormatGroupProps> = (pr
         <Typography variant="h6">Filter by Format</Typography>
       </Tooltip>
       <List
-        sx={(theme) => ({
+        sx={theme => ({
           maxHeight: theme.spacing(42),
-          overflow: 'auto',
+          overflow: "auto",
         })}
       >
         {props.formats.map(renderFormat)}

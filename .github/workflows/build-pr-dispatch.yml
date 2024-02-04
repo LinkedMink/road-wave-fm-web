@@ -1,7 +1,11 @@
-name: Build ref
+---
+name: Build Pull Requests and Dispatch
+
 concurrency:
   group: build-${{ github.ref }}
   cancel-in-progress: true
+
+# yamllint disable-line rule:truthy
 on:
   push:
     branches-ignore:
@@ -11,6 +15,6 @@ on:
 
 jobs:
   build:
-    uses: LinkedMink/road-wave-fm-web/.github/workflows/build.yml@main
+    uses: LinkedMink/.github/.github/workflows/build-npm-package.yml@main
     with:
       uploadBuild: false

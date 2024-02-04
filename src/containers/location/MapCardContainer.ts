@@ -1,15 +1,15 @@
-import { connect, MapDispatchToPropsFunction, MapStateToProps } from 'react-redux';
-import { Dispatch } from 'redux';
-import { setSearchLocation } from '../../actions/LocationAction';
+import { connect, MapDispatchToPropsFunction, MapStateToProps } from "react-redux";
+import { setSearchLocation } from "../../actions/LocationAction";
 import MapCard, {
   MapCardDispatchProps,
   MapCardOwnProps,
   MapCardStateProps,
-} from '../../components/location/MapCard';
-import { RootState } from '../../reducers/RootReducer';
+} from "../../components/location/MapCard";
+import { RootState } from "../../reducers/RootReducer";
+import { AppThunkDispatch } from "../../store";
 
 const mapStateToProps: MapStateToProps<MapCardStateProps, MapCardOwnProps, RootState> = (
-  state: RootState,
+  state: RootState
 ) => {
   return {
     isMapsApiLoaded: state.map.isInitialized,
@@ -20,7 +20,7 @@ const mapStateToProps: MapStateToProps<MapCardStateProps, MapCardOwnProps, RootS
 };
 
 const mapDispatchToProps: MapDispatchToPropsFunction<MapCardDispatchProps, MapCardOwnProps> = (
-  dispatch: Dispatch,
+  dispatch: AppThunkDispatch
 ) => {
   return {
     selectLocation: (lat: number, lng: number) => dispatch(setSearchLocation({ lat, lng })),

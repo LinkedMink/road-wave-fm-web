@@ -1,12 +1,12 @@
-import React, { FunctionComponent, useEffect } from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import LayoutContainer from '../containers/layout/LayoutContainer';
-import LogoutContainer from '../containers/LogoutContainer';
-import HomeContainer from '../containers/pages/HomeContainer';
-import LoginContainer from '../containers/pages/LoginContainer';
-import AboutPage from './pages/AboutPage';
-import MarkdownPage from './pages/MarkdownPage';
-import SettingsPage from './pages/SettingsPage';
+import { FunctionComponent, useEffect } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import LayoutContainer from "../containers/layout/LayoutContainer";
+import LogoutContainer from "../containers/LogoutContainer";
+import HomeContainer from "../containers/pages/HomeContainer";
+import LoginContainer from "../containers/pages/LoginContainer";
+import AboutPage from "./pages/AboutPage";
+import MarkdownPage from "./pages/MarkdownPage";
+import SettingsPage from "./pages/SettingsPage";
 
 export interface AppStateProps {
   isLoggedIn: boolean;
@@ -23,23 +23,55 @@ export interface AppDispatchProps {
 export type AppProps = AppStateProps & AppDispatchProps;
 
 const commontRoutes = [
-  <Route key={0} path="about" element={<AboutPage />} />,
-  <Route key={1} path="document/:documentName" element={<MarkdownPage />} />,
+  <Route
+    key={0}
+    path="about"
+    element={<AboutPage />}
+  />,
+  <Route
+    key={1}
+    path="document/:documentName"
+    element={<MarkdownPage />}
+  />,
 ];
 
 const authenticatedRoutes = [
-  <Route key={2} index element={<HomeContainer />} />,
-  <Route key={3} path="logout" element={<LogoutContainer />} />,
-  <Route key={4} path="settings" element={<SettingsPage />} />,
-  <Route key={5} path="*" element={<HomeContainer />} />,
+  <Route
+    key={2}
+    index
+    element={<HomeContainer />}
+  />,
+  <Route
+    key={3}
+    path="logout"
+    element={<LogoutContainer />}
+  />,
+  <Route
+    key={4}
+    path="settings"
+    element={<SettingsPage />}
+  />,
+  <Route
+    key={5}
+    path="*"
+    element={<HomeContainer />}
+  />,
 ];
 
 const unauthenticatedRoutes = [
-  <Route key={2} index element={<LoginContainer />} />,
-  <Route key={3} path="*" element={<LoginContainer />} />,
+  <Route
+    key={2}
+    index
+    element={<LoginContainer />}
+  />,
+  <Route
+    key={3}
+    path="*"
+    element={<LoginContainer />}
+  />,
 ];
 
-const App: FunctionComponent<AppProps> = (props) => {
+const App: FunctionComponent<AppProps> = props => {
   useEffect(() => {
     if (props.isConfigLoaded && !props.isDependenciesLoaded) {
       return props.loadDependencies();
@@ -57,7 +89,10 @@ const App: FunctionComponent<AppProps> = (props) => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<LayoutContainer />}>
+        <Route
+          path="/"
+          element={<LayoutContainer />}
+        >
           {allRoutes}
         </Route>
       </Routes>

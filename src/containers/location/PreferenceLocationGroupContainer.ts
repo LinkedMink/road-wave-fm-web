@@ -1,22 +1,22 @@
-import { connect, MapDispatchToPropsFunction, MapStateToProps } from 'react-redux';
-import { Dispatch } from 'redux';
-import { alertError } from '../../actions/AlertAction';
+import { connect, MapDispatchToPropsFunction, MapStateToProps } from "react-redux";
+import { alertError } from "../../actions/AlertAction";
 import {
   clearLocationWatchId,
   setLocationWatchFailed,
   setLocationWatchId,
   setSearchLocation,
   setUserLocation,
-} from '../../actions/LocationAction';
+} from "../../actions/LocationAction";
 import PreferenceLocationGroup, {
   PreferenceLocationGroupDispatchProps,
   PreferenceLocationGroupStateProps,
-} from '../../components/location/PreferenceLocationGroup';
-import { RootState } from '../../reducers/RootReducer';
+} from "../../components/location/PreferenceLocationGroup";
+import { RootState } from "../../reducers/RootReducer";
+import { AppThunkDispatch } from "../../store";
 
 const PERMISSION_GRANT_ERROR =
-  'No prompt will appear to enable locaion sharing after it has been declined. Look for a button in the address bar to reenable it.';
-const CLIENT_LOCATION_ERROR = '';
+  "No prompt will appear to enable locaion sharing after it has been declined. Look for a button in the address bar to reenable it.";
+const CLIENT_LOCATION_ERROR = "";
 
 const mapStateToProps: MapStateToProps<
   PreferenceLocationGroupStateProps,
@@ -34,7 +34,7 @@ const mapStateToProps: MapStateToProps<
 const mapDispatchToProps: MapDispatchToPropsFunction<
   PreferenceLocationGroupDispatchProps,
   Record<string, never>
-> = (dispatch: Dispatch) => {
+> = (dispatch: AppThunkDispatch) => {
   return {
     enableLocationWatch: () => {
       const id = navigator.geolocation.watchPosition(
@@ -43,7 +43,7 @@ const mapDispatchToProps: MapDispatchToPropsFunction<
             setUserLocation({
               lat: position.coords.latitude,
               lng: position.coords.longitude,
-            }),
+            })
           );
         },
         (positionError: GeolocationPositionError) => {
@@ -57,7 +57,7 @@ const mapDispatchToProps: MapDispatchToPropsFunction<
         },
         {
           enableHighAccuracy: true,
-        },
+        }
       );
 
       dispatch(setLocationWatchId(id));
@@ -69,7 +69,7 @@ const mapDispatchToProps: MapDispatchToPropsFunction<
 
 const PreferenceLocationGroupContainer = connect(
   mapStateToProps,
-  mapDispatchToProps,
+  mapDispatchToProps
 )(PreferenceLocationGroup);
 
 export default PreferenceLocationGroupContainer;

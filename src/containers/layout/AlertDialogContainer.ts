@@ -1,15 +1,15 @@
-import { connect, MapDispatchToPropsFunction, MapStateToProps } from 'react-redux';
-import { Dispatch } from 'redux';
-import { alertClear } from '../../actions/AlertAction';
+import { connect, MapDispatchToPropsFunction, MapStateToProps } from "react-redux";
+import { alertClear } from "../../actions/AlertAction";
 import AlertDialog, {
   AlertDialogDispatchProps,
   AlertDialogStateProps,
-} from '../../components/layout/AlertDialog';
-import { AlertSeverity } from '../../definitions/StateModels';
-import { RootState } from '../../reducers/RootReducer';
+} from "../../components/layout/AlertDialog";
+import { AlertSeverity } from "../../definitions/StateModels";
+import { RootState } from "../../reducers/RootReducer";
+import { AppThunkDispatch } from "../../store";
 
 const mapStateToProps: MapStateToProps<AlertDialogStateProps, Record<string, never>, RootState> = (
-  state: RootState,
+  state: RootState
 ) => {
   return {
     isActive: state.alert.severity === AlertSeverity.Error || !!state.alert.redirect,
@@ -22,7 +22,7 @@ const mapStateToProps: MapStateToProps<AlertDialogStateProps, Record<string, nev
 const mapDispatchToProps: MapDispatchToPropsFunction<
   AlertDialogDispatchProps,
   Record<string, never>
-> = (dispatch: Dispatch) => {
+> = (dispatch: AppThunkDispatch) => {
   return {
     close: () => {
       dispatch(alertClear());

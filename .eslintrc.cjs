@@ -2,12 +2,12 @@
  * @type {import("eslint").Linter.RulesRecord}
  */
 const commonOverrideRules = {
-  '@typescript-eslint/no-unused-vars': [
-    'error',
-    { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+  "@typescript-eslint/no-unused-vars": [
+    "error",
+    { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
   ],
-  '@typescript-eslint/restrict-template-expressions': [
-    'error',
+  "@typescript-eslint/restrict-template-expressions": [
+    "error",
     {
       allowNumber: true,
       allowBoolean: true,
@@ -16,7 +16,7 @@ const commonOverrideRules = {
       allowRegExp: false,
     },
   ],
-  'prettier/prettier': 'off',
+  "prettier/prettier": "off",
 };
 
 /**
@@ -24,55 +24,54 @@ const commonOverrideRules = {
  */
 const config = {
   root: true,
+  ignorePatterns: ["*.test.tsx"],
   overrides: [
     {
-      files: ['*.{m,c,}js', 'deploy/**/*.{m,c,}ts'],
+      files: ["*.{m,c,}js"],
       env: {
         node: true,
-        es2021: true,
+        es2023: true,
       },
-      extends: ['eslint:recommended'],
+      extends: ["eslint:recommended"],
     },
     {
-      files: ['deploy/**/*.{m,c,}ts'],
+      files: ["*.{m,c,}ts"],
       parserOptions: {
-        project: ['deploy/tsconfig.json'],
+        project: ["tsconfig.json"],
       },
       extends: [
-        'eslint:recommended',
-        'plugin:@typescript-eslint/recommended',
-        'plugin:@typescript-eslint/recommended-requiring-type-checking',
-        'plugin:prettier/recommended',
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/recommended-requiring-type-checking",
       ],
       rules: { ...commonOverrideRules },
     },
     {
-      files: ['src/**/*.{m,c,}ts{x,}'],
-      parser: '@typescript-eslint/parser',
+      files: ["src/**/*.{m,c,}ts{x,}"],
       env: {
         browser: true,
         es2020: true,
       },
       parserOptions: {
-        project: ['tsconfig.json'],
+        project: ["src/tsconfig.json"],
         ecmaFeatures: {
           jsx: true,
         },
       },
       settings: {
         react: {
-          version: 'detect',
+          version: "detect",
         },
       },
       extends: [
-        'plugin:react/recommended',
-        'plugin:@typescript-eslint/recommended',
-        'plugin:@typescript-eslint/recommended-requiring-type-checking',
-        'plugin:prettier/recommended',
+        "plugin:react/recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/recommended-requiring-type-checking",
       ],
       rules: {
         ...commonOverrideRules,
-        'react/prop-types': 'off',
+        "react/prop-types": "off",
+        "react/react-in-jsx-scope": "off",
       },
     },
   ],

@@ -1,11 +1,11 @@
-import { connect, MapDispatchToPropsFunction, MapStateToProps } from 'react-redux';
-import { Dispatch } from 'redux';
-import { formatSelect } from '../../actions/FormatAction';
+import { connect, MapDispatchToPropsFunction, MapStateToProps } from "react-redux";
+import { formatSelect } from "../../actions/FormatAction";
 import PreferenceFormatGroup, {
   PreferenceFormatGroupDispatchProps,
   PreferenceFormatGroupStateProps,
-} from '../../components/location/PreferenceFormatGroup';
-import { RootState } from '../../reducers/RootReducer';
+} from "../../components/location/PreferenceFormatGroup";
+import { RootState } from "../../reducers/RootReducer";
+import { AppThunkDispatch } from "../../store";
 
 const mapStateToProps: MapStateToProps<
   PreferenceFormatGroupStateProps,
@@ -21,7 +21,7 @@ const mapStateToProps: MapStateToProps<
 const mapDispatchToProps: MapDispatchToPropsFunction<
   PreferenceFormatGroupDispatchProps,
   Record<string, never>
-> = (dispatch: Dispatch) => {
+> = (dispatch: AppThunkDispatch) => {
   return {
     selectFormats: (ids: string[]) => {
       dispatch(formatSelect(ids));
@@ -31,7 +31,7 @@ const mapDispatchToProps: MapDispatchToPropsFunction<
 
 const PreferenceFormatGroupContainer = connect(
   mapStateToProps,
-  mapDispatchToProps,
+  mapDispatchToProps
 )(PreferenceFormatGroup);
 
 export default PreferenceFormatGroupContainer;

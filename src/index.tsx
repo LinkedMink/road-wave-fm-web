@@ -1,30 +1,31 @@
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
-import './index.css';
+import "@fontsource/roboto/300.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
+import "./index.css";
 
-import React from 'react';
-import { createRoot } from 'react-dom/client';
-import { Provider } from 'react-redux';
-import { initialize } from './actions/InitializeAction';
-import AppContainer from './containers/AppContainer';
-import reportWebVitals from './reportWebVitals';
-import * as serviceWorkerRegistration from './serviceWorkerRegistration';
-import store from './store';
-import { BuildEnvVars } from './definitions/AppConstants';
-import { toBoolean } from './shared/Convert';
-
-const ROOT_ELEMENT_ID = 'root';
+import React from "react";
+import { createRoot } from "react-dom/client";
+import { Provider } from "react-redux";
+import { initialize } from "./actions/InitializeAction";
+import AppContainer from "./containers/AppContainer";
+import reportWebVitals from "./reportWebVitals";
+import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
+import store from "./store";
+import { BuildEnvVars } from "./definitions/AppConstants";
+import { toBoolean } from "./shared/Convert";
 
 initialize(store.dispatch);
 
-const container = document.getElementById(ROOT_ELEMENT_ID);
-if (!container) {
-  throw new Error(`An HTML element with id '${ROOT_ELEMENT_ID}' must exist to initialize`);
+const bodyElement = document.getElementsByTagName("body").item(0);
+if (!bodyElement) {
+  throw new Error("A body HTML element must exist");
 }
 
-const root = createRoot(container);
+const rootElement = document.createElement("div");
+bodyElement.appendChild(rootElement);
+
+const root = createRoot(rootElement);
 root.render(
   <React.StrictMode>
     <Provider store={store}>

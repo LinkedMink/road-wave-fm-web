@@ -1,5 +1,5 @@
-import store from '../store';
-import { isError, isString } from './TypeCheck';
+import store from "../store";
+import { isError, isString } from "./TypeCheck";
 
 export enum LogLevel {
   Debug = 0,
@@ -13,8 +13,8 @@ let logEntryBuffer: string[] = [];
 
 export class LogService {
   private readonly context: string;
-  private readonly levelConsole: number;
-  private readonly levelPersist: number;
+  private readonly levelConsole: LogLevel;
+  private readonly levelPersist: LogLevel;
 
   constructor(context: string) {
     const state = store.getState();

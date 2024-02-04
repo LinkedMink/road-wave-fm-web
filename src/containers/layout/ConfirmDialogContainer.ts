@@ -1,12 +1,12 @@
-import { connect, MapDispatchToPropsFunction, MapStateToProps } from 'react-redux';
-import { Dispatch } from 'redux';
-import { confirmSetValue } from '../../actions/ConfirmAction';
+import { connect, MapDispatchToPropsFunction, MapStateToProps } from "react-redux";
+import { confirmSetValue } from "../../actions/ConfirmAction";
 import ConfirmDialog, {
   ConfirmDialogStateProps,
   ConfirmDialogOwnProps,
   ConfirmDialogDispatchProps,
-} from '../../components/layout/ConfirmDialog';
-import { RootState } from '../../reducers/RootReducer';
+} from "../../components/layout/ConfirmDialog";
+import { RootState } from "../../reducers/RootReducer";
+import { AppThunkDispatch } from "../../store";
 
 const mapStateToProps: MapStateToProps<
   ConfirmDialogStateProps,
@@ -22,7 +22,7 @@ const mapStateToProps: MapStateToProps<
 const mapDispatchToProps: MapDispatchToPropsFunction<
   ConfirmDialogDispatchProps,
   ConfirmDialogOwnProps
-> = (dispatch: Dispatch) => {
+> = (dispatch: AppThunkDispatch) => {
   return {
     confirmYes: () => dispatch(confirmSetValue(true)),
     confirmNo: () => dispatch(confirmSetValue(false)),

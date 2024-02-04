@@ -1,7 +1,7 @@
-import { LogService } from './LogService';
-import { isArray, isString } from './TypeCheck';
+import { LogService } from "./LogService";
+import { isArray, isString } from "./TypeCheck";
 
-const logger = LogService.get('Validator');
+const logger = LogService.get("Validator");
 
 export enum ValidationRuleType {
   Required,
@@ -25,7 +25,7 @@ export interface FieldResult {
   message: string;
 }
 
-export type ValidationRules<TField extends string = string> = Record<TField, FieldRules | never>;
+export type ValidationRules<TField extends string = string> = Record<TField, FieldRules>;
 
 export interface ValidationResult<TField extends string = string> {
   isValid: boolean;
@@ -48,7 +48,7 @@ export enum Comparison {
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export const hasValidationErrors = <TField extends string = string>(
-  errors: Record<TField, FieldResult | never>
+  errors: Record<TField, FieldResult>
 ): boolean => Object.keys(errors).some(e => errors[e as TField].isInvalid);
 
 export class Validator<TField extends string = string> {
@@ -59,7 +59,7 @@ export class Validator<TField extends string = string> {
     for (const key of Object.keys(this.rules)) {
       errorState[key as TField] = {
         isInvalid: false,
-        message: '',
+        message: "",
       };
     }
     return errorState;
@@ -81,7 +81,7 @@ export class Validator<TField extends string = string> {
       });
 
       if (!invalidRule) {
-        errors[property as TField] = { isInvalid: false, message: '' };
+        errors[property as TField] = { isInvalid: false, message: "" };
       }
     }
 
@@ -99,20 +99,20 @@ export class Validator<TField extends string = string> {
 
     switch (ruleType) {
       case ValidationRuleType.Required: {
-        if (value === undefined || value === null || value === '') {
+        if (value === undefined || value === null || value === "") {
           return `${label} is required`;
         }
         return;
       }
       case ValidationRuleType.Email: {
-        if (typeof value !== 'string' || value.trim() === '') return;
+        if (typeof value !== "string" || value.trim() === "") return;
         if (!EMAIL_REGEX.test(value)) {
           return `${label} must be an email address`;
         }
         return;
       }
       case ValidationRuleType.Length: {
-        if (typeof value !== 'string' || value.trim() === '') return;
+        if (typeof value !== "string" || value.trim() === "") return;
         const min = rule[1] as number;
         const max = rule[2] as number;
         if (min !== undefined && value.length < min) {
@@ -124,7 +124,7 @@ export class Validator<TField extends string = string> {
         return;
       }
       case ValidationRuleType.Range: {
-        if (typeof value !== 'string' || value.trim() === '') return;
+        if (typeof value !== "string" || value.trim() === "") return;
         const min = rule[1] as number;
         const max = rule[2] as number;
         if (min !== undefined && Number(value) < min) {
@@ -162,7 +162,7 @@ export class Validator<TField extends string = string> {
           return `${label} must be valid JSON`;
         }
 
-        if (value.trim() === '') return;
+        if (value.trim() === "") return;
         try {
           JSON.parse(value);
         } catch (e) {

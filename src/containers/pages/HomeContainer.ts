@@ -1,7 +1,7 @@
-import { connect, MapDispatchToPropsFunction, MapStateToProps } from 'react-redux';
-import { Dispatch } from 'redux';
-import { RootState } from '../../reducers/RootReducer';
-import HomePage from '../../components/pages/HomePage';
+import { connect, MapDispatchToPropsFunction, MapStateToProps } from "react-redux";
+import { RootState } from "../../reducers/RootReducer";
+import HomePage from "../../components/pages/HomePage";
+import { AppThunkDispatch } from "../../store";
 
 const mapStateToProps: MapStateToProps<unknown, unknown, RootState> = (state: RootState) => {
   return {
@@ -9,7 +9,9 @@ const mapStateToProps: MapStateToProps<unknown, unknown, RootState> = (state: Ro
   };
 };
 
-const mapDispatchToProps: MapDispatchToPropsFunction<unknown, unknown> = (_dispatch: Dispatch) => {
+const mapDispatchToProps: MapDispatchToPropsFunction<unknown, unknown> = (
+  _dispatch: AppThunkDispatch
+) => {
   return {};
 };
 

@@ -1,39 +1,39 @@
-import queryString from 'query-string';
-import { Action, Dispatch } from 'redux';
-import { alertError } from '../actions/AlertAction';
-import { Services } from '../definitions/AppConstants';
-import store from '../store';
-import { LogService } from './LogService';
+import queryString from "query-string";
+import { Action } from "redux";
+import { alertError } from "../actions/AlertAction";
+import { Services } from "../definitions/AppConstants";
+import store, { AppThunkDispatch } from "../store";
+import { LogService } from "./LogService";
 
-const logger = LogService.get('RequestFactory');
+const logger = LogService.get("RequestFactory");
 const GENERIC_REQUEST_ERROR =
-  'An error occurred while processing your request. If the problem persist, contact the administrator.';
+  "An error occurred while processing your request. If the problem persist, contact the administrator.";
 
-export type ResponseHandler<TResponse = unknown, TAction extends Action = Action<unknown>> = (
-  data: TResponse,
+export type ResponseHandler<TResponse = unknown, TAction extends Action = Action> = (
+  data: TResponse
 ) => TAction | void;
 
 export enum HttpMethods {
-  GET = 'GET',
-  POST = 'POST',
-  PUT = 'PUT',
-  DELETE = 'DELETE',
+  GET = "GET",
+  POST = "POST",
+  PUT = "PUT",
+  DELETE = "DELETE",
 }
 
 export const getRequestOptions = (
   method = HttpMethods.GET,
-  requestData: unknown | null = null,
-  isAuthorized = true,
+  requestData: unknown = null,
+  isAuthorized = true
 ): RequestInit => {
   const headers: Record<string, string> = {
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
+    Accept: "application/json",
+    "Content-Type": "application/json",
   };
 
   if (isAuthorized) {
     const state = store.getState();
     if (state.session.jwtToken) {
-      headers['Authorization'] = `Bearer ${state.session.jwtToken}`;
+      headers["Authorization"] = `Bearer ${state.session.jwtToken}`;
     }
   }
 
@@ -55,7 +55,7 @@ const responseToJson = <TResponse>() => {
   };
 };
 
-export const handleGenericCatch = (dispatch: Dispatch) => {
+export const handleGenericCatch = (dispatch: AppThunkDispatch) => {
   // eslint-disable-next-line react/display-name
   return (error: Error): null => {
     logger.error({
@@ -81,7 +81,7 @@ export const getJsonResponse = <TResponse = unknown, TRequest = unknown>(
   path: string,
   method = HttpMethods.GET,
   requestData: TRequest | null = null,
-  isAuthorized = true,
+  isAuthorized = true
 ): Promise<TResponse> => {
   const url = getServiceActionUrl(targetService, path);
 
@@ -90,13 +90,13 @@ export const getJsonResponse = <TResponse = unknown, TRequest = unknown>(
     const query = queryString.stringify(requestData, {
       skipEmptyString: true,
     });
-    urlString += '?' + query;
+    urlString += "?" + query;
   }
 
   const options = getRequestOptions(
     method,
     method === HttpMethods.GET ? null : requestData,
-    isAuthorized,
+    isAuthorized
   );
 
   return fetch(urlString, options).then(responseToJson<TResponse>());

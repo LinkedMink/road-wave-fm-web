@@ -4,11 +4,11 @@ ARG ENVIRONMENT=development
 
 ENV IS_CONTAINER_ENV true
 
-COPY deploy/container/nginx.conf /etc/nginx/conf.d/default.conf
+COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
 
 WORKDIR /usr/share/nginx/html
 
-COPY build/ .
+COPY dist/ .
 
 RUN ls -la .
 
