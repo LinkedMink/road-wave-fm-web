@@ -8,10 +8,8 @@ const config: Config = {
   verbose: true,
   testEnvironment: "jsdom",
   setupFilesAfterEnv: ["<rootDir>/config/jestSetupAfterEnv.ts"],
-  extensionsToTreatAsEsm: [".ts", ".tsx"],
   moduleFileExtensions: ["js", "jsx", "mjs", "cjs", "json", "ts", "tsx", "mts", "cts"],
   moduleNameMapper: {
-    "^(\\.{1,2}/.*)\\.js$": "$1",
     "\\.(jpg|jpeg|png|gif|webp|svg)$/": "<rootDir>/__mocks__/fileMock.js",
     "\\.(eot|otf|ttf|woff|woff2)$/": "<rootDir>/__mocks__/fileMock.js",
     "\\.(txt|md)$/": "<rootDir>/__mocks__/fileMock.js",
@@ -32,15 +30,7 @@ const config: Config = {
   //     lines: 75,
   //   },
   // },
-  transform: {
-    "^.+\\.m?tsx?$": [
-      "ts-jest",
-      {
-        tsconfig: "src/tsconfig.json",
-        useESM: true,
-      },
-    ],
-  },
+  transformIgnorePatterns: ["/node_modules/(?!(jose)/)"],
 };
 
 export default config;

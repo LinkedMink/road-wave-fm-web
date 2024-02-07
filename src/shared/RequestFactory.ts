@@ -1,4 +1,3 @@
-import queryString from "query-string";
 import { Action } from "redux";
 import { alertError } from "../actions/AlertAction";
 import { Services } from "../definitions/AppConstants";
@@ -87,10 +86,8 @@ export const getJsonResponse = <TResponse = unknown, TRequest = unknown>(
 
   let urlString = url.toString();
   if (requestData && method === HttpMethods.GET) {
-    const query = queryString.stringify(requestData, {
-      skipEmptyString: true,
-    });
-    urlString += "?" + query;
+    const query = new URLSearchParams(requestData);
+    urlString += "?" + query.toString();
   }
 
   const options = getRequestOptions(
