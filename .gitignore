@@ -24,3 +24,4 @@
 *.log
 
 /public/config.json
+/src/config.*.ts

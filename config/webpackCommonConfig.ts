@@ -3,7 +3,7 @@ import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import path from "node:path";
 import postcssPresetEnv from "postcss-preset-env";
-import { Configuration, EnvironmentPlugin, RuleSetRule } from "webpack";
+import { Configuration, NormalModuleReplacementPlugin, RuleSetRule } from "webpack";
 
 export const styleRuleSet: RuleSetRule = {
   test: /\.s?css$/i,
@@ -83,14 +83,16 @@ export const webpackCommonConfig: Configuration = {
         configFile: path.resolve(__dirname, "../src/tsconfig.json"),
       },
     }),
-    new EnvironmentPlugin([
-      "NODE_ENV",
-      "REACT_APP_DISABLE_SERVICE_WORKER",
-      "REACT_APP_ENABLE_WEB_VITALS",
-    ]),
+    new NormalModuleReplacementPlugin(
+      /src[\\/]config\.ts/,
+      `config.${process.env.ENVIRONMENT_CONFIG}.ts`
+    ),
     // TODO
     new CopyWebpackPlugin({
-      patterns: [{ from: path.join(__dirname, "../public"), to: path.join(__dirname, "../dist") }],
+      patterns: [
+        { from: path.join(__dirname, "../public"), to: path.join(__dirname, "../dist") },
+        { from: path.join(__dirname, "../LICENSE.md"), to: path.join(__dirname, "../dist/docs") },
+      ],
     }),
   ],
   watchOptions: {

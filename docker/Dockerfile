@@ -1,10 +1,8 @@
-FROM nginx:stable-alpine
+FROM alpine:latest
 
-ARG ENVIRONMENT=development
+RUN apk add nginx nginx-mod-http-brotli
 
-ENV IS_CONTAINER_ENV true
-
-COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
+COPY docker/nginx.conf /etc/nginx/http.d/default.conf
 
 WORKDIR /usr/share/nginx/html
 
@@ -13,3 +11,5 @@ COPY dist/ .
 RUN ls -la .
 
 EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]

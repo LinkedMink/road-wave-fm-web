@@ -8,12 +8,11 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import { initialize } from "./actions/InitializeAction";
+import { Config } from "./config";
 import AppContainer from "./containers/AppContainer";
 import reportWebVitals from "./reportWebVitals";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import store from "./store";
-import { BuildEnvVars } from "./definitions/AppConstants";
-import { toBoolean } from "./shared/Convert";
 
 initialize(store.dispatch);
 
@@ -37,13 +36,13 @@ root.render(
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://cra.link/PWA
-if (toBoolean(process.env[BuildEnvVars.DisableServiceWorker])) {
-  serviceWorkerRegistration.unregister();
-} else {
+if (Config.ENABLE_SERVICE_WORKER) {
   serviceWorkerRegistration.register();
+} else {
+  serviceWorkerRegistration.unregister();
 }
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals(toBoolean(process.env[BuildEnvVars.EnableWebVitals]) ? console.log : undefined);
+reportWebVitals(Config.ENABLE_WEB_VITALS ? console.log : undefined);

@@ -2,6 +2,14 @@
 
 ![Build State](https://github.com/LinkedMink/road-wave-fm-web/actions/workflows/build-main.yml/badge.svg)
 
+```powershell
+docker build `
+  --file "docker/Dockerfile" `
+  --tag "linkedmink/road-wave-fm-web:latest" `
+  --progress "plain" `
+  .
+```
+
 ## Notice
 
 Development on this project has stalled in favor of focusing on a mobile app front-end
