@@ -25,3 +25,4 @@
 
 /public/config.json
 /src/config.*.ts
+!/src/config.production.ts

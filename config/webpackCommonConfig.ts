@@ -1,4 +1,5 @@
 import CopyWebpackPlugin from "copy-webpack-plugin";
+import "dotenv/config";
 import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import path from "node:path";
@@ -51,8 +52,8 @@ export const webpackCommonConfig: Configuration = {
         type: "asset",
       },
       {
-        test: /\.(txt|md)$/i,
-        type: "asset/resource",
+        test: /\.md$/i,
+        use: [{ loader: "html-loader" }, { loader: "markdown-loader" }],
       },
       {
         test: /\.([cm]?ts|tsx)$/,
@@ -85,7 +86,7 @@ export const webpackCommonConfig: Configuration = {
     }),
     new NormalModuleReplacementPlugin(
       /src[\\/]config\.ts/,
-      `config.${process.env.ENVIRONMENT_CONFIG}.ts`
+      `config.${process.env.ENVIRONMENT_CONFIG ?? "production"}.ts`
     ),
     // TODO
     new CopyWebpackPlugin({
