@@ -1,42 +1,37 @@
-import Brightness4Icon from '@mui/icons-material/Brightness4';
-import Brightness7Icon from '@mui/icons-material/Brightness7';
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
+import { useTheme } from "@mui/material/styles";
 // import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import GitHubIcon from '@mui/icons-material/GitHub';
-import MenuIcon from '@mui/icons-material/Menu';
-import { AppBar, IconButton, Toolbar, Tooltip, Typography } from '@mui/material';
-import React, { MouseEventHandler } from 'react';
+import GitHubIcon from "@mui/icons-material/GitHub";
+import MenuIcon from "@mui/icons-material/Menu";
+import { AppBar, IconButton, Toolbar, Tooltip, Typography } from "@mui/material";
+import React, { FunctionComponent, MouseEventHandler } from "react";
 // import { Link } from 'react-router-dom';
 
-export interface HeaderPanelOwnProps {
-  isLoggedIn: boolean;
+export interface HeaderPanelProps {
   isOpen: boolean;
   onMenuOpen: MouseEventHandler<HTMLButtonElement>;
-  isDarkMode: boolean;
   onDarkModeToggle: MouseEventHandler<HTMLButtonElement>;
 }
 
-type HeaderPanelProps = HeaderPanelOwnProps;
+export const HeaderPanel: FunctionComponent<HeaderPanelProps> = props => {
+  const theme = useTheme();
 
-class HeaderPanel extends React.Component<HeaderPanelProps> {
-  constructor(props: HeaderPanelProps) {
-    super(props);
-  }
-
-  render = () => (
+  return (
     <AppBar
       position="absolute"
-      sx={(theme) => ({
+      sx={theme => ({
         // backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.dark : undefined,
         zIndex: theme.zIndex.drawer + 1,
-        transition: theme.transitions.create(['width', 'margin'], {
+        transition: theme.transitions.create(["width", "margin"], {
           easing: theme.transitions.easing.sharp,
           duration: theme.transitions.duration.leavingScreen,
         }),
-        ...(this.props.isOpen
+        ...(props.isOpen
           ? {
               marginLeft: 240,
               width: `calc(100% - 240px)`,
-              transition: theme.transitions.create(['width', 'margin'], {
+              transition: theme.transitions.create(["width", "margin"], {
                 easing: theme.transitions.easing.sharp,
                 duration: theme.transitions.duration.enteringScreen,
               }),
@@ -50,15 +45,15 @@ class HeaderPanel extends React.Component<HeaderPanelProps> {
             edge="start"
             color="inherit"
             aria-label="menu"
-            onClick={this.props.onMenuOpen}
-            sx={(theme) => ({
+            onClick={props.onMenuOpen}
+            sx={theme => ({
               color: theme.palette.common.white,
               marginRight: theme.spacing(2),
-              ...(this.props.isOpen
+              ...(props.isOpen
                 ? {
-                    visibility: 'hidden',
-                    marginRight: '0',
-                    width: '0',
+                    visibility: "hidden",
+                    marginRight: "0",
+                    width: "0",
                   }
                 : undefined),
             })}
@@ -80,7 +75,7 @@ class HeaderPanel extends React.Component<HeaderPanelProps> {
           <IconButton
             aria-label="GitHub Repository"
             href="https://github.com/LinkedMink/road-wave-fm-web"
-            sx={(theme) => ({
+            sx={theme => ({
               color: theme.palette.common.white,
             })}
           >
@@ -90,32 +85,30 @@ class HeaderPanel extends React.Component<HeaderPanelProps> {
         <Tooltip title="Toggle light/dark mode">
           <IconButton
             aria-label="Toggle light/dark mode"
-            onClick={this.props.onDarkModeToggle}
-            sx={(theme) => ({
+            onClick={props.onDarkModeToggle}
+            sx={theme => ({
               color: theme.palette.common.white,
             })}
           >
-            {this.props.isDarkMode ? <Brightness7Icon /> : <Brightness4Icon />}
+            {theme.palette.mode === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
           </IconButton>
         </Tooltip>
         {/* TODO
-        this.props.isLoggedIn && (
-          <Tooltip title="Logout of your session">
-            <Link to="/logout">
-              <IconButton
-                aria-label="Logout of your session"
-                sx={(theme) => ({
-                  color: theme.palette.common.white,
-                })}
-              >
-                <ExitToAppIcon />
-              </IconButton>
-            </Link>
-          </Tooltip>
-              )*/}
+      props.isLoggedIn && (
+        <Tooltip title="Logout of your session">
+          <Link to="/logout">
+            <IconButton
+              aria-label="Logout of your session"
+              sx={(theme) => ({
+                color: theme.palette.common.white,
+              })}
+            >
+              <ExitToAppIcon />
+            </IconButton>
+          </Link>
+        </Tooltip>
+            )*/}
       </Toolbar>
     </AppBar>
   );
-}
-
-export default HeaderPanel;
+};

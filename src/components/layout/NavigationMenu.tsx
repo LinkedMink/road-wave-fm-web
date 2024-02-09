@@ -1,50 +1,78 @@
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+// import LockOpenIcon from '@mui/icons-material/LockOpen';
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+// import PersonAddOutlinedIcon from '@mui/icons-material/PersonAddOutlined';
+// import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+// import SettingsIcon from '@mui/icons-material/Settings';
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import {
   Box,
   Divider,
   Drawer,
   IconButton,
   List,
-  ListItem,
+  ListItemButton,
   ListItemIcon,
   ListItemText,
   Tooltip,
-} from '@mui/material';
-import React, { JSXElementConstructor, MouseEventHandler } from 'react';
-import { useLocation } from 'react-router-dom';
-import { getLinkReference } from '../../shared/Element';
+} from "@mui/material";
+import { ComponentType, FunctionComponent, MouseEventHandler } from "react";
+import { NavLink, useLocation } from "react-router-dom";
 
-export interface NavigationMenuLink {
+interface NavigationMenuLink {
   path?: string;
   name?: string;
   active?: boolean;
   tooltip?: string;
-  icon?: JSXElementConstructor<unknown>;
+  icon?: ComponentType;
 }
 
-export interface NavigationMenuStateProps {
-  links: NavigationMenuLink[];
-}
+const GUEST_LINKS: NavigationMenuLink[] = [
+  {
+    path: "/about",
+    name: "About",
+    icon: InfoOutlinedIcon,
+    active: false,
+    tooltip: "Find out more about this app",
+  },
+];
 
-export interface NavigationMenuOwnProps {
+// const getAuthenticatedLinks = () => {
+//   return [
+//     {
+//       path: "/home",
+//       name: "Home",
+//       icon: HomeOutlinedIcon,
+//       active: false,
+//       tooltip: "Discover the dangers of traveling by auto",
+//     },
+//     {},
+//     {
+//       path: "/about",
+//       name: "About",
+//       icon: InfoOutlinedIcon,
+//       active: false,
+//       tooltip: "Find out more about this app",
+//     },
+//   ] as NavigationMenuLink[];
+// };
+
+export interface NavigationMenuProps {
   isOpen: boolean;
   onMenuClose: MouseEventHandler<HTMLButtonElement>;
 }
 
-type NavigationMenuProps = NavigationMenuStateProps & NavigationMenuOwnProps;
-
-const NavigationMenu: React.FunctionComponent<NavigationMenuProps> = (props) => {
+export const NavigationMenu: FunctionComponent<NavigationMenuProps> = props => {
   const location = useLocation();
 
-  if (location) {
-    props.links.forEach((link) => {
-      if (link.path && location.pathname.startsWith(link.path)) {
-        link.active = true;
-      } else {
-        link.active = false;
-      }
-    });
-  }
+  const links = GUEST_LINKS;
+
+  links.forEach(link => {
+    if (link.path && location.pathname.startsWith(link.path)) {
+      link.active = true;
+    } else {
+      link.active = false;
+    }
+  });
 
   const getLinkItem = (link: NavigationMenuLink, index: number) => {
     if (!link.path) {
@@ -52,15 +80,24 @@ const NavigationMenu: React.FunctionComponent<NavigationMenuProps> = (props) => 
     }
 
     const listItem = (
-      <ListItem button key={index} component={getLinkReference(link.path)} selected={link.active}>
+      <ListItemButton
+        key={index}
+        component={NavLink}
+        to={link.path}
+        selected={link.active}
+      >
         <ListItemIcon>{link.icon && <link.icon />}</ListItemIcon>
         <ListItemText primary={link.name} />
-      </ListItem>
+      </ListItemButton>
     );
 
     if (link.tooltip) {
       return (
-        <Tooltip key={index} title={link.tooltip} placement="right">
+        <Tooltip
+          key={index}
+          title={link.tooltip}
+          placement="right"
+        >
           {listItem}
         </Tooltip>
       );
@@ -74,29 +111,29 @@ const NavigationMenu: React.FunctionComponent<NavigationMenuProps> = (props) => 
       variant="permanent"
       open={props.isOpen}
       PaperProps={{
-        sx: (theme) => {
+        sx: theme => {
           const closedStyles = !props.isOpen
             ? {
-                overflowX: 'hidden',
-                transition: theme.transitions.create('width', {
+                overflowX: "hidden",
+                transition: theme.transitions.create("width", {
                   easing: theme.transitions.easing.sharp,
                   duration: theme.transitions.duration.leavingScreen,
                 }),
                 // width: theme.spacing(7),
                 width: 0,
-                [theme.breakpoints.up('sm')]: {
+                [theme.breakpoints.up("sm")]: {
                   width: theme.spacing(7),
                 },
-                [theme.breakpoints.up('md')]: {
+                [theme.breakpoints.up("md")]: {
                   width: theme.spacing(8),
                 },
               }
             : undefined;
           return {
-            position: 'relative',
-            whiteSpace: 'nowrap',
+            position: "relative",
+            whiteSpace: "nowrap",
             width: 240,
-            transition: theme.transitions.create('width', {
+            transition: theme.transitions.create("width", {
               easing: theme.transitions.easing.sharp,
               duration: theme.transitions.duration.enteringScreen,
             }),
@@ -106,13 +143,13 @@ const NavigationMenu: React.FunctionComponent<NavigationMenuProps> = (props) => 
       }}
     >
       <Box
-        sx={(theme) => {
-          const smRule = theme.breakpoints.up('sm');
+        sx={theme => {
+          const smRule = theme.breakpoints.up("sm");
           return {
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'flex-end',
-            padding: '0 8px',
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "flex-end",
+            padding: "0 8px",
             minHeight: theme.mixins.toolbar.minHeight,
             [smRule]: theme.mixins.toolbar[smRule],
           };
@@ -123,7 +160,7 @@ const NavigationMenu: React.FunctionComponent<NavigationMenuProps> = (props) => 
         </IconButton>
       </Box>
       <Divider />
-      <List>{props.links.map(getLinkItem)}</List>
+      <List>{links.map(getLinkItem)}</List>
     </Drawer>
   );
 };

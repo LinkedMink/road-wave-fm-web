@@ -1,19 +1,33 @@
-import { decodeJwt, JWTPayload } from 'jose';
-import { Reducer } from 'redux';
-import { SessionAction, SessionActionType } from '../definitions/Actions';
-import { LocalStorageKey } from '../definitions/AppConstants';
-import { SessionState } from '../definitions/State';
-import { SessionTokens } from '../definitions/StateModels';
+import { decodeJwt, JWTPayload } from "jose";
+import { Reducer } from "react";
+import { LocalStorageKey } from "../definitions/AppConstants";
 
-const defaultState: SessionState = {
-  isDestroyed: false,
+export enum SessionActionType {
+  SAVE = "SESSION_SAVE",
+  DESTROY = "SESSION_DESTROY",
+  RESTORE = "SESSION_RESTORE",
+}
+
+export interface SessionAction {
+  type: SessionActionType;
+  payload?: string;
+}
+
+export interface SessionState {
+  isActive: boolean;
+  jwtToken?: string;
+  decodedToken?: JWTPayload;
+}
+
+export const SESSION_STATE_INITIAL: SessionState = {
+  isActive: false,
 };
 
-const sessionReducer: Reducer<SessionState, SessionAction> = (
-  state: SessionState = defaultState,
-  action: SessionAction,
+export const sessionReducer: Reducer<SessionState, SessionAction> = (
+  state: SessionState,
+  action: SessionAction
 ): SessionState => {
-  if (action.type === SessionActionType.Save) {
+  if (action.type === SessionActionType.SAVE) {
     const jwtToken = action.payload as string;
 
     let decodedToken: JWTPayload;
@@ -27,32 +41,40 @@ const sessionReducer: Reducer<SessionState, SessionAction> = (
     localStorage.setItem(LocalStorageKey.AuthToken, JSON.stringify({ jwtToken, decodedToken }));
     return {
       ...state,
-      isDestroyed: false,
+      isActive: true,
       jwtToken,
       decodedToken,
     };
-  } else if (action.type === SessionActionType.Destroy) {
+  } else if (action.type === SessionActionType.DESTROY) {
     localStorage.removeItem(LocalStorageKey.AuthToken);
     return {
       ...state,
-      isDestroyed: true,
+      isActive: false,
       jwtToken: undefined,
       decodedToken: undefined,
     };
-  } else if (action.type === SessionActionType.Restore) {
+  } else if (action.type === SessionActionType.RESTORE) {
     const tokenData = localStorage.getItem(LocalStorageKey.AuthToken);
     if (!tokenData) {
       return state;
     }
 
     const tokenObj = JSON.parse(tokenData) as SessionTokens;
+    if ((tokenObj.decodedToken.exp as number) * 1000 < Date.now()) {
+      return state;
+    }
+
     return {
       ...state,
       ...tokenObj,
+      isActive: true,
     };
   } else {
     return state;
   }
 };
 
-export default sessionReducer;
+interface SessionTokens {
+  jwtToken: string;
+  decodedToken: JWTPayload;
+}

@@ -52,6 +52,11 @@ export const webpackOptimizedConfig = merge(webpackCommonConfig, {
       // },
     },
   },
+  performance: {
+    maxAssetSize: 204800,
+    maxEntrypointSize: 409600,
+    assetFilter: (assetFilename: string) => !/\.(map|gz|br)$/.test(assetFilename),
+  },
   output: {
     filename: "static/[name].[contenthash].js",
     assetModuleFilename: "static/[name][ext][query]",

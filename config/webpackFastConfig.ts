@@ -13,7 +13,7 @@ export const webpackFastConfig = merge(webpackCommonConfig, {
     rules: [fastStyleRuleSet],
   },
   output: {
-    filename: "static/[name].bundle.js",
+    filename: "static/[name].js",
     assetModuleFilename: "static/[name][ext][query]",
   },
 });

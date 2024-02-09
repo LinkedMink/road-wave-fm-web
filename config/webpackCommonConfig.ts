@@ -18,7 +18,6 @@ export const styleRuleSet: RuleSetRule = {
         },
       },
     },
-    { loader: "sass-loader" },
   ],
 };
 
@@ -70,7 +69,7 @@ export const webpackCommonConfig: Configuration = {
   plugins: [
     new HtmlWebpackPlugin({
       title: "Road Wave FM",
-      favicon: "public/favicon.ico",
+      favicon: path.resolve(__dirname, "../src/assets/favicon.ico"),
       base: "/",
       meta: {
         viewport: "width=device-width, initial-scale=1",
@@ -85,14 +84,12 @@ export const webpackCommonConfig: Configuration = {
       },
     }),
     new NormalModuleReplacementPlugin(
-      /src[\\/]config\.ts/,
-      `config.${process.env.ENVIRONMENT_CONFIG ?? "production"}.ts`
+      /src[\\/]environments[\\/]Config\.ts/,
+      `Config.${process.env.ENVIRONMENT_CONFIG ?? "production"}.ts`
     ),
-    // TODO
     new CopyWebpackPlugin({
       patterns: [
-        { from: path.join(__dirname, "../public"), to: path.join(__dirname, "../dist") },
-        { from: path.join(__dirname, "../LICENSE.md"), to: path.join(__dirname, "../dist/docs") },
+        { from: path.join(__dirname, "../src/assets"), to: path.join(__dirname, "../dist") },
       ],
     }),
   ],
