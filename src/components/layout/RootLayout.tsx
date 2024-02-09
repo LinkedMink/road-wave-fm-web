@@ -5,6 +5,8 @@ import { Outlet } from "react-router-dom";
 import { FooterPanel } from "./FooterPanel";
 import { HeaderPanel } from "./HeaderPanel";
 import { NavigationMenu } from "./NavigationMenu";
+import { AlertSnackbar } from "./AlertSnackbar";
+import { AlertProvider } from "../../providers/AlertProvider";
 
 export const RootLayout: FunctionComponent = () => {
   const isDarkModePreferred = useMediaQuery("(prefers-color-scheme: dark)");
@@ -26,50 +28,53 @@ export const RootLayout: FunctionComponent = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Box
-        sx={{
-          display: "flex",
-          overflow: "auto",
-        }}
-      >
-        <HeaderPanel
-          isOpen={isMenuOpen}
-          onMenuOpen={() => setIsMenuOpen(true)}
-          onDarkModeToggle={() => setPaletteType(paletteType === "dark" ? "light" : "dark")}
-        />
-        <NavigationMenu
-          isOpen={isMenuOpen}
-          onMenuClose={() => setIsMenuOpen(false)}
-        />
+      <AlertProvider>
+        <AlertSnackbar />
         <Box
           sx={{
             display: "flex",
-            flexDirection: "column",
-            flex: `1 1`,
-            minHeight: `100vh`,
-            alignItems: "stretch",
-            overflow: "hidden",
+            overflow: "auto",
           }}
         >
-          <Box sx={theme.mixins.toolbar} />
+          <HeaderPanel
+            isOpen={isMenuOpen}
+            onMenuOpen={() => setIsMenuOpen(true)}
+            onDarkModeToggle={() => setPaletteType(paletteType === "dark" ? "light" : "dark")}
+          />
+          <NavigationMenu
+            isOpen={isMenuOpen}
+            onMenuClose={() => setIsMenuOpen(false)}
+          />
           <Box
             sx={{
               display: "flex",
-              flex: "1 1 auto",
+              flexDirection: "column",
+              flex: `1 1`,
+              minHeight: `100vh`,
               alignItems: "stretch",
-              paddingTop: theme.spacing(2),
-              paddingBottom: theme.spacing(2),
-              [theme.breakpoints.up("md")]: {
-                paddingTop: theme.spacing(4),
-                paddingBottom: theme.spacing(4),
-              },
+              overflow: "hidden",
             }}
           >
-            <Outlet />
+            <Box sx={theme.mixins.toolbar} />
+            <Box
+              sx={{
+                display: "flex",
+                flex: "1 1 auto",
+                alignItems: "stretch",
+                paddingTop: theme.spacing(2),
+                paddingBottom: theme.spacing(2),
+                [theme.breakpoints.up("md")]: {
+                  paddingTop: theme.spacing(4),
+                  paddingBottom: theme.spacing(4),
+                },
+              }}
+            >
+              <Outlet />
+            </Box>
+            <FooterPanel />
           </Box>
-          <FooterPanel />
         </Box>
-      </Box>
+      </AlertProvider>
     </ThemeProvider>
   );
 };

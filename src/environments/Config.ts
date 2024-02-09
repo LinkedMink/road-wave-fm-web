@@ -11,4 +11,4 @@ export const Config = {
   LOG_LEVEL_PERSIST: 0,
 };
 
-export type EnvironmentConfig = typeof Config;
+export type EnvironmentConfig = Readonly<typeof Config>;

@@ -1,4 +1,4 @@
 import { createContext } from "react";
-import { Config } from "./Config";
+import { Config, EnvironmentConfig } from "./Config";
 
-export const ConfigContext = createContext(Config);
+export const ConfigContext = createContext<EnvironmentConfig>(Config);

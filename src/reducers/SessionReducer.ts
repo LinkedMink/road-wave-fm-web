@@ -1,23 +1,8 @@
 import { decodeJwt, JWTPayload } from "jose";
 import { Reducer } from "react";
-import { LocalStorageKey } from "../definitions/AppConstants";
-
-export enum SessionActionType {
-  SAVE = "SESSION_SAVE",
-  DESTROY = "SESSION_DESTROY",
-  RESTORE = "SESSION_RESTORE",
-}
-
-export interface SessionAction {
-  type: SessionActionType;
-  payload?: string;
-}
-
-export interface SessionState {
-  isActive: boolean;
-  jwtToken?: string;
-  decodedToken?: JWTPayload;
-}
+import { LocalStorageKey } from "../definitions/sharedConstants";
+import { SessionAction, SessionState } from "../types/actionTypes";
+import { SessionActionType } from "../definitions/actionConstants";
 
 export const SESSION_STATE_INITIAL: SessionState = {
   isActive: false,
@@ -38,7 +23,7 @@ export const sessionReducer: Reducer<SessionState, SessionAction> = (
       return state;
     }
 
-    localStorage.setItem(LocalStorageKey.AuthToken, JSON.stringify({ jwtToken, decodedToken }));
+    localStorage.setItem(LocalStorageKey.AUTH_TOKEN, JSON.stringify({ jwtToken, decodedToken }));
     return {
       ...state,
       isActive: true,
@@ -46,7 +31,7 @@ export const sessionReducer: Reducer<SessionState, SessionAction> = (
       decodedToken,
     };
   } else if (action.type === SessionActionType.DESTROY) {
-    localStorage.removeItem(LocalStorageKey.AuthToken);
+    localStorage.removeItem(LocalStorageKey.AUTH_TOKEN);
     return {
       ...state,
       isActive: false,
@@ -54,7 +39,7 @@ export const sessionReducer: Reducer<SessionState, SessionAction> = (
       decodedToken: undefined,
     };
   } else if (action.type === SessionActionType.RESTORE) {
-    const tokenData = localStorage.getItem(LocalStorageKey.AuthToken);
+    const tokenData = localStorage.getItem(LocalStorageKey.AUTH_TOKEN);
     if (!tokenData) {
       return state;
     }
@@ -75,6 +60,6 @@ export const sessionReducer: Reducer<SessionState, SessionAction> = (
 };
 
 interface SessionTokens {
-  jwtToken: string;
-  decodedToken: JWTPayload;
+  readonly jwtToken: string;
+  readonly decodedToken: JWTPayload;
 }

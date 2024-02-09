@@ -3,7 +3,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { RootLayout } from "./layout/RootLayout";
 import { AboutPage } from "./pages/AboutPage";
 import { SessionContext } from "../providers/SessionProvider";
-import { SessionActionType } from "../reducers/SessionReducer";
+import { SessionActionType } from "../definitions/actionConstants";
 
 const router = createBrowserRouter([
   {
@@ -17,7 +17,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/documents/:documentName",
-        lazy: () => import("./documentsRouteObject").then(m => m.documentsRouteObject),
+        lazy: () => import("../routes/documentsRouteObject").then(m => m.documentsRouteObject),
       },
     ],
   },

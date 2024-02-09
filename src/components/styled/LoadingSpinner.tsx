@@ -30,7 +30,7 @@ export const LoadingSpinner: FunctionComponent<LoadingSpinnerProps> = props => {
       })}
     >
       <CircularProgress variant="indeterminate" />
-      <Typography variant="caption">{props.message}</Typography>
+      {props.message && <Typography variant="caption">{props.message}</Typography>}
     </Box>
   );
 };

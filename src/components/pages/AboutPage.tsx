@@ -2,7 +2,7 @@ import { Container, Link, List, ListItemButton, Typography } from "@mui/material
 import { styled } from "@mui/material/styles";
 import { Box } from "@mui/system";
 import { FunctionComponent } from "react";
-import { PagePaper } from "../Styled";
+import { PagePaper } from "../styled/PagePaper";
 
 const AboutContentBox = styled(Box)(({ theme }) => ({
   marginBottom: theme.spacing(4),
