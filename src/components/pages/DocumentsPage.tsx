@@ -1,9 +1,9 @@
 import Container from "@mui/material/Container";
 import { FunctionComponent } from "react";
 import { useParams } from "react-router";
-import { PagePaper } from "../styled/PagePaper";
 import license from "../../documents/license.md";
 import privacyPolicy from "../../documents/privacyPolicy.md";
+import { PagePaper } from "../styled/PagePaper";
 
 const documents: Record<string, string> = {
   license,

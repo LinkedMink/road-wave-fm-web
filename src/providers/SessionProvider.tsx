@@ -1,7 +1,7 @@
 import { Dispatch, FunctionComponent, createContext, useReducer } from "react";
-import { InitializedProviderProps } from "../types/reactUtilityTypes";
 import { SESSION_STATE_INITIAL, sessionReducer } from "../reducers/sessionReducer";
 import { SessionAction, SessionState } from "../types/actionTypes";
+import { InitializedProviderProps } from "../types/reactUtilityTypes";
 
 export const SessionContext = createContext<[SessionState, Dispatch<SessionAction>]>([
   SESSION_STATE_INITIAL,

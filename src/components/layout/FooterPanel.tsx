@@ -18,9 +18,8 @@ const FooterTypography = styled(Typography)(({ theme }) => ({
 export const FooterPanel: FunctionComponent = () => {
   return (
     <Box
-      pt={4}
+      component={"footer"}
       sx={theme => ({
-        marginLeft: theme.spacing(4),
         display: "flex",
         flexDirection: "column",
         padding: theme.spacing(2, 0),

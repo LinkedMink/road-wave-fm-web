@@ -1,9 +1,11 @@
 import { FunctionComponent, useContext, useEffect } from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { SessionActionType } from "../definitions/actionConstants";
+import { SessionContext } from "../providers/SessionProvider";
 import { RootLayout } from "./layout/RootLayout";
 import { AboutPage } from "./pages/AboutPage";
-import { SessionContext } from "../providers/SessionProvider";
-import { SessionActionType } from "../definitions/actionConstants";
+import { LoginPage } from "./pages/LoginPage";
+import { LogoutComponent } from "./pages/LogoutComponent";
 
 const router = createBrowserRouter([
   {
@@ -11,13 +13,22 @@ const router = createBrowserRouter([
     element: <RootLayout />,
     children: [
       {
-        index: true,
-        path: "/about",
+        path: "about",
         element: <AboutPage />,
       },
       {
-        path: "/documents/:documentName",
+        path: "documents/:documentName",
         lazy: () => import("../routes/documentsRouteObject").then(m => m.documentsRouteObject),
+      },
+      {
+        index: true,
+        path: "login",
+        element: <LoginPage />,
+      },
+
+      {
+        path: "logout",
+        element: <LogoutComponent />,
       },
     ],
   },

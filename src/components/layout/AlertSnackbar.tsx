@@ -1,9 +1,8 @@
-import { Grow, Snackbar, Alert } from "@mui/material";
-import { FunctionComponent, useContext } from "react";
+import { Alert, Grow, Snackbar } from "@mui/material";
 import { TransitionProps } from "@mui/material/transitions";
-// import { useEffect } from 'react';
-import { AlertContext } from "../../providers/AlertProvider";
+import { FunctionComponent, useContext } from "react";
 import { AlertActionType } from "../../definitions/actionConstants";
+import { AlertContext } from "../../providers/AlertProvider";
 
 const GROW_TIMEOUT = 300;
 

@@ -68,6 +68,7 @@ export const webpackCommonConfig: Configuration = {
   },
   plugins: [
     new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, "../src/index.ejs"),
       title: "Road Wave FM",
       favicon: path.resolve(__dirname, "../src/assets/favicon.ico"),
       base: "/",

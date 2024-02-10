@@ -17,7 +17,7 @@ jobs:
       uploadBuild: true
   publish-npm:
     needs: build
-    environment: 
+    environment:
       name: publish
     uses: LinkedMink/.github/.github/workflows/publish-npm-package.yml@main
     with:
@@ -25,7 +25,7 @@ jobs:
       uploadedBuildName: ${{ needs.build.outputs.uploadedBuildName }}
   publish-docker:
     needs: build
-    environment: 
+    environment:
       name: publish
     uses: LinkedMink/.github/.github/workflows/push-docker-hub-npm-package.yml@main
     with:

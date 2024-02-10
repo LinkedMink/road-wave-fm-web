@@ -4,16 +4,16 @@ metadata:
   name: road-wave-fm-web
 data:
   config.json: |
-  {
-    "urls": {
-      "user": "http://user.api.mydomain.local",
-      "roadWave": "http://rwfm.api.mydomain.local"
-    },
-    "googleMapsApiKey": "<My Key>",
-    "jwtPublicKey": "<My base64 key>",
-    "logLevelConsole": 0,
-    "logLevelPersist": 0
-  }
+    {
+      "urls": {
+        "user": "http://user.api.mydomain.local",
+        "roadWave": "http://rwfm.api.mydomain.local"
+      },
+      "googleMapsApiKey": "<My Key>",
+      "jwtPublicKey": "<My base64 key>",
+      "logLevelConsole": 0,
+      "logLevelPersist": 0
+    }
 
 ---
 apiVersion: apps/v1
@@ -33,15 +33,15 @@ spec:
       nodeSelector:
         "kubernetes.io/os": linux
       containers:
-      - name: road-wave-fm-web
-        image: linkedmink/road-wave-fm-web
-        ports:
-        - containerPort: 80
-        volumeMounts:
-        - name: config-volume
-          mountPath: /usr/share/nginx/html/config.json
-          subPath: config.json
-          readonly: true
+        - name: road-wave-fm-web
+          image: linkedmink/road-wave-fm-web
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: config-volume
+              mountPath: /usr/share/nginx/html/config.json
+              subPath: config.json
+              readonly: true
   volumes:
     - name: config-volume
       configMap:
@@ -54,6 +54,6 @@ metadata:
   name: road-wave-fm-web
 spec:
   ports:
-  - port: 80
+    - port: 80
   selector:
     app: road-wave-fm-web

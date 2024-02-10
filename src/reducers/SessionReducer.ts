@@ -1,12 +1,10 @@
 import { decodeJwt, JWTPayload } from "jose";
 import { Reducer } from "react";
+import { SessionActionType } from "../definitions/actionConstants";
 import { LocalStorageKey } from "../definitions/sharedConstants";
 import { SessionAction, SessionState } from "../types/actionTypes";
-import { SessionActionType } from "../definitions/actionConstants";
 
-export const SESSION_STATE_INITIAL: SessionState = {
-  isActive: false,
-};
+export const SESSION_STATE_INITIAL: SessionState = {};
 
 export const sessionReducer: Reducer<SessionState, SessionAction> = (
   state: SessionState,
@@ -26,7 +24,7 @@ export const sessionReducer: Reducer<SessionState, SessionAction> = (
     localStorage.setItem(LocalStorageKey.AUTH_TOKEN, JSON.stringify({ jwtToken, decodedToken }));
     return {
       ...state,
-      isActive: true,
+      isDestroyed: undefined,
       jwtToken,
       decodedToken,
     };
@@ -34,7 +32,7 @@ export const sessionReducer: Reducer<SessionState, SessionAction> = (
     localStorage.removeItem(LocalStorageKey.AUTH_TOKEN);
     return {
       ...state,
-      isActive: false,
+      isDestroyed: true,
       jwtToken: undefined,
       decodedToken: undefined,
     };
@@ -52,7 +50,7 @@ export const sessionReducer: Reducer<SessionState, SessionAction> = (
     return {
       ...state,
       ...tokenObj,
-      isActive: true,
+      isDestroyed: undefined,
     };
   } else {
     return state;

@@ -11,13 +11,10 @@ import { App } from "./components/App";
 import { ConfigContext } from "./environments/ConfigContext";
 import { SessionProvider } from "./providers/SessionProvider";
 
-const bodyElement = document.getElementsByTagName("body").item(0);
-if (!bodyElement) {
-  throw new Error("A body HTML element must exist");
+const rootElement = document.getElementById("root");
+if (!rootElement) {
+  throw new Error("A HTML container element with id 'root' must exist");
 }
-
-const rootElement = document.createElement("div");
-bodyElement.appendChild(rootElement);
 
 const root = createRoot(rootElement);
 root.render(

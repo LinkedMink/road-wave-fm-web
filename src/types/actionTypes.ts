@@ -24,7 +24,7 @@ export interface SessionAction extends ReducerAction<SessionActionType> {
 }
 
 export interface SessionState {
-  readonly isActive: boolean;
+  readonly isDestroyed?: boolean;
   readonly jwtToken?: string;
   readonly decodedToken?: JWTPayload;
 }
