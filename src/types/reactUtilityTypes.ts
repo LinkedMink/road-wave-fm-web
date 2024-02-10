@@ -4,6 +4,6 @@ import type { Simplify } from "type-fest";
 
 export type LazyRouteObject = Simplify<Awaited<ReturnType<LazyRouteFunction<RouteObject>>>>;
 
-export interface InitializedProviderProps {
+export interface HasChildrenProps {
   children: ReactNode;
 }

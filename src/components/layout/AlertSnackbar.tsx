@@ -1,46 +1,33 @@
-import { Alert, Grow, Snackbar } from "@mui/material";
-import { TransitionProps } from "@mui/material/transitions";
-import { FunctionComponent, useContext } from "react";
+import { Alert, Snackbar, SnackbarCloseReason } from "@mui/material";
+import { FunctionComponent, SyntheticEvent, useContext } from "react";
 import { AlertActionType } from "../../definitions/actionConstants";
 import { AlertContext } from "../../providers/AlertProvider";
 
-const GROW_TIMEOUT = 300;
-
-const GrowTransition: React.JSXElementConstructor<
-  TransitionProps & { children: React.ReactElement }
-> = (props: TransitionProps & { children: React.ReactElement }) => {
-  return <Grow timeout={GROW_TIMEOUT}>{props.children}</Grow>;
-};
-
 export const AlertSnackbar: FunctionComponent = () => {
-  const [state, dispatch] = useContext(AlertContext);
+  const [alertState, alertDispatch] = useContext(AlertContext);
 
-  // useEffect(() => {
-  //   if (props.isActive && !state.text) {
-  //     setState({
-  //       text: props.text as string,
-  //       severity: props.severity?.toLowerCase() as AlertColor,
-  //     });
-  //   } else if (!props.isActive && state.text) {
-  //     setTimeout(() => {
-  //       setState({ text: undefined, severity: undefined });
-  //     }, GROW_TIMEOUT);
-  //   }
-  // });
+  const handleClose = (event: SyntheticEvent | Event, reason?: SnackbarCloseReason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    alertDispatch({ type: AlertActionType.CLEAR });
+  };
 
   return (
     <Snackbar
-      open={!!state.severity}
-      autoHideDuration={state.closeInMs}
-      TransitionComponent={GrowTransition}
-      onClose={() => dispatch({ type: AlertActionType.CLEAR })}
+      anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      open={!!alertState.severity}
+      autoHideDuration={alertState.closeInMs}
+      onClose={handleClose}
     >
       <Alert
-        severity={state.severity}
+        severity={alertState.severity}
         elevation={4}
         variant="filled"
+        onClose={handleClose}
       >
-        {state.message}
+        {alertState.message}
       </Alert>
     </Snackbar>
   );

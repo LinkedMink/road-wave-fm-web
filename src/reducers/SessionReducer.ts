@@ -3,6 +3,7 @@ import { Reducer } from "react";
 import { SessionActionType } from "../definitions/actionConstants";
 import { LocalStorageKey } from "../definitions/sharedConstants";
 import { SessionAction, SessionState } from "../types/actionTypes";
+import { setBearerToken } from "../routes/fetchAuthClient";
 
 export const SESSION_STATE_INITIAL: SessionState = {};
 
@@ -21,7 +22,9 @@ export const sessionReducer: Reducer<SessionState, SessionAction> = (
       return state;
     }
 
+    setBearerToken(jwtToken);
     localStorage.setItem(LocalStorageKey.AUTH_TOKEN, JSON.stringify({ jwtToken, decodedToken }));
+
     return {
       ...state,
       isDestroyed: undefined,
@@ -29,7 +32,9 @@ export const sessionReducer: Reducer<SessionState, SessionAction> = (
       decodedToken,
     };
   } else if (action.type === SessionActionType.DESTROY) {
+    setBearerToken();
     localStorage.removeItem(LocalStorageKey.AUTH_TOKEN);
+
     return {
       ...state,
       isDestroyed: true,
@@ -46,6 +51,8 @@ export const sessionReducer: Reducer<SessionState, SessionAction> = (
     if ((tokenObj.decodedToken.exp as number) * 1000 < Date.now()) {
       return state;
     }
+
+    setBearerToken(tokenObj.jwtToken);
 
     return {
       ...state,

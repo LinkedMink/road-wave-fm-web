@@ -10,7 +10,7 @@ const documents: Record<string, string> = {
   privacyPolicy,
 };
 
-export const DocumentsPage: FunctionComponent = _props => {
+export const DocumentsPage: FunctionComponent = () => {
   const { documentName } = useParams<"documentName">();
   const documentHtml = {
     __html: documentName ? documents[documentName] ?? "" : "",

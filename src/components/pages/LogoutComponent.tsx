@@ -1,4 +1,4 @@
-import { FunctionComponent, useContext } from "react";
+import { FunctionComponent, useContext, useEffect } from "react";
 import { Navigate } from "react-router";
 import { SessionActionType } from "../../definitions/actionConstants";
 import { SessionContext } from "../../providers/SessionProvider";
@@ -6,14 +6,18 @@ import { SessionContext } from "../../providers/SessionProvider";
 export const LogoutComponent: FunctionComponent = () => {
   const [session, dispatch] = useContext(SessionContext);
 
-  if (session.jwtToken) {
-    dispatch({ type: SessionActionType.DESTROY });
-  }
+  useEffect(() => {
+    if (session.jwtToken) {
+      dispatch({ type: SessionActionType.DESTROY });
+    }
+  }, [session]);
 
-  return (
-    <Navigate
-      to={"/"}
-      replace={true}
-    />
-  );
+  if (!session.jwtToken) {
+    return (
+      <Navigate
+        to={"/"}
+        replace={true}
+      />
+    );
+  }
 };

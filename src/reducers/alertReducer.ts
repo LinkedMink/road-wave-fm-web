@@ -7,7 +7,7 @@ const NON_CRITICAL_ALERT_CLOSE_MS = 5000;
 export const ALERT_STATE_INITIAL: AlertState = {};
 
 export const alertReducer: Reducer<AlertState, AlertAction> = (
-  state: AlertState = ALERT_STATE_INITIAL,
+  state: AlertState,
   action: AlertAction
 ): AlertState => {
   if (action.type === AlertActionType.CLEAR) {

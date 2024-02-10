@@ -4,6 +4,7 @@ import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import { FunctionComponent } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { Form, Outlet, useSubmit } from "react-router-dom";
 import { PagePaper } from "../styled/PagePaper";
 
 type FormInput = {
@@ -12,19 +13,24 @@ type FormInput = {
 };
 
 export const LoginPage: FunctionComponent = () => {
+  const submit = useSubmit();
   const {
     register,
-    handleSubmit,
     formState: { errors },
+    handleSubmit,
   } = useForm<FormInput>();
 
-  const onSubmit: SubmitHandler<FormInput> = data => console.log(data);
+  const onSubmit: SubmitHandler<FormInput> = (_data, event) =>
+    submit(event?.target as HTMLFormElement);
 
   return (
     <Container maxWidth="sm">
+      <Outlet />
       <PagePaper>
         <Typography variant="h3">Login</Typography>
-        <form
+        <Form
+          action="/login/submit"
+          method="post"
           onSubmit={handleSubmit(onSubmit)}
           noValidate
         >
@@ -49,6 +55,7 @@ export const LoginPage: FunctionComponent = () => {
               autoComplete="current-password"
               margin="normal"
               fullWidth
+              required
               error={!!errors.password}
               helperText={errors.password?.message ?? " "}
               {...register("password", { required: "Password is required", maxLength: 128 })}
@@ -63,11 +70,11 @@ export const LoginPage: FunctionComponent = () => {
               Sign In
             </Button>
           </Stack>
-          {/* <Stack
+          <Stack
             spacing={2}
             sx={{ alignItems: "flex-end" }}
           >
-            <Link
+            {/* <Link
               component={NavLink}
               to={"/password-reset"}
               variant="body2"
@@ -80,9 +87,10 @@ export const LoginPage: FunctionComponent = () => {
               variant="body2"
             >
               {"Don't have an account? Sign Up"}
-            </Link>
-          </Stack> */}
-        </form>
+            </Link> */}
+            <Typography variant="body2">Registration has been temporarily closed</Typography>
+          </Stack>
+        </Form>
       </PagePaper>
     </Container>
   );
