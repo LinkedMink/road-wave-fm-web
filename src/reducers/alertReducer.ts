@@ -1,5 +1,5 @@
 import type { Reducer } from "react";
-import { AlertActionType, AlertSeverity } from "../definitions/actionConstants";
+import { AlertActionType, AlertSeverity } from "../definitions/alertConstants";
 import type { AlertAction, AlertState } from "../types/actionTypes";
 
 const NON_CRITICAL_ALERT_CLOSE_MS = 5000;

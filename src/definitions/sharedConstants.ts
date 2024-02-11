@@ -1,4 +1,10 @@
 export enum LocalStorageKey {
   AUTH_TOKEN = "AuthToken",
-  FORMAT_STATE = "FormatState",
+  FORMATS_STATE = "FormatsState",
+}
+
+export enum SessionActionType {
+  SAVE = "SESSION_SAVE",
+  DESTROY = "SESSION_DESTROY",
+  RESTORE = "SESSION_RESTORE",
 }

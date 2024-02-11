@@ -27,7 +27,7 @@ export const SearchBar: FunctionComponent<SearchBarProps> = props => {
 
     const handler = props.onPlaceChanged.bind(undefined, autocomplete);
     autocomplete.addListener("place_changed", handler);
-  }, [props.map, mapsApi, inputRef.current]);
+  }, [props.map, mapsApi, props.onPlaceChanged, inputRef]);
 
   const tooltip = props.disabled
     ? "Search is disabled when location tracking is enabled"

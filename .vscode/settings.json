@@ -23,8 +23,10 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "cSpell.words": [
+    "autocomplate",
     "cacheable",
     "fontsource",
+    "geocode",
     "googlemaps",
     "linkedmink",
     "postbuild",

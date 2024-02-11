@@ -1,6 +1,6 @@
 import { Alert, Snackbar, SnackbarCloseReason } from "@mui/material";
 import { FunctionComponent, SyntheticEvent, useContext } from "react";
-import { AlertActionType } from "../../definitions/actionConstants";
+import { AlertActionType } from "../../definitions/alertConstants";
 import { AlertContext } from "../../providers/AlertProvider";
 
 export const AlertSnackbar: FunctionComponent = () => {

@@ -12,9 +12,3 @@ export enum AlertActionType {
   WARN = "ALERT_WARN",
   SUCCESS = "ALERT_SUCCESS",
 }
-
-export enum SessionActionType {
-  SAVE = "SESSION_SAVE",
-  DESTROY = "SESSION_DESTROY",
-  RESTORE = "SESSION_RESTORE",
-}

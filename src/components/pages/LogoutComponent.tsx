@@ -1,6 +1,6 @@
 import { FunctionComponent, useContext, useEffect } from "react";
 import { Navigate } from "react-router";
-import { SessionActionType } from "../../definitions/actionConstants";
+import { SessionActionType } from "../../definitions/sharedConstants";
 import { SessionContext } from "../../providers/SessionProvider";
 
 export const LogoutComponent: FunctionComponent = () => {
@@ -10,7 +10,7 @@ export const LogoutComponent: FunctionComponent = () => {
     if (session.jwtToken) {
       dispatch({ type: SessionActionType.DESTROY });
     }
-  }, [session]);
+  }, [session.jwtToken, dispatch]);
 
   if (!session.jwtToken) {
     return (

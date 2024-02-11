@@ -1,7 +1,6 @@
 import { decodeJwt, JWTPayload } from "jose";
 import { Reducer } from "react";
-import { SessionActionType } from "../definitions/actionConstants";
-import { LocalStorageKey } from "../definitions/sharedConstants";
+import { LocalStorageKey, SessionActionType } from "../definitions/sharedConstants";
 import { SessionAction, SessionState } from "../types/actionTypes";
 import { setBearerToken } from "../routes/fetchAuthClient";
 

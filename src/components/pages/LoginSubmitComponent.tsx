@@ -1,9 +1,10 @@
 import { FunctionComponent, useContext, useEffect } from "react";
 import { Navigate, useActionData, useNavigation } from "react-router";
-import { AlertActionType, SessionActionType } from "../../definitions/actionConstants";
+import { AlertActionType } from "../../definitions/alertConstants";
+import { SessionActionType } from "../../definitions/sharedConstants";
 import { AlertContext } from "../../providers/AlertProvider";
-import { LoadingOverlay } from "../layout/LoadingOverlay";
 import { SessionContext } from "../../providers/SessionProvider";
+import { LoadingOverlay } from "../layout/LoadingOverlay";
 
 export const LoginSubmitComponent: FunctionComponent = () => {
   const navigation = useNavigation();
@@ -23,7 +24,7 @@ export const LoginSubmitComponent: FunctionComponent = () => {
     }
 
     dispatchSession({ type: SessionActionType.SAVE, payload: token });
-  }, [data]);
+  }, [data, dispatchAlert, dispatchSession]);
 
   if (session.jwtToken) {
     return <Navigate to={"/"} />;

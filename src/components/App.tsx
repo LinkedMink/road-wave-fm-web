@@ -1,6 +1,6 @@
 import { FunctionComponent, useContext, useEffect, useMemo } from "react";
 import { Navigate, RouterProvider, createBrowserRouter } from "react-router-dom";
-import { SessionActionType } from "../definitions/actionConstants";
+import { SessionActionType } from "../definitions/sharedConstants";
 import { ConfigContext } from "../environments/ConfigContext";
 import { SessionContext } from "../providers/SessionProvider";
 import { RootLayout } from "./layout/RootLayout";
@@ -27,9 +27,31 @@ export const App: FunctionComponent = () => {
               element: <AuthorizeComponent />,
               children: [
                 {
-                  index: true,
                   lazy: () =>
-                    import("../routes/dashboardRouteObject").then(m => m.dashboardRouteObject),
+                    import("../routes/dashboardRouteObject").then(m => m.dashboardRouteObject.root),
+                  children: [
+                    {
+                      path: "",
+                      lazy: () =>
+                        import("../routes/dashboardRouteObject").then(
+                          m => m.dashboardRouteObject.stations
+                        ),
+                    },
+                    {
+                      path: "stations/:lat/:lng",
+                      lazy: () =>
+                        import("../routes/dashboardRouteObject").then(
+                          m => m.dashboardRouteObject.stations
+                        ),
+                    },
+                    {
+                      path: "formats",
+                      lazy: () =>
+                        import("../routes/dashboardRouteObject").then(
+                          m => m.dashboardRouteObject.formats
+                        ),
+                    },
+                  ],
                 },
               ],
             },
@@ -84,10 +106,10 @@ export const App: FunctionComponent = () => {
           ],
         },
       ]),
-    []
+    [config.USER_API_BASE_URL]
   );
 
-  useEffect(() => dispatch({ type: SessionActionType.RESTORE }), []);
+  useEffect(() => dispatch({ type: SessionActionType.RESTORE }), [dispatch]);
 
   return <RouterProvider router={router} />;
 };

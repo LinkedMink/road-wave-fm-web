@@ -6,7 +6,7 @@ export const fetchLoginAction =
     const formData = await request.formData();
     const formDataObj = Object.fromEntries(formData.entries());
 
-    const response = await fetch(`${baseUrl}/authenticate`, {
+    const response = await fetch(new URL("authenticate", baseUrl), {
       method: request.method,
       body: JSON.stringify(formDataObj),
       headers: {

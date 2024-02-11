@@ -4,12 +4,16 @@ export const setBearerToken = (newBearerToken: null | string = null) =>
 
 export const fetchAuthClient = (input: string | URL, init?: RequestInit) => {
   if (!bearerToken) {
-    return null;
+    throw new Error(
+      `Attempted to make authenticated request without bearer token: ${input.toString()}`
+    );
   }
 
   const authRequestInit: RequestInit = {
     ...init,
     headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
       ...init?.headers,
       Authorization: `Bearer ${bearerToken}`,
     },
