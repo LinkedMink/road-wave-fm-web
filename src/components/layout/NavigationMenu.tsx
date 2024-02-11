@@ -1,77 +1,8 @@
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import LoginIcon from "@mui/icons-material/Login";
-import LogoutIcon from "@mui/icons-material/Logout";
-import {
-  Box,
-  Divider,
-  Drawer,
-  IconButton,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Tooltip,
-} from "@mui/material";
-import { ComponentType, FunctionComponent, MouseEventHandler, useContext, useMemo } from "react";
-import { NavLink, useLocation } from "react-router-dom";
-import { SessionContext } from "../../providers/SessionProvider";
+import { Box, Drawer, IconButton, Tooltip } from "@mui/material";
+import { FunctionComponent, MouseEventHandler } from "react";
+import { NavigationMenuLinks } from "./NavigationMenuLinks";
 import { NAV_DRAWER_WIDTH_PX } from "./layoutConstants";
-
-interface NavigationMenuLink {
-  path: string;
-  name: string;
-  isActive: boolean;
-  icon: ComponentType;
-  tooltip?: string;
-}
-
-const getGuestLinks = (): NavigationMenuLink[] => {
-  return [
-    {
-      path: "/about",
-      name: "About",
-      isActive: false,
-      icon: InfoOutlinedIcon,
-      tooltip: "Find out more about this app",
-    },
-    {
-      path: "/login",
-      name: "Login",
-      isActive: false,
-      icon: LoginIcon,
-      tooltip: "Login to your account",
-    },
-  ];
-};
-
-const getAuthenticatedLinks = (): NavigationMenuLink[] => {
-  return [
-    {
-      path: "/",
-      name: "Dashboard",
-      isActive: false,
-      icon: DashboardIcon,
-      tooltip: "Find radio stations by geographic location",
-    },
-    {
-      path: "/about",
-      name: "About",
-      isActive: false,
-      icon: InfoOutlinedIcon,
-      tooltip: "Find out more about this app",
-    },
-    {
-      path: "/logout",
-      name: "Logout",
-      isActive: false,
-      icon: LogoutIcon,
-      tooltip: "Logout of your account",
-    },
-  ];
-};
 
 export interface NavigationMenuProps {
   isOpen: boolean;
@@ -79,58 +10,6 @@ export interface NavigationMenuProps {
 }
 
 export const NavigationMenu: FunctionComponent<NavigationMenuProps> = props => {
-  const location = useLocation();
-  const [session] = useContext(SessionContext);
-
-  const links = useMemo(() => {
-    const linksBySession = session.jwtToken ? getAuthenticatedLinks() : getGuestLinks();
-
-    /**
-     * @todo Use router provided state to set `selected`
-     * @see https://reactrouter.com/en/main/start/overview#active-links
-     */
-    const activeLink = linksBySession.find(
-      l => l.path && location.pathname.toLowerCase() === l.path.toLowerCase()
-    );
-    if (activeLink) {
-      activeLink.isActive = true;
-    }
-
-    return linksBySession;
-  }, [location, session]);
-
-  const getLinkItem = (link: NavigationMenuLink, index: number) => {
-    const listItem = (
-      <ListItem
-        key={index}
-        disablePadding
-      >
-        <ListItemButton
-          component={NavLink}
-          to={link.path}
-          selected={link.isActive}
-        >
-          <ListItemIcon>{link.icon && <link.icon />}</ListItemIcon>
-          <ListItemText primary={link.name} />
-        </ListItemButton>
-      </ListItem>
-    );
-
-    if (link.tooltip) {
-      return (
-        <Tooltip
-          key={index}
-          title={link.tooltip}
-          placement="right"
-        >
-          {listItem}
-        </Tooltip>
-      );
-    } else {
-      return listItem;
-    }
-  };
-
   return (
     <Drawer
       variant="permanent"
@@ -187,10 +66,7 @@ export const NavigationMenu: FunctionComponent<NavigationMenuProps> = props => {
           </IconButton>
         </Tooltip>
       </Box>
-      <Divider />
-      <List>{links.map(getLinkItem)}</List>
+      <NavigationMenuLinks />
     </Drawer>
   );
 };
-
-export default NavigationMenu;

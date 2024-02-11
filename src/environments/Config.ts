@@ -7,8 +7,6 @@ export const Config = {
   ENABLE_SERVICE_WORKER: false,
   ENABLE_WEB_VITALS: false,
   DEBUG: true,
-  LOG_LEVEL_CONSOLE: 0,
-  LOG_LEVEL_PERSIST: 0,
 };
 
 export type EnvironmentConfig = Readonly<typeof Config>;

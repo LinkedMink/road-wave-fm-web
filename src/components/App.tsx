@@ -1,5 +1,5 @@
 import { FunctionComponent, useContext, useEffect, useMemo } from "react";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { Navigate, RouterProvider, createBrowserRouter } from "react-router-dom";
 import { SessionActionType } from "../definitions/actionConstants";
 import { ConfigContext } from "../environments/ConfigContext";
 import { SessionContext } from "../providers/SessionProvider";
@@ -34,6 +34,19 @@ export const App: FunctionComponent = () => {
               ],
             },
             {
+              path: "/account",
+              element: <AuthorizeComponent />,
+              children: [
+                {
+                  index: true,
+                  lazy: () =>
+                    import("../routes/accountRouteObjects").then(
+                      m => m.accountRouteObjects.account
+                    ),
+                },
+              ],
+            },
+            {
               path: "/about",
               lazy: () => import("../routes/infoRouteObject").then(m => m.infoRouteObjects.about),
             },
@@ -62,7 +75,11 @@ export const App: FunctionComponent = () => {
             {
               path: "/logout",
               lazy: () =>
-                import("../routes/loginRouteObjects").then(m => m.loginRouteObjects.logout),
+                import("../routes/accountRouteObjects").then(m => m.accountRouteObjects.logout),
+            },
+            {
+              path: "*",
+              element: <Navigate to={"/"} />,
             },
           ],
         },

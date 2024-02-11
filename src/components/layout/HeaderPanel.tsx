@@ -21,7 +21,6 @@ export const HeaderPanel: FunctionComponent<HeaderPanelProps> = props => {
     <AppBar
       position="fixed"
       sx={theme => ({
-        // backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.dark : undefined,
         zIndex: theme.zIndex.drawer + 1,
         transition: theme.transitions.create(["width", "margin"], {
           easing: theme.transitions.easing.sharp,

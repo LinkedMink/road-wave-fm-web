@@ -10,6 +10,4 @@ export const Config: EnvironmentConfig = {
   ENABLE_SERVICE_WORKER: true,
   ENABLE_WEB_VITALS: false,
   DEBUG: false,
-  LOG_LEVEL_CONSOLE: 0,
-  LOG_LEVEL_PERSIST: 0,
 };

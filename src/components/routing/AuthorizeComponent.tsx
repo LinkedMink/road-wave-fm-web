@@ -5,7 +5,7 @@ import { Navigate, Outlet } from "react-router";
 export const AuthorizeComponent: FunctionComponent = () => {
   const [session] = useContext(SessionContext);
   if (!session.jwtToken) {
-    return <Navigate to={"login"} />;
+    return <Navigate to={"/login"} />;
   }
 
   return <Outlet />;
