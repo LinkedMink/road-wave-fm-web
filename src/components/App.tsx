@@ -38,11 +38,14 @@ export const App: FunctionComponent = () => {
                         ),
                     },
                     {
-                      path: "stations/:lat/:lng",
+                      path: "stations",
                       lazy: () =>
-                        import("../routes/dashboardRouteObject").then(
-                          m => m.dashboardRouteObject.stations
-                        ),
+                        import("../routes/dashboardRouteObject").then(m => ({
+                          Component: m.dashboardRouteObject.stations.Component,
+                          loader: m.dashboardRouteObject.stations.loaderConstructor!(
+                            config.ROAD_WAVE_API_BASE_URL
+                          ),
+                        })),
                     },
                     {
                       path: "formats",
@@ -106,7 +109,7 @@ export const App: FunctionComponent = () => {
           ],
         },
       ]),
-    [config.USER_API_BASE_URL]
+    [config.USER_API_BASE_URL, config.ROAD_WAVE_API_BASE_URL]
   );
 
   useEffect(() => dispatch({ type: SessionActionType.RESTORE }), [dispatch]);

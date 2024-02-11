@@ -5,8 +5,8 @@ import { HasChildrenProps } from "../types/reactUtilityTypes";
 
 export const SessionContext = createContext<[SessionState, Dispatch<SessionAction>]>([
   SESSION_STATE_INITIAL,
-  (() => {}) as Dispatch<SessionAction>,
-]);
+  () => {},
+] as [SessionState, Dispatch<SessionAction>]);
 
 export const SessionProvider: FunctionComponent<HasChildrenProps> = props => {
   const reducerState = useReducer(sessionReducer, SESSION_STATE_INITIAL);

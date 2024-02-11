@@ -10,7 +10,7 @@ import { FORMATS_STATE_INITIAL, formatsReducer } from "../reducers/formatsReduce
 import { FormatsAction, FormatsState } from "../types/actionTypes";
 import { HasChildrenProps } from "../types/reactUtilityTypes";
 import { FormatsActionType } from "../definitions/dashboardConstants";
-import { fetchAuthClient } from "../routes/fetchAuthClient";
+import { fetchAuthClient } from "../functions/fetchAuthClient";
 import { ConfigContext } from "../environments/ConfigContext";
 import { useAsync } from "react-use";
 import { FormatViewModel } from "../types/responseModels";

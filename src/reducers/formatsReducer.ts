@@ -5,8 +5,8 @@ import { FormatsAction, FormatsState } from "../types/actionTypes";
 import { FormatViewModel } from "../types/responseModels";
 
 export const FORMATS_STATE_INITIAL: FormatsState = {
-  map: new Map(),
-  selected: [],
+  list: [],
+  selected: new Set(),
 };
 
 export const formatsReducer: Reducer<FormatsState, FormatsAction> = (
@@ -17,15 +17,23 @@ export const formatsReducer: Reducer<FormatsState, FormatsAction> = (
     const formats = action.payload as FormatViewModel[];
     const nextState = {
       ...state,
-      map: new Map(formats.sort((a, b) => a.name.localeCompare(b.name)).map(f => [f.id, f])),
+      list: formats.sort((a, b) => a.name.localeCompare(b.name)),
       lastUpdated: Date.now(),
     };
     localStorage.setItem(LocalStorageKey.FORMATS_STATE, JSON.stringify(nextState));
     return nextState;
   } else if (action.type === FormatsActionType.SELECT) {
+    const formatId = action.payload as string;
+    const selected = new Set(state.selected);
+    if (selected.has(formatId)) {
+      selected.delete(formatId);
+    } else {
+      selected.add(formatId);
+    }
+
     const nextState = {
       ...state,
-      selected: action.payload as string[],
+      selected,
     };
     localStorage.setItem(LocalStorageKey.FORMATS_STATE, JSON.stringify(nextState));
     return nextState;

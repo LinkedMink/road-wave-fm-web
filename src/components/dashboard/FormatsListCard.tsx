@@ -1,75 +1,44 @@
-import {
-  Checkbox,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Stack,
-  Tooltip,
-  Typography,
-} from "@mui/material";
-import { FunctionComponent, useContext } from "react";
-import { FormatViewModel } from "../../types/responseModels";
+import { List, ListSubheader, Tooltip } from "@mui/material";
+import { FunctionComponent, useContext, useMemo } from "react";
 import { FormatsContext } from "../../providers/FormatsProvider";
-import { FormatsActionType } from "../../definitions/dashboardConstants";
-
-const LABEL_PREFIX = "format-label-";
+import { PagePaper } from "../styled/PagePaper";
+import { FormatListItem } from "./FormatListItem";
 
 export const FormatsListCard: FunctionComponent = () => {
-  const [formatsState, formatsDispatch] = useContext(FormatsContext);
-  const selected = new Set(formatsState.selected);
+  const [formatsState] = useContext(FormatsContext);
 
-  const handleChange = (formatId: string) => {
-    if (selected.has(formatId)) {
-      selected.delete(formatId);
-    } else {
-      selected.add(formatId);
-    }
-
-    formatsDispatch({ type: FormatsActionType.SELECT, payload: Array.from(selected) });
-  };
-
-  const renderFormat = (format: FormatViewModel, index: number) => {
-    const labelId = LABEL_PREFIX + format.id;
-    const checked = selected.has(format.id);
-    return (
-      <ListItem
-        key={index}
-        role={undefined}
-        dense={true}
-        button
-        onClick={() => handleChange(format.id)}
-      >
-        <ListItemIcon>
-          <Checkbox
-            edge="start"
-            checked={checked}
-            tabIndex={-1}
-            disableRipple
-            inputProps={{ "aria-labelledby": labelId }}
-          />
-        </ListItemIcon>
-        <ListItemText
-          id={labelId}
-          primary={format.name}
+  const formatsListElements = useMemo(
+    () =>
+      formatsState.list.map(f => (
+        <FormatListItem
+          key={f.id}
+          model={f}
         />
-      </ListItem>
-    );
-  };
+      )),
+    [formatsState.list]
+  );
 
   return (
-    <Stack>
-      <Tooltip title="Find stations by the selected formats. If none are selected, the closest will be found.">
-        <Typography variant="h6">Filter by Format</Typography>
-      </Tooltip>
+    <PagePaper
+      sx={{
+        display: "flex",
+        flex: "1 1 auto",
+      }}
+    >
       <List
-        sx={theme => ({
-          maxHeight: theme.spacing(42),
+        subheader={
+          <Tooltip title="Find stations by the selected formats. If none are selected, the closest will be found.">
+            <ListSubheader>Filter by Format</ListSubheader>
+          </Tooltip>
+        }
+        sx={{
+          width: "100%",
+          alignItems: "stretch",
           overflow: "auto",
-        })}
+        }}
       >
-        {Array.from(formatsState.map.values()).map(renderFormat)}
+        {formatsListElements}
       </List>
-    </Stack>
+    </PagePaper>
   );
 };

@@ -4,12 +4,12 @@ import { StationsRequestResult } from "../types/requestModels";
 import { StationViewModel } from "../types/responseModels";
 
 export const STATIONS_STATE_INITIAL: StationsState = {
-  isLoading: false,
+  list: [],
   hasLastRequestFailed: false,
 };
 
 export const stationsReducer = (state: StationsState, action: StationsAction): StationsState => {
-  if (action.type === StationsActionType.Store) {
+  if (action.type === StationsActionType.STORE) {
     const requestResult = action.payload as StationsRequestResult;
     return {
       ...state,
@@ -17,30 +17,18 @@ export const stationsReducer = (state: StationsState, action: StationsAction): S
       lastRequest: requestResult.params,
       hasLastRequestFailed: false,
       selected: undefined,
-      isLoading: false,
     };
-  } else if (action.type === StationsActionType.Select) {
+  } else if (action.type === StationsActionType.SELECT) {
     return {
       ...state,
       selected: action.payload as StationViewModel,
     };
-  } else if (action.type === StationsActionType.LoadStart) {
+  } else if (action.type === StationsActionType.SET_FAILED) {
     return {
       ...state,
-      isLoading: true,
-    };
-  } else if (action.type === StationsActionType.LoadEnd) {
-    return {
-      ...state,
-      isLoading: false,
-    };
-  } else if (action.type === StationsActionType.SetFailed) {
-    return {
-      ...state,
-      isLoading: false,
       hasLastRequestFailed: true,
     };
-  } else if (action.type === StationsActionType.SetReady) {
+  } else if (action.type === StationsActionType.SET_READY) {
     return {
       ...state,
       hasLastRequestFailed: false,

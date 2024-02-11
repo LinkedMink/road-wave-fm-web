@@ -1,34 +1,34 @@
 export interface Coordinates {
-  lat: number;
-  lng: number;
+  readonly lat: number;
+  readonly lng: number;
 }
 
 export interface AuthenticateResponse {
-  token: string;
+  readonly token: string;
 }
 
 export interface AccountModel {
-  email: string;
-  password?: string;
-  isEmailVerified: boolean;
-  isLocked: boolean;
-  isLockedDate?: Date;
-  authenticationDates?: Date[];
-  claims: string[];
+  readonly email: string;
+  readonly password?: string;
+  readonly isEmailVerified: boolean;
+  readonly isLocked: boolean;
+  readonly isLockedDate?: Date;
+  readonly authenticationDates?: Date[];
+  readonly claims: string[];
 }
 
 export interface FormatViewModel {
-  id: string;
-  name: string;
+  readonly id: string;
+  readonly name: string;
 }
 
 export interface StationViewModel {
-  id: string;
-  callSign: string;
-  protocol: string;
-  frequency: number;
-  format: string;
-  location: Coordinates;
-  distance?: number;
-  signalStrength?: number;
+  readonly id: string;
+  readonly callSign: string;
+  readonly protocol: string;
+  readonly frequency: number;
+  readonly format: string;
+  readonly location: Coordinates;
+  readonly distance?: number;
+  readonly signalStrength?: number;
 }

@@ -30,19 +30,18 @@ export interface SessionState {
 }
 
 export interface FormatsAction extends ReducerAction<FormatsActionType> {
-  readonly payload?: FormatViewModel[] | string[];
+  readonly payload?: FormatViewModel[] | string;
 }
 
 export interface FormatsState {
-  readonly map: Map<string, FormatViewModel>;
+  readonly list: FormatViewModel[];
   readonly lastUpdated?: number;
-  readonly selected: string[];
+  readonly selected: Set<string>;
 }
 
 export interface StationsState {
-  readonly list?: StationViewModel[];
+  readonly list: StationViewModel[];
   readonly selected?: StationViewModel;
-  readonly isLoading: boolean;
   readonly lastRequest?: StationRequest;
   readonly hasLastRequestFailed: boolean;
 }

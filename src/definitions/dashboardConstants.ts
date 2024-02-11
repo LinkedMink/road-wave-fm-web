@@ -5,10 +5,8 @@ export enum FormatsActionType {
 }
 
 export enum StationsActionType {
-  Store = "STATION_STORE",
-  Select = "STATION_SELECT",
-  LoadStart = "STATION_LOAD_START",
-  LoadEnd = "STATION_LOAD_END",
-  SetFailed = "STATION_SET_FAILED",
-  SetReady = "STATION_SET_READY",
+  STORE = "STATION_STORE",
+  SELECT = "STATION_SELECT",
+  SET_FAILED = "STATION_SET_FAILED",
+  SET_READY = "STATION_SET_READY",
 }

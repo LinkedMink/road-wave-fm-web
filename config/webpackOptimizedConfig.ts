@@ -2,7 +2,7 @@ import CompressionWebpackPlugin from "compression-webpack-plugin";
 import CssMinimizerWebpackPlugin from "css-minimizer-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import zlib, { BrotliOptions } from "node:zlib";
-import { RuleSetUseItem } from "webpack";
+import { RuleSetUseItem, optimize } from "webpack";
 import { merge } from "webpack-merge";
 import { styleRuleSet, webpackCommonConfig } from "./webpackCommonConfig";
 
@@ -36,6 +36,9 @@ export const webpackOptimizedConfig = merge(webpackCommonConfig, {
       } as BrotliOptions,
       minRatio: 1,
     }),
+    new optimize.MinChunkSizePlugin({
+      minChunkSize: 10 * 1024,
+    }),
   ],
   optimization: {
     minimizer: ["...", new CssMinimizerWebpackPlugin()],
@@ -53,8 +56,8 @@ export const webpackOptimizedConfig = merge(webpackCommonConfig, {
     },
   },
   performance: {
-    maxAssetSize: 204800,
-    maxEntrypointSize: 409600,
+    maxAssetSize: 256 * 1024,
+    maxEntrypointSize: 512 * 1024,
     assetFilter: (assetFilename: string) => !/\.(map|gz|br)$/.test(assetFilename),
   },
   output: {
