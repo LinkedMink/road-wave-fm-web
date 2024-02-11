@@ -1,13 +1,12 @@
 import { FunctionComponent, useContext } from "react";
 import { SessionContext } from "../../providers/SessionProvider";
-import { Navigate } from "react-router";
-import { HasChildrenProps } from "../../types/reactUtilityTypes";
+import { Navigate, Outlet } from "react-router";
 
-export const AuthorizeComponent: FunctionComponent<HasChildrenProps> = props => {
+export const AuthorizeComponent: FunctionComponent = () => {
   const [session] = useContext(SessionContext);
   if (!session.jwtToken) {
     return <Navigate to={"login"} />;
   }
 
-  return props.children;
+  return <Outlet />;
 };

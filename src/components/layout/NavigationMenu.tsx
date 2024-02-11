@@ -1,4 +1,5 @@
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import DashboardIcon from "@mui/icons-material/Dashboard";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -29,7 +30,6 @@ interface NavigationMenuLink {
 
 const getGuestLinks = (): NavigationMenuLink[] => {
   return [
-    //{},
     {
       path: "/about",
       name: "About",
@@ -49,6 +49,13 @@ const getGuestLinks = (): NavigationMenuLink[] => {
 
 const getAuthenticatedLinks = (): NavigationMenuLink[] => {
   return [
+    {
+      path: "/",
+      name: "Dashboard",
+      isActive: false,
+      icon: DashboardIcon,
+      tooltip: "Find radio stations by geographic location",
+    },
     {
       path: "/about",
       name: "About",
@@ -82,7 +89,9 @@ export const NavigationMenu: FunctionComponent<NavigationMenuProps> = props => {
      * @todo Use router provided state to set `selected`
      * @see https://reactrouter.com/en/main/start/overview#active-links
      */
-    const activeLink = linksBySession.find(l => l.path && location.pathname.startsWith(l.path));
+    const activeLink = linksBySession.find(
+      l => l.path && location.pathname.toLowerCase() === l.path.toLowerCase()
+    );
     if (activeLink) {
       activeLink.isActive = true;
     }

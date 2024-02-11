@@ -1,17 +1,11 @@
 import { FunctionComponent, useContext, useEffect, useMemo } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { SessionActionType } from "../definitions/actionConstants";
+import { ConfigContext } from "../environments/ConfigContext";
 import { SessionContext } from "../providers/SessionProvider";
 import { RootLayout } from "./layout/RootLayout";
-import { AboutPage } from "./pages/AboutPage";
-import { LoginPage } from "./pages/LoginPage";
-import { LogoutComponent } from "./pages/LogoutComponent";
-import { DashboardPage } from "./pages/DashboardPage";
 import { AuthorizeComponent } from "./routing/AuthorizeComponent";
-import { ConfigContext } from "../environments/ConfigContext";
-import { fetchLoginAction } from "../routes/routeActions";
 import { RootErrorBoundary } from "./routing/RootErrorBoundary";
-import { LoginSubmitComponent } from "./pages/LoginSubmitComponent";
 
 export const App: FunctionComponent = () => {
   const config = useContext(ConfigContext);
@@ -22,15 +16,15 @@ export const App: FunctionComponent = () => {
       createBrowserRouter([
         {
           element: <RootLayout />,
-          errorElement: <RootErrorBoundary />,
+          errorElement: (
+            <RootLayout>
+              <RootErrorBoundary />
+            </RootLayout>
+          ),
           children: [
             {
               path: "/",
-              element: (
-                <AuthorizeComponent>
-                  <DashboardPage />
-                </AuthorizeComponent>
-              ),
+              element: <AuthorizeComponent />,
               children: [
                 {
                   index: true,
@@ -42,7 +36,6 @@ export const App: FunctionComponent = () => {
             {
               path: "/about",
               lazy: () => import("../routes/infoRouteObject").then(m => m.infoRouteObjects.about),
-              element: <AboutPage />,
             },
             {
               path: "/documents/:documentName",
@@ -51,18 +44,25 @@ export const App: FunctionComponent = () => {
             },
             {
               path: "/login",
-              element: <LoginPage />,
+              lazy: () =>
+                import("../routes/loginRouteObjects").then(m => m.loginRouteObjects.login),
               children: [
                 {
                   path: "submit",
-                  element: <LoginSubmitComponent />,
-                  action: fetchLoginAction(config.USER_API_BASE_URL),
+                  lazy: () =>
+                    import("../routes/loginRouteObjects").then(m => ({
+                      Component: m.loginRouteObjects.loginSubmit.Component,
+                      action: m.loginRouteObjects.loginSubmit.actionConstructor!(
+                        config.USER_API_BASE_URL
+                      ),
+                    })),
                 },
               ],
             },
             {
               path: "/logout",
-              element: <LogoutComponent />,
+              lazy: () =>
+                import("../routes/loginRouteObjects").then(m => m.loginRouteObjects.logout),
             },
           ],
         },

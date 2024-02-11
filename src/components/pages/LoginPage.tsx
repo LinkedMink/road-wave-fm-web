@@ -5,6 +5,7 @@ import Typography from "@mui/material/Typography";
 import { FunctionComponent } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Form, Outlet, useSubmit } from "react-router-dom";
+import { AlertProvider } from "../../providers/AlertProvider";
 import { PagePaper } from "../styled/PagePaper";
 
 type FormInput = {
@@ -24,57 +25,58 @@ export const LoginPage: FunctionComponent = () => {
     submit(event?.target as HTMLFormElement);
 
   return (
-    <Container maxWidth="sm">
-      <Outlet />
-      <PagePaper>
-        <Typography variant="h3">Login</Typography>
-        <Form
-          action="/login/submit"
-          method="post"
-          onSubmit={handleSubmit(onSubmit)}
-          noValidate
-        >
-          <Stack sx={{ marginBottom: 8 }}>
-            <TextField
-              variant="outlined"
-              label="Email"
-              type="email"
-              autoComplete="email"
-              margin="normal"
-              fullWidth
-              required
-              error={!!errors.email}
-              helperText={errors.email?.message ?? " "}
-              autoFocus
-              {...register("email", { required: "Email is required", maxLength: 320 })}
-            />
-            <TextField
-              variant="outlined"
-              label="Password"
-              type="password"
-              autoComplete="current-password"
-              margin="normal"
-              fullWidth
-              required
-              error={!!errors.password}
-              helperText={errors.password?.message ?? " "}
-              {...register("password", { required: "Password is required", maxLength: 128 })}
-            />
-            <Button
-              type="submit"
-              variant="contained"
-              size="large"
-              fullWidth
-              sx={{ marginTop: 2 }}
-            >
-              Sign In
-            </Button>
-          </Stack>
-          <Stack
-            spacing={2}
-            sx={{ alignItems: "flex-end" }}
+    <AlertProvider>
+      <Container maxWidth="sm">
+        <Outlet />
+        <PagePaper>
+          <Typography variant="h3">Login</Typography>
+          <Form
+            action="/login/submit"
+            method="post"
+            onSubmit={handleSubmit(onSubmit)}
+            noValidate
           >
-            {/* <Link
+            <Stack sx={{ marginBottom: 8 }}>
+              <TextField
+                variant="outlined"
+                label="Email"
+                type="email"
+                autoComplete="email"
+                margin="normal"
+                fullWidth
+                required
+                error={!!errors.email}
+                helperText={errors.email?.message ?? " "}
+                autoFocus
+                {...register("email", { required: "Email is required", maxLength: 320 })}
+              />
+              <TextField
+                variant="outlined"
+                label="Password"
+                type="password"
+                autoComplete="current-password"
+                margin="normal"
+                fullWidth
+                required
+                error={!!errors.password}
+                helperText={errors.password?.message ?? " "}
+                {...register("password", { required: "Password is required", maxLength: 128 })}
+              />
+              <Button
+                type="submit"
+                variant="contained"
+                size="large"
+                fullWidth
+                sx={{ marginTop: 2 }}
+              >
+                Sign In
+              </Button>
+            </Stack>
+            <Stack
+              spacing={2}
+              sx={{ alignItems: "flex-end" }}
+            >
+              {/* <Link
               component={NavLink}
               to={"/password-reset"}
               variant="body2"
@@ -88,10 +90,11 @@ export const LoginPage: FunctionComponent = () => {
             >
               {"Don't have an account? Sign Up"}
             </Link> */}
-            <Typography variant="body2">Registration has been temporarily closed</Typography>
-          </Stack>
-        </Form>
-      </PagePaper>
-    </Container>
+              <Typography variant="body2">Registration has been temporarily closed</Typography>
+            </Stack>
+          </Form>
+        </PagePaper>
+      </Container>
+    </AlertProvider>
   );
 };
