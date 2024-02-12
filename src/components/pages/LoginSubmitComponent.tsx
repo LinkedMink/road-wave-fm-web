@@ -5,25 +5,26 @@ import { SessionActionType } from "../../definitions/sharedConstants";
 import { AlertContext } from "../../providers/AlertProvider";
 import { SessionContext } from "../../providers/SessionProvider";
 import { LoadingOverlay } from "../layout/LoadingOverlay";
+import { AuthenticateResponse, MessageResponse } from "../../types/responseModels";
+import { isMessageResponse } from "../../functions/fetchAuthClient";
 
 export const LoginSubmitComponent: FunctionComponent = () => {
   const navigation = useNavigation();
   const [session, dispatchSession] = useContext(SessionContext);
   const [_, dispatchAlert] = useContext(AlertContext);
-  const data = useActionData() as { token?: string; message?: string };
+  const data = useActionData() as MessageResponse | AuthenticateResponse;
 
   useEffect(() => {
     if (!data) {
       return;
     }
 
-    const token = data.token;
-    if (!token) {
+    if (isMessageResponse(data)) {
       dispatchAlert({ type: AlertActionType.ERROR, payload: data.message ?? "Error logging in" });
       return;
     }
 
-    dispatchSession({ type: SessionActionType.SAVE, payload: token });
+    dispatchSession({ type: SessionActionType.SAVE, payload: data.token });
   }, [data, dispatchAlert, dispatchSession]);
 
   if (session.jwtToken) {

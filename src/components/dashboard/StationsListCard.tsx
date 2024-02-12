@@ -1,26 +1,38 @@
 import { Collapse, List, ListItem, ListItemText, ListSubheader } from "@mui/material";
 import { FunctionComponent, useContext, useMemo } from "react";
-import { StationsContext } from "../../providers/StationsProvider";
+import { useLoaderData, useNavigation } from "react-router";
+import { MessageResponse, StationViewModel } from "../../types/responseModels";
 import { LoadingSpinner } from "../styled/LoadingSpinner";
 import { PagePaper } from "../styled/PagePaper";
 import { StationListItem } from "./StationListItem";
-import { useNavigation } from "react-router";
+import { AlertContext } from "../../providers/AlertProvider";
+import { AlertActionType } from "../../definitions/alertConstants";
+import { isMessageResponse } from "../../functions/fetchAuthClient";
 
 export const StationsListCard: FunctionComponent = () => {
   const navigation = useNavigation();
-  const [stationsState] = useContext(StationsContext);
+  const [_, alertDispatch] = useContext(AlertContext);
+  const loaderData = useLoaderData() as null | MessageResponse | StationViewModel[];
+  // const [stationsState] = useContext(StationsContext);
 
-  const stationsListElements = useMemo(
-    () =>
-      stationsState.list.map((station, index) => (
-        <StationListItem
-          key={station.id}
-          model={station}
-          index={index}
-        />
-      )),
-    [stationsState.list]
-  );
+  const stationsListElements = useMemo(() => {
+    if (!loaderData) {
+      return [];
+    }
+
+    if (isMessageResponse(loaderData)) {
+      alertDispatch({ type: AlertActionType.ERROR, payload: loaderData.message });
+      return [];
+    }
+
+    return loaderData.map((station, index) => (
+      <StationListItem
+        key={station.id}
+        model={station}
+        index={index}
+      />
+    ));
+  }, [alertDispatch, loaderData]);
 
   const isLoading = navigation.state === "loading";
   return (

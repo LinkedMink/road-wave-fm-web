@@ -3,6 +3,7 @@ import { FunctionComponent, useState } from "react";
 import { PagePaper } from "../styled/PagePaper";
 import { MapControl } from "./MapControl";
 import { SearchControl } from "./SearchControl";
+import { UserLocationProvider } from "../../providers/UserLocationProvider";
 
 export const MapCard: FunctionComponent = () => {
   const [mapRef, setMapRef] = useState<google.maps.Map>();
@@ -23,15 +24,17 @@ export const MapCard: FunctionComponent = () => {
         },
       })}
     >
-      <Box
-        sx={theme => ({
-          flex: "0 0 auto",
-          marginBottom: theme.spacing(1),
-        })}
-      >
-        <SearchControl map={mapRef} />
-      </Box>
-      <MapControl onMapInitialized={setMapRef} />
+      <UserLocationProvider>
+        <Box
+          sx={theme => ({
+            flex: "0 0 auto",
+            marginBottom: theme.spacing(1),
+          })}
+        >
+          <SearchControl map={mapRef} />
+        </Box>
+        <MapControl onMapInitialized={setMapRef} />
+      </UserLocationProvider>
     </PagePaper>
   );
 };

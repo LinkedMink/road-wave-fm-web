@@ -3,7 +3,7 @@ import type { StationViewModel } from "./responseModels";
 export interface StationRequest {
   readonly lat: number;
   readonly lng: number;
-  readonly fmt: string[];
+  readonly fmt?: string[];
 }
 
 export interface StationsRequestResult {

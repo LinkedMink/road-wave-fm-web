@@ -1,17 +1,52 @@
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import LocationOffIcon from "@mui/icons-material/LocationOff";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 import SearchIcon from "@mui/icons-material/Search";
-import { FilledInput, FormControl, InputAdornment, InputLabel, Tooltip } from "@mui/material";
+import {
+  Box,
+  Divider,
+  FilledInput,
+  FormControl,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  Tooltip,
+} from "@mui/material";
 import { FunctionComponent, useContext, useEffect, useRef, useState } from "react";
+import { NavLink, useSubmit } from "react-router-dom";
+import { FormatsContext } from "../../providers/FormatsProvider";
 import { MapsContext } from "../../providers/MapsProvider";
-import { Form } from "react-router-dom";
+import { UserLocationContext } from "../../providers/UserLocationProvider";
+import { Coordinates } from "../../types/responseModels";
+import { getEarthDistance } from "../../functions/math";
+
+const UPDATE_DISTANCE_KM = 10;
 
 export interface SearchControlProps {
   map?: google.maps.Map;
 }
 
 export const SearchControl: FunctionComponent<SearchControlProps> = props => {
+  const submit = useSubmit();
   const mapsApi = useContext(MapsContext);
+  const userLocation = useContext(UserLocationContext);
+  const [formatsState] = useContext(FormatsContext);
   const inputRef = useRef<HTMLInputElement>();
-  const [isLocationTrackingEnabled] = useState(false);
+  const [searchLocation, setSearchLocation] = useState<Coordinates>();
+
+  useEffect(() => {
+    if (!searchLocation) {
+      return;
+    }
+
+    const searchParams = new URLSearchParams({
+      lat: searchLocation.lat.toString(),
+      lng: searchLocation.lng.toString(),
+    });
+    formatsState.selected.forEach(f => searchParams.append("fmt", f));
+
+    submit(searchParams, { action: "/stations", method: "get" });
+  }, [formatsState.selected, searchLocation, submit]);
 
   useEffect(() => {
     if (!props.map || !inputRef.current) {
@@ -28,35 +63,55 @@ export const SearchControl: FunctionComponent<SearchControlProps> = props => {
     const placeChangedHandler = () => {
       const location = autocomplete.getPlace().geometry?.location;
       if (location) {
-        console.log("TODO");
+        setSearchLocation({
+          lat: location.lat(),
+          lng: location.lng(),
+        });
       }
     };
 
     autocomplete.addListener("place_changed", placeChangedHandler);
   }, [props.map, mapsApi, inputRef]);
 
+  useEffect(() => {
+    if (!userLocation.coordinates) {
+      return;
+    }
+
+    if (
+      searchLocation &&
+      getEarthDistance(userLocation.coordinates, searchLocation) < UPDATE_DISTANCE_KM
+    ) {
+      return;
+    }
+
+    setSearchLocation(userLocation.coordinates);
+  }, [searchLocation, userLocation.coordinates]);
+
   return (
-    <Form
-      action="/stations"
-      method="get"
-      noValidate
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "stretch",
+      }}
     >
       <Tooltip
         title={
-          isLocationTrackingEnabled
+          userLocation.isTrackingEnabled
             ? "Search is disabled when location tracking is enabled"
             : "Search by nearby landmarks"
         }
       >
         <FormControl
           variant="filled"
-          fullWidth={true}
+          sx={{ flex: "1 1" }}
         >
           <InputLabel htmlFor="location-search">Search</InputLabel>
           <FilledInput
             id="location-search"
             inputRef={inputRef}
-            disabled={isLocationTrackingEnabled}
+            disabled={userLocation.isTrackingEnabled}
             endAdornment={
               <InputAdornment position="end">
                 <SearchIcon />
@@ -65,6 +120,36 @@ export const SearchControl: FunctionComponent<SearchControlProps> = props => {
           />
         </FormControl>
       </Tooltip>
-    </Form>
+      <Tooltip title="Filter by format">
+        <IconButton
+          component={NavLink}
+          to={"/formats"}
+          sx={{ p: 1.5, ml: 0.5 }}
+        >
+          <FilterAltIcon />
+        </IconButton>
+      </Tooltip>
+
+      <Divider
+        sx={{ height: 28, m: 0.5 }}
+        orientation="vertical"
+      />
+      <Tooltip
+        title={
+          userLocation.isTrackingEnabled ? "Disable location tracking" : "Enable location tracking"
+        }
+      >
+        <IconButton
+          sx={{ p: 1.5 }}
+          onClick={
+            userLocation.isTrackingEnabled
+              ? userLocation.disableTracking
+              : userLocation.enableTracking
+          }
+        >
+          {userLocation.isTrackingEnabled ? <LocationOnIcon /> : <LocationOffIcon />}
+        </IconButton>
+      </Tooltip>
+    </Box>
   );
 };

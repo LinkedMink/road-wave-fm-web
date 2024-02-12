@@ -20,7 +20,13 @@ export const formatsReducer: Reducer<FormatsState, FormatsAction> = (
       list: formats.sort((a, b) => a.name.localeCompare(b.name)),
       lastUpdated: Date.now(),
     };
-    localStorage.setItem(LocalStorageKey.FORMATS_STATE, JSON.stringify(nextState));
+    localStorage.setItem(
+      LocalStorageKey.FORMATS_STATE,
+      JSON.stringify({
+        ...nextState,
+        selected: Array.from(nextState.selected),
+      })
+    );
     return nextState;
   } else if (action.type === FormatsActionType.SELECT) {
     const formatId = action.payload as string;
@@ -35,18 +41,28 @@ export const formatsReducer: Reducer<FormatsState, FormatsAction> = (
       ...state,
       selected,
     };
-    localStorage.setItem(LocalStorageKey.FORMATS_STATE, JSON.stringify(nextState));
+    localStorage.setItem(
+      LocalStorageKey.FORMATS_STATE,
+      JSON.stringify({
+        ...nextState,
+        selected: Array.from(nextState.selected),
+      })
+    );
     return nextState;
   } else if (action.type === FormatsActionType.RESTORE) {
     const storedState = localStorage.getItem(LocalStorageKey.FORMATS_STATE);
     if (!storedState) {
-      return state;
+      return {
+        ...state,
+        lastUpdated: 0,
+      };
     }
 
     const storedJson = JSON.parse(storedState) as FormatsState;
     return {
       ...state,
       ...storedJson,
+      selected: new Set(storedJson.selected),
     };
   } else {
     return state;

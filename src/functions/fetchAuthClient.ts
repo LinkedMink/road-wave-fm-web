@@ -1,3 +1,5 @@
+import { MessageResponse } from "../types/responseModels";
+
 let bearerToken: null | string = null;
 export const setBearerToken = (newBearerToken: null | string = null) =>
   (bearerToken = newBearerToken);
@@ -21,3 +23,6 @@ export const fetchAuthClient = (input: string | URL, init?: RequestInit) => {
 
   return fetch(input, authRequestInit);
 };
+
+export const isMessageResponse = (checked: unknown): checked is MessageResponse =>
+  typeof (checked as MessageResponse)?.message === "string";

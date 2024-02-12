@@ -32,7 +32,6 @@ export const FormatListItem: FunctionComponent<FormatListItemProps> = props => {
   const labelId = LABEL_PREFIX + props.model.id;
   return (
     <ListItem
-      role={undefined}
       dense={true}
       onClick={handleChange}
     >

@@ -3,20 +3,18 @@ import { FormatsListCard } from "../components/dashboard/FormatsListCard";
 import { MapDashboard } from "../components/dashboard/MapDashboard";
 import { StationsListCard } from "../components/dashboard/StationsListCard";
 import type { LazyRouteObject } from "../types/reactUtilityTypes";
+import { fetchAuthClient } from "../functions/fetchAuthClient";
 
 const fetchStationsLoader =
   (baseUrl: string): LoaderFunction =>
-  async ({ params, request }) => {
-    if (!params.lat || !params.lng) {
+  async ({ request }) => {
+    const url = new URL(request.url);
+    if (!url.searchParams.get("lat") || !url.searchParams.get("lng")) {
       return null;
     }
 
-    const formData = await request.formData();
-    const formDataObj = Object.fromEntries(formData.entries());
-
-    const response = await fetch(new URL("stations", baseUrl), {
+    const response = await fetchAuthClient(new URL("stations" + url.search, baseUrl), {
       method: request.method,
-      body: JSON.stringify(formDataObj),
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",

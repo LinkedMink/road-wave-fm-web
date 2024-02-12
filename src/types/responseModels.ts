@@ -1,3 +1,7 @@
+export interface MessageResponse {
+  readonly message: string;
+}
+
 export interface Coordinates {
   readonly lat: number;
   readonly lng: number;

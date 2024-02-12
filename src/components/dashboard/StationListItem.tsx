@@ -41,6 +41,7 @@ export type StationListItemProps = {
 
 export const StationListItem: FunctionComponent<StationListItemProps> = props => {
   const [stationsState, stationsDispatch] = useContext(StationsContext);
+
   return (
     <ListItem
       dense={true}
