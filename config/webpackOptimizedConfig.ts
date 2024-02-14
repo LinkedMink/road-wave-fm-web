@@ -37,7 +37,7 @@ export const webpackOptimizedConfig = merge(webpackCommonConfig, {
       minRatio: 1,
     }),
     new optimize.MinChunkSizePlugin({
-      minChunkSize: 10 * 1024,
+      minChunkSize: 20 * 1024,
     }),
   ],
   optimization: {

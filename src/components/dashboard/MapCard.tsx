@@ -12,10 +12,9 @@ export const MapCard: FunctionComponent = () => {
   return (
     <PagePaper
       sx={theme => ({
-        position: "relative",
         minHeight: "580px",
         display: "flex",
-        flex: "3 1 auto",
+        flex: "4 1",
         alignItems: "stretch",
         flexDirection: "column",
         [theme.breakpoints.up("md")]: {
@@ -30,7 +29,7 @@ export const MapCard: FunctionComponent = () => {
         <UserLocationProvider>
           <Box
             sx={theme => ({
-              flex: "0 0 auto",
+              flex: "0",
               marginBottom: theme.spacing(1),
             })}
           >

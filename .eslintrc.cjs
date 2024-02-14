@@ -35,6 +35,17 @@ const config = {
       extends: ["eslint:recommended"],
     },
     {
+      files: ["src/**/*.js"],
+      env: {
+        browser: true,
+        es2020: true,
+      },
+      parserOptions: {
+        sourceType: "module",
+      },
+      extends: ["eslint:recommended"],
+    },
+    {
       files: ["*.{m,c,}ts"],
       parserOptions: {
         project: ["tsconfig.json"],

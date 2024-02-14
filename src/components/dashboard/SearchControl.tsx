@@ -49,11 +49,11 @@ export const SearchControl: FunctionComponent<SearchControlProps> = props => {
   }, [formatsState.selected, searchLocation, submit]);
 
   useEffect(() => {
-    if (!props.map || !inputRef.current) {
+    if (!props.map || !inputRef.current || !mapsApi.places.value) {
       return;
     }
 
-    const autocomplete = new mapsApi.places.Autocomplete(inputRef.current, {
+    const autocomplete = new mapsApi.places.value.Autocomplete(inputRef.current, {
       componentRestrictions: { country: "us" },
       strictBounds: false,
       types: ["geocode"],
@@ -71,7 +71,7 @@ export const SearchControl: FunctionComponent<SearchControlProps> = props => {
     };
 
     autocomplete.addListener("place_changed", placeChangedHandler);
-  }, [props.map, mapsApi, inputRef]);
+  }, [props.map, mapsApi.places]);
 
   useEffect(() => {
     if (!userLocation.coordinates) {

@@ -1,49 +1,55 @@
-import { Loader } from "@googlemaps/js-api-loader";
-import { Fragment, FunctionComponent, createContext, useContext, useRef } from "react";
+// import { Loader } from "@googlemaps/js-api-loader";
+import { FunctionComponent, createContext, useContext } from "react";
 import { useAsync } from "react-use";
-import { LoadingSpinner } from "../components/styled/LoadingSpinner";
+import type { AsyncState } from "react-use/lib/useAsync";
 import { ConfigContext } from "../environments/ConfigContext";
 import { HasChildrenProps } from "../types/reactUtilityTypes";
+import { mapsLoaderBootstrap } from "./MapsLoaderBootstrap";
 
 export type MapsApi = {
-  core: google.maps.CoreLibrary;
-  maps: google.maps.MapsLibrary;
-  marker: google.maps.MarkerLibrary;
-  places: google.maps.PlacesLibrary;
+  core: AsyncState<google.maps.CoreLibrary>;
+  maps: AsyncState<google.maps.MapsLibrary>;
+  marker: AsyncState<google.maps.MarkerLibrary>;
+  places: AsyncState<google.maps.PlacesLibrary>;
 };
 
 export const MapsContext = createContext<MapsApi>({} as MapsApi);
 
 export const MapsProvider: FunctionComponent<HasChildrenProps> = props => {
   const config = useContext(ConfigContext);
-  const mapsApiRef = useRef<null | MapsApi>(null);
-  const mapsApiLoadState = useAsync(async () => {
-    const mapsLoader = new Loader({
-      apiKey: config.GOOGLE_MAPS_API_KEY,
-      libraries: ["core", "maps", "marker", "places"],
-    });
-    const [coreApi, mapsApi, markerApi, placesApi] = await Promise.all([
-      mapsLoader.importLibrary("core"),
-      mapsLoader.importLibrary("maps"),
-      mapsLoader.importLibrary("marker"),
-      mapsLoader.importLibrary("places"),
-    ]);
 
-    mapsApiRef.current = {
-      core: coreApi,
-      maps: mapsApi,
-      marker: markerApi,
-      places: placesApi,
-    };
-    return mapsApiRef.current;
-  }, [config.GOOGLE_MAPS_API_KEY]);
+  if (!window.google?.maps?.importLibrary) {
+    mapsLoaderBootstrap({ key: config.GOOGLE_MAPS_API_KEY });
+  }
+  // const mapsLoader = useMemo(
+  //   () =>
+  //     new Loader({
+  //       apiKey: config.GOOGLE_MAPS_API_KEY,
+  //       libraries: ["core", "maps", "marker", "places"],
+  //     }),
+  //   [config.GOOGLE_MAPS_API_KEY]
+  // );
+
+  const core = useAsync(
+    () => google.maps.importLibrary("core") as Promise<google.maps.CoreLibrary>,
+    []
+  );
+  const maps = useAsync(
+    () => google.maps.importLibrary("maps") as Promise<google.maps.MapsLibrary>,
+    []
+  );
+  const marker = useAsync(
+    () => google.maps.importLibrary("marker") as Promise<google.maps.MarkerLibrary>,
+    []
+  );
+  const places = useAsync(
+    () => google.maps.importLibrary("places") as Promise<google.maps.PlacesLibrary>,
+    []
+  );
 
   return (
-    <Fragment>
-      <LoadingSpinner isLoading={mapsApiLoadState.loading} />
-      {!mapsApiLoadState.loading && mapsApiRef.current && (
-        <MapsContext.Provider value={mapsApiRef.current}>{props.children}</MapsContext.Provider>
-      )}
-    </Fragment>
+    <MapsContext.Provider value={{ core, maps, marker, places }}>
+      {props.children}
+    </MapsContext.Provider>
   );
 };

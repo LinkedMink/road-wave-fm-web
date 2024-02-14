@@ -1,0 +1,14 @@
+---
+services:
+  road-wave-fm-web:
+    image: linkedmink/road-wave-fm-web
+    pull_policy: missing
+    build:
+      context: ./
+      dockerfile: ./docker/Dockerfile
+    ports:
+      - 8082:80
+    volumes:
+      - type: bind
+        source: ./dist
+        target: /usr/share/nginx/html

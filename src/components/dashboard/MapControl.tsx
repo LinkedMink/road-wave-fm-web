@@ -8,6 +8,7 @@ import { MapsContext } from "../../providers/MapsProvider";
 import { StationsContext } from "../../providers/StationsProvider";
 import { UserLocationContext } from "../../providers/UserLocationProvider";
 import { StationViewModel } from "../../types/responseModels";
+import { LoadingSpinner } from "../styled/LoadingSpinner";
 
 // TODO find better way to import raw SVG
 // import PersonPinCircleIcon from '@mui/icons-material/PersonPinCircle';
@@ -39,29 +40,36 @@ export const MapControl: FunctionComponent<MapControlProps> = props => {
   const [searchParams] = useSearchParams();
 
   useEffect(() => {
-    if (!mapElementRef.current || mapRef) {
+    if (!mapElementRef.current || mapRef || !mapsApi.maps.value) {
       return;
     }
 
-    const map = new mapsApi.maps.Map(mapElementRef.current, {
+    const map = new mapsApi.maps.value.Map(mapElementRef.current, {
       center: INITIAL_MAP_CENTER,
       zoom: INITIAL_ZOOM,
     });
     setMapRef(map);
     props.onMapInitialized(map);
-  }, [mapRef, mapsApi, props]);
+  }, [mapRef, mapsApi.maps, props]);
 
   useEffect(() => {
-    if (!mapRef || !stationsState.list || stationsState.list === markers.for) {
+    const markerApi = mapsApi.marker.value;
+    if (
+      !mapRef ||
+      !mapsApi.core.value ||
+      !markerApi ||
+      !stationsState.list ||
+      stationsState.list === markers.for
+    ) {
       return;
     }
 
     markers.refs.forEach(m => m.setMap(null));
 
-    const newBounds = new mapsApi.core.LatLngBounds();
+    const newBounds = new mapsApi.core.value.LatLngBounds();
     const createdMarkers = stationsState.list.map((s, i) => {
       newBounds.extend(s.location);
-      const marker = new mapsApi.marker.Marker({
+      const marker = new markerApi.Marker({
         position: s.location,
         map: mapRef,
         title: s.callSign,
@@ -105,7 +113,15 @@ export const MapControl: FunctionComponent<MapControlProps> = props => {
       refs: createdMarkers,
       for: stationsState.list,
     });
-  }, [mapRef, stationsState.list, markers, mapsApi, stationsDispatch, searchParams]);
+  }, [
+    mapRef,
+    stationsState.list,
+    markers,
+    mapsApi.core,
+    mapsApi.marker,
+    stationsDispatch,
+    searchParams,
+  ]);
 
   useEffect(() => {
     if (!mapRef || !stationsState.selected) {
@@ -120,7 +136,8 @@ export const MapControl: FunctionComponent<MapControlProps> = props => {
   }, [mapRef, stationsState.selected]);
 
   useEffect(() => {
-    if (!mapRef || !userLocation.coordinates) {
+    const markerApi = mapsApi.marker.value;
+    if (!mapRef || !userLocation.coordinates || !markerApi) {
       if (userMarker) {
         userMarker.setMap(null);
       }
@@ -130,7 +147,7 @@ export const MapControl: FunctionComponent<MapControlProps> = props => {
 
     const tempMarker =
       userMarker ??
-      new mapsApi.marker.Marker({
+      new markerApi.Marker({
         position: userLocation.coordinates,
         map: mapRef,
         title: `Your Location: ${userLocation.coordinates.lat.toFixed(
@@ -153,15 +170,19 @@ export const MapControl: FunctionComponent<MapControlProps> = props => {
     } else if (!markerPos || !areEqualMapPos(userLocation.coordinates, markerPos)) {
       tempMarker.setPosition(userLocation.coordinates);
     }
-  }, [mapRef, userLocation.coordinates, userMarker, mapsApi, theme.palette.secondary.dark]);
+  }, [mapRef, userLocation.coordinates, userMarker, mapsApi.marker, theme.palette.secondary.dark]);
 
   return (
-    <Box
-      ref={mapElementRef}
-      sx={{
-        flex: "1 1",
-        width: "100%",
-      }}
-    ></Box>
+    <Box sx={{ position: "relative", flex: "1" }}>
+      <Box
+        ref={mapElementRef}
+        sx={{
+          position: "absolute",
+          height: "100%",
+          width: "100%",
+        }}
+      />
+      <LoadingSpinner isLoading={mapsApi.maps.loading || mapsApi.marker.loading} />
+    </Box>
   );
 };

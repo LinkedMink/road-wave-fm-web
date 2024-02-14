@@ -24,6 +24,7 @@
   "private": true,
   "scripts": {
     "start": "webpack serve --open --config config/webpack.serve.ts",
+    "start:optimized": "docker-compose up -d && webpack --watch --config config/webpack.prod.ts",
     "build": "webpack --config config/webpack.prod.ts",
     "build:dev": "webpack --config config/webpack.dev.ts",
     "build:local": "webpack --config config/webpack.local.ts",
@@ -42,7 +43,6 @@
     "@emotion/react": "^11.10.0",
     "@emotion/styled": "^11.10.0",
     "@fontsource/roboto": "^5.0.8",
-    "@googlemaps/js-api-loader": "^1.12.11",
     "@mui/icons-material": "^5.10.2",
     "@mui/material": "^5.10.2",
     "jose": "^5.2.1",
