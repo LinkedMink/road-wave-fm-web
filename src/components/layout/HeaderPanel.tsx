@@ -1,22 +1,17 @@
-import Brightness4Icon from "@mui/icons-material/Brightness4";
-import Brightness7Icon from "@mui/icons-material/Brightness7";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import MenuIcon from "@mui/icons-material/Menu";
 import { AppBar, IconButton, Toolbar, Tooltip, Typography } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
 import { FunctionComponent, MouseEventHandler } from "react";
 import { AccountIconButton } from "./AccountIconButton";
+import { PaletteModeIconButton } from "./PaletteModeIconButton";
 import { NAV_DRAWER_WIDTH_PX } from "./layoutConstants";
 
 export interface HeaderPanelProps {
   isOpen: boolean;
   onMenuOpen: MouseEventHandler<HTMLButtonElement>;
-  onDarkModeToggle: MouseEventHandler<HTMLButtonElement>;
 }
 
 export const HeaderPanel: FunctionComponent<HeaderPanelProps> = props => {
-  const theme = useTheme();
-
   return (
     <AppBar
       position="fixed"
@@ -81,17 +76,7 @@ export const HeaderPanel: FunctionComponent<HeaderPanelProps> = props => {
             <GitHubIcon />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Toggle light/dark mode">
-          <IconButton
-            aria-label="Toggle light/dark mode"
-            onClick={props.onDarkModeToggle}
-            sx={theme => ({
-              color: theme.palette.common.white,
-            })}
-          >
-            {theme.palette.mode === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
-          </IconButton>
-        </Tooltip>
+        <PaletteModeIconButton />
         <AccountIconButton />
       </Toolbar>
     </AppBar>

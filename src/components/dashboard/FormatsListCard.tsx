@@ -1,12 +1,31 @@
-import { Button, List, ListItem, ListItemText, ListSubheader } from "@mui/material";
-import { FunctionComponent, useContext, useMemo } from "react";
-import { NavLink } from "react-router-dom";
+import { Box, Button, List, ListItem, ListItemText, ListSubheader } from "@mui/material";
+import { FunctionComponent, useCallback, useContext, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
+import { FormatsActionType } from "../../definitions/dashboardConstants";
 import { FormatsContext } from "../../providers/FormatsProvider";
 import { PagePaper } from "../styled/PagePaper";
 import { FormatListItem } from "./FormatListItem";
 
 export const FormatsListCard: FunctionComponent = () => {
-  const [formatsState] = useContext(FormatsContext);
+  const [formatsState, formatsDispatch] = useContext(FormatsContext);
+  const navigate = useNavigate();
+
+  const confirmSelect = useCallback(() => {
+    formatsDispatch({ type: FormatsActionType.SELECT_CONFIRM });
+    navigate(-1);
+  }, [formatsDispatch, navigate]);
+
+  const cancelSelect = useCallback(() => {
+    formatsDispatch({ type: FormatsActionType.SELECT_CANCEL });
+    navigate(-1);
+  }, [formatsDispatch, navigate]);
+
+  const selectFormat = useCallback(
+    (formatId: string) => {
+      formatsDispatch({ type: FormatsActionType.SELECT, payload: formatId });
+    },
+    [formatsDispatch]
+  );
 
   const formatsListElements = useMemo(
     () =>
@@ -14,9 +33,10 @@ export const FormatsListCard: FunctionComponent = () => {
         <FormatListItem
           key={f.id}
           model={f}
+          onFormatSelect={selectFormat}
         />
       )),
-    [formatsState.list]
+    [formatsState.list, selectFormat]
   );
 
   return (
@@ -45,15 +65,22 @@ export const FormatsListCard: FunctionComponent = () => {
           </ListItem>
         )}
       </List>
-      <Button
-        component={NavLink}
-        variant="contained"
-        fullWidth
-        to={"/stations"}
-        sx={{ marginTop: 2 }}
-      >
-        Filter
-      </Button>
+      <Box sx={{ mt: 2, display: "flex" }}>
+        <Button
+          variant="outlined"
+          onClick={cancelSelect}
+          sx={{ mr: 2, flex: "1" }}
+        >
+          Cancel
+        </Button>
+        <Button
+          variant="contained"
+          onClick={confirmSelect}
+          sx={{ flex: "1" }}
+        >
+          Filter
+        </Button>
+      </Box>
     </PagePaper>
   );
 };

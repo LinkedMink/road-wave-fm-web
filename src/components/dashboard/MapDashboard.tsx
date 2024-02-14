@@ -2,10 +2,9 @@ import { Container } from "@mui/material";
 import { FunctionComponent } from "react";
 import { Outlet } from "react-router";
 import { AlertProvider } from "../../providers/AlertProvider";
-import { MapsProvider } from "../../providers/MapsProvider";
-import { MapCard } from "./MapCard";
 import { FormatsProvider } from "../../providers/FormatsProvider";
 import { StationsProvider } from "../../providers/StationsProvider";
+import { MapCard } from "./MapCard";
 
 export const MapDashboard: FunctionComponent = () => {
   return (
@@ -24,9 +23,7 @@ export const MapDashboard: FunctionComponent = () => {
       >
         <FormatsProvider>
           <StationsProvider>
-            <MapsProvider>
-              <MapCard />
-            </MapsProvider>
+            <MapCard />
             <Outlet />
           </StationsProvider>
         </FormatsProvider>

@@ -1,12 +1,13 @@
 import { Box, useTheme } from "@mui/material";
 import { FunctionComponent, useContext, useEffect, useRef, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import { StationsActionType } from "../../definitions/dashboardConstants";
 import { indexToChar } from "../../functions/collection";
 import { areEqualMapPos } from "../../functions/math";
 import { MapsContext } from "../../providers/MapsProvider";
 import { StationsContext } from "../../providers/StationsProvider";
-import { StationViewModel } from "../../types/responseModels";
-import { StationsActionType } from "../../definitions/dashboardConstants";
 import { UserLocationContext } from "../../providers/UserLocationProvider";
+import { StationViewModel } from "../../types/responseModels";
 
 // TODO find better way to import raw SVG
 // import PersonPinCircleIcon from '@mui/icons-material/PersonPinCircle';
@@ -35,6 +36,7 @@ export const MapControl: FunctionComponent<MapControlProps> = props => {
   const [userMarker, setUserMarker] = useState<google.maps.Marker>();
   const [markers, setMarkers] = useState<MarkersFor>({ for: [], refs: [] });
   const [mapRef, setMapRef] = useState<google.maps.Map>();
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
     if (!mapElementRef.current || mapRef) {
@@ -82,13 +84,28 @@ export const MapControl: FunctionComponent<MapControlProps> = props => {
           mapRef.setZoom(FOCUS_ZOOM_MIN);
         }
       }
+    } else {
+      const lat = searchParams.get("lat");
+      const lng = searchParams.get("lng");
+      if (!lat || !lng) {
+        return;
+      }
+
+      mapRef.panTo({
+        lat: Number(lat),
+        lng: Number(lng),
+      });
+      const zoom = mapRef.getZoom();
+      if (zoom && zoom < FOCUS_ZOOM_MIN) {
+        mapRef.setZoom(FOCUS_ZOOM_MIN);
+      }
     }
 
     setMarkers({
       refs: createdMarkers,
       for: stationsState.list,
     });
-  }, [mapRef, stationsState.list, markers, mapsApi, stationsDispatch]);
+  }, [mapRef, stationsState.list, markers, mapsApi, stationsDispatch, searchParams]);
 
   useEffect(() => {
     if (!mapRef || !stationsState.selected) {

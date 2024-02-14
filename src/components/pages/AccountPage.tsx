@@ -1,14 +1,14 @@
+import { Typography } from "@mui/material";
 import Container from "@mui/material/Container";
 import { FunctionComponent, useContext } from "react";
-import { PagePaper } from "../styled/PagePaper";
-import { Typography } from "@mui/material";
 import { SessionContext } from "../../providers/SessionProvider";
+import { PagePaper } from "../styled/PagePaper";
 
 export const AccountPage: FunctionComponent = () => {
   const [session] = useContext(SessionContext);
 
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="md">
       <PagePaper>
         <Typography variant="h3">Account</Typography>
         <Typography>TODO</Typography>

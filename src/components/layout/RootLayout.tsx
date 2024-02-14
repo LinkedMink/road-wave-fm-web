@@ -1,6 +1,5 @@
-import { Box, CssBaseline, PaletteMode, ThemeProvider, useMediaQuery } from "@mui/material";
-import { createTheme } from "@mui/material/styles";
-import { FunctionComponent, useMemo, useState } from "react";
+import { Box } from "@mui/material";
+import { Fragment, FunctionComponent, useState } from "react";
 import { Outlet } from "react-router-dom";
 import { HasChildrenProps } from "../../types/reactUtilityTypes";
 import { FooterPanel } from "./FooterPanel";
@@ -8,29 +7,13 @@ import { HeaderPanel } from "./HeaderPanel";
 import { NavigationMenu } from "./NavigationMenu";
 
 export const RootLayout: FunctionComponent<Partial<HasChildrenProps>> = props => {
-  const isDarkModePreferred = useMediaQuery("(prefers-color-scheme: dark)");
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-  const [paletteType, setPaletteType] = useState<PaletteMode>(
-    isDarkModePreferred ? "dark" : "light"
-  );
-
-  const theme = useMemo(
-    () =>
-      createTheme({
-        palette: {
-          mode: paletteType,
-        },
-      }),
-    [paletteType]
-  );
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
+    <Fragment>
       <HeaderPanel
         isOpen={isMenuOpen}
         onMenuOpen={() => setIsMenuOpen(true)}
-        onDarkModeToggle={() => setPaletteType(paletteType === "dark" ? "light" : "dark")}
       />
       <NavigationMenu
         isOpen={isMenuOpen}
@@ -45,7 +28,7 @@ export const RootLayout: FunctionComponent<Partial<HasChildrenProps>> = props =>
           overflow: "hidden",
         }}
       >
-        <Box sx={theme.mixins.toolbar} />
+        <Box sx={theme => theme.mixins.toolbar} />
         <Box
           sx={{
             display: "flex",
@@ -56,9 +39,7 @@ export const RootLayout: FunctionComponent<Partial<HasChildrenProps>> = props =>
         >
           <Box
             component={"main"}
-            sx={{
-              flex: "1 1 auto",
-            }}
+            sx={{ flex: "1 1 auto" }}
           >
             {props.children}
             <Outlet />
@@ -66,6 +47,6 @@ export const RootLayout: FunctionComponent<Partial<HasChildrenProps>> = props =>
           <FooterPanel />
         </Box>
       </Box>
-    </ThemeProvider>
+    </Fragment>
   );
 };

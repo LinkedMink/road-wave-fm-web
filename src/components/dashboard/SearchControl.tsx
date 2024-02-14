@@ -5,20 +5,20 @@ import SearchIcon from "@mui/icons-material/Search";
 import {
   Box,
   Divider,
-  FilledInput,
   FormControl,
   IconButton,
   InputAdornment,
   InputLabel,
+  OutlinedInput,
   Tooltip,
 } from "@mui/material";
 import { FunctionComponent, useContext, useEffect, useRef, useState } from "react";
 import { NavLink, useSubmit } from "react-router-dom";
+import { getEarthDistance } from "../../functions/math";
 import { FormatsContext } from "../../providers/FormatsProvider";
 import { MapsContext } from "../../providers/MapsProvider";
 import { UserLocationContext } from "../../providers/UserLocationProvider";
 import { Coordinates } from "../../types/responseModels";
-import { getEarthDistance } from "../../functions/math";
 
 const UPDATE_DISTANCE_KM = 10;
 
@@ -104,11 +104,12 @@ export const SearchControl: FunctionComponent<SearchControlProps> = props => {
         }
       >
         <FormControl
-          variant="filled"
+          variant="outlined"
+          disabled={userLocation.isTrackingEnabled}
           sx={{ flex: "1 1" }}
         >
           <InputLabel htmlFor="location-search">Search</InputLabel>
-          <FilledInput
+          <OutlinedInput
             id="location-search"
             inputRef={inputRef}
             disabled={userLocation.isTrackingEnabled}
@@ -117,6 +118,7 @@ export const SearchControl: FunctionComponent<SearchControlProps> = props => {
                 <SearchIcon />
               </InputAdornment>
             }
+            label="Search"
           />
         </FormControl>
       </Tooltip>
@@ -124,6 +126,7 @@ export const SearchControl: FunctionComponent<SearchControlProps> = props => {
         <IconButton
           component={NavLink}
           to={"/formats"}
+          color="error"
           sx={{ p: 1.5, ml: 0.5 }}
         >
           <FilterAltIcon />
@@ -141,6 +144,7 @@ export const SearchControl: FunctionComponent<SearchControlProps> = props => {
       >
         <IconButton
           sx={{ p: 1.5 }}
+          color="primary"
           onClick={
             userLocation.isTrackingEnabled
               ? userLocation.disableTracking

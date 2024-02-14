@@ -1,7 +1,7 @@
 import { Loader } from "@googlemaps/js-api-loader";
-import { FunctionComponent, createContext, useContext, useRef } from "react";
+import { Fragment, FunctionComponent, createContext, useContext, useRef } from "react";
 import { useAsync } from "react-use";
-import { LoadingOverlay } from "../components/layout/LoadingOverlay";
+import { LoadingSpinner } from "../components/styled/LoadingSpinner";
 import { ConfigContext } from "../environments/ConfigContext";
 import { HasChildrenProps } from "../types/reactUtilityTypes";
 
@@ -38,9 +38,12 @@ export const MapsProvider: FunctionComponent<HasChildrenProps> = props => {
     return mapsApiRef.current;
   }, [config.GOOGLE_MAPS_API_KEY]);
 
-  return !mapsApiLoadState.loading && mapsApiRef.current ? (
-    <MapsContext.Provider value={mapsApiRef.current}>{props.children}</MapsContext.Provider>
-  ) : (
-    <LoadingOverlay isLoading={true} />
+  return (
+    <Fragment>
+      <LoadingSpinner isLoading={mapsApiLoadState.loading} />
+      {!mapsApiLoadState.loading && mapsApiRef.current && (
+        <MapsContext.Provider value={mapsApiRef.current}>{props.children}</MapsContext.Provider>
+      )}
+    </Fragment>
   );
 };

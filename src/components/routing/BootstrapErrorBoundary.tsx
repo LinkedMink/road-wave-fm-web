@@ -1,8 +1,8 @@
 import { Container, Typography } from "@mui/material";
 import { FunctionComponent, useContext } from "react";
 import { useRouteError } from "react-router";
-import { PagePaper } from "../styled/PagePaper";
 import { ConfigContext } from "../../environments/ConfigContext";
+import { PagePaper } from "../styled/PagePaper";
 
 const GENERIC_ERROR_MESSAGE = "Sorry, an unexpected error has occurred.";
 
@@ -11,7 +11,7 @@ export const RootErrorBoundary: FunctionComponent = () => {
   const error = useRouteError();
 
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="md">
       <PagePaper>
         <Typography variant="h3">Error</Typography>
         <Typography>

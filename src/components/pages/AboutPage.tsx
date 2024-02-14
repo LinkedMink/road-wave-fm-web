@@ -15,7 +15,7 @@ const AboutContentBox = styled(Box)(({ theme }) => ({
 
 export const AboutPage: FunctionComponent = () => {
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="md">
       <PagePaper>
         <AboutContentBox component="section">
           <Typography variant="h3">About</Typography>

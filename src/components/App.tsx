@@ -3,9 +3,11 @@ import { Navigate, RouterProvider, createBrowserRouter } from "react-router-dom"
 import { SessionActionType } from "../definitions/sharedConstants";
 import { ConfigContext } from "../environments/ConfigContext";
 import { SessionContext } from "../providers/SessionProvider";
-import { RootLayout } from "./layout/RootLayout";
 import { AuthorizeComponent } from "./routing/AuthorizeComponent";
-import { RootErrorBoundary } from "./routing/RootErrorBoundary";
+import { BootstrapContent } from "./routing/BootstrapContent";
+import { RootErrorBoundary } from "./routing/BootstrapErrorBoundary";
+import { BootstrapLayout } from "./routing/BootstrapLayout";
+import { BootstrapStyles } from "./routing/BootstrapStyles";
 
 export const App: FunctionComponent = () => {
   const config = useContext(ConfigContext);
@@ -15,11 +17,11 @@ export const App: FunctionComponent = () => {
     () =>
       createBrowserRouter([
         {
-          element: <RootLayout />,
+          lazy: () => import("../routes/rootRouteObject").then(m => m.rootRouteObject),
           errorElement: (
-            <RootLayout>
+            <BootstrapLayout>
               <RootErrorBoundary />
-            </RootLayout>
+            </BootstrapLayout>
           ),
           children: [
             {
@@ -114,5 +116,17 @@ export const App: FunctionComponent = () => {
 
   useEffect(() => dispatch({ type: SessionActionType.RESTORE }), [dispatch]);
 
-  return <RouterProvider router={router} />;
+  return (
+    <BootstrapStyles>
+      <RouterProvider
+        router={router}
+        fallbackElement={
+          <BootstrapLayout>
+            <BootstrapContent />
+          </BootstrapLayout>
+        }
+        future={{ v7_startTransition: true }}
+      />
+    </BootstrapStyles>
+  );
 };

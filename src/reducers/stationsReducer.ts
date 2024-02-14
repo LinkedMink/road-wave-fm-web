@@ -1,6 +1,5 @@
 import { StationsActionType } from "../definitions/dashboardConstants";
 import { StationsAction, StationsState } from "../types/actionTypes";
-import { StationsRequestResult } from "../types/requestModels";
 import { StationViewModel } from "../types/responseModels";
 
 export const STATIONS_STATE_INITIAL: StationsState = {
@@ -10,11 +9,10 @@ export const STATIONS_STATE_INITIAL: StationsState = {
 
 export const stationsReducer = (state: StationsState, action: StationsAction): StationsState => {
   if (action.type === StationsActionType.STORE) {
-    const requestResult = action.payload as StationsRequestResult;
+    const list = action.payload as StationViewModel[];
     return {
       ...state,
-      list: requestResult.data,
-      lastRequest: requestResult.params,
+      list,
       hasLastRequestFailed: false,
       selected: undefined,
     };

@@ -1,9 +1,9 @@
 import type { JWTPayload } from "jose";
 import type { AlertActionType, AlertSeverity } from "../definitions/alertConstants";
-import type { SessionActionType } from "../definitions/sharedConstants";
-import type { FormatViewModel, StationViewModel } from "./responseModels";
 import type { FormatsActionType, StationsActionType } from "../definitions/dashboardConstants";
-import type { StationRequest, StationsRequestResult } from "./requestModels";
+import type { SessionActionType } from "../definitions/sharedConstants";
+import type { StationRequest } from "./requestModels";
+import type { FormatViewModel, StationViewModel } from "./responseModels";
 
 export interface ReducerAction<T extends string> {
   readonly type: T;
@@ -36,7 +36,8 @@ export interface FormatsAction extends ReducerAction<FormatsActionType> {
 export interface FormatsState {
   readonly list: FormatViewModel[];
   readonly lastUpdated?: number;
-  readonly selected: Set<string>;
+  readonly selected: string[];
+  readonly selectedPending: Set<string>;
 }
 
 export interface StationsState {
@@ -47,5 +48,5 @@ export interface StationsState {
 }
 
 export interface StationsAction extends ReducerAction<StationsActionType> {
-  readonly payload: StationsRequestResult | StationViewModel | null;
+  readonly payload: StationViewModel[] | StationViewModel | null;
 }
