@@ -5,15 +5,11 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Debug All Tests",
-      "type": "node",
+      "command": "npm run test:debug",
+      "name": "Debug Unit Tests",
       "request": "launch",
-      "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/react-scripts",
-      "args": ["test", "--runInBand", "--no-cache", "--watchAll=false"],
-      "cwd": "${workspaceRoot}",
-      "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen",
-      "env": { "CI": "true" }
+      "type": "node-terminal",
+      "outputCapture": "std"
     },
     {
       "type": "chrome",

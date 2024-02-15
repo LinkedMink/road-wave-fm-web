@@ -1,41 +1,39 @@
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
-import './index.css';
+import "@fontsource/roboto/300.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
+import "./index.css";
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { initialize } from './actions/InitializeAction';
-import AppContainer from './containers/AppContainer';
-import reportWebVitals from './reportWebVitals';
-import * as serviceWorkerRegistration from './serviceWorkerRegistration';
-import store from './store';
-import { BuildEnvVars } from './definitions/AppConstants';
-import { toBoolean } from './shared/Convert';
+import React from "react";
+import { createRoot } from "react-dom/client";
+import { Config } from "./environments/Config";
+import { App } from "./components/App";
+import { ConfigContext } from "./environments/ConfigContext";
+import { SessionProvider } from "./providers/SessionProvider";
 
-initialize(store.dispatch);
-
-ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <AppContainer />
-    </Provider>
-  </React.StrictMode>,
-  document.getElementById('root'),
-);
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://cra.link/PWA
-if (toBoolean(process.env[BuildEnvVars.DisableServiceWorker])) {
-  serviceWorkerRegistration.unregister();
-} else {
-  serviceWorkerRegistration.register();
+const rootElement = document.getElementById("root");
+if (!rootElement) {
+  throw new Error("A HTML container element with id 'root' must exist");
 }
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals(toBoolean(process.env[BuildEnvVars.EnableWebVitals]) ? console.log : undefined);
+const root = createRoot(rootElement);
+root.render(
+  <React.StrictMode>
+    <ConfigContext.Provider value={Config}>
+      <SessionProvider>
+        <App />
+      </SessionProvider>
+    </ConfigContext.Provider>
+  </React.StrictMode>
+);
+
+if (Config.ENABLE_WEB_VITALS) {
+  void import("web-vitals").then(({ onCLS, onFID, onFCP, onINP, onLCP, onTTFB }) => {
+    onCLS(console.log);
+    onFID(console.log);
+    onFCP(console.log);
+    onINP(console.log);
+    onLCP(console.log);
+    onTTFB(console.log);
+  });
+}

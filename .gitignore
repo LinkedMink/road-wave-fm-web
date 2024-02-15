@@ -9,7 +9,8 @@
 /coverage
 
 # production
-/build
+/dist
+/docker/package
 *.tgz
 
 # misc
@@ -23,3 +24,5 @@
 *.log
 
 /public/config.json
+/src/environments/config.*.ts
+!/src/environments/config.production.ts

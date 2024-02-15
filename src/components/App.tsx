@@ -1,111 +1,132 @@
-import { Box, CssBaseline, PaletteMode, ThemeProvider, useMediaQuery } from '@mui/material';
-import { createTheme } from '@mui/material/styles';
-import React, { FunctionComponent, useEffect, useState } from 'react';
-import { BrowserRouter } from 'react-router-dom';
-import AlertDialogContainer from '../containers/AlertDialogContainer';
-import AlertSnackbarContainer from '../containers/AlertSnackbarContainer';
-import ConfirmDialogContainer from '../containers/ConfirmDialogContainer';
-import LoadingOverlayContainer from '../containers/LoadingOverlayContainer';
-import NavigationMenuContainer from '../containers/NavigationMenuContainer';
-import FooterPanel from './FooterPanel';
-import HeaderPanel from './HeaderPanel';
-import RouterOutlet from './RouterOutlet';
+import { FunctionComponent, useContext, useEffect, useMemo } from "react";
+import { Navigate, RouterProvider, createBrowserRouter } from "react-router-dom";
+import { SessionActionType } from "../definitions/sharedConstants";
+import { ConfigContext } from "../environments/ConfigContext";
+import { SessionContext } from "../providers/SessionProvider";
+import { AuthorizeComponent } from "./routing/AuthorizeComponent";
+import { BootstrapContent } from "./routing/BootstrapContent";
+import { RootErrorBoundary } from "./routing/BootstrapErrorBoundary";
+import { BootstrapLayout } from "./routing/BootstrapLayout";
+import { BootstrapStyles } from "./routing/BootstrapStyles";
 
-export interface AppStateProps {
-  isLoggedIn: boolean;
-  isConfigLoaded: boolean;
-  isDependenciesLoaded: boolean;
-  isInitialized: boolean;
-}
+export const App: FunctionComponent = () => {
+  const config = useContext(ConfigContext);
+  const [_, dispatch] = useContext(SessionContext);
 
-export interface AppDispatchProps {
-  loadDependencies(): void;
-  completeInit(): void;
-}
-
-export type AppProps = AppStateProps & AppDispatchProps;
-
-const App: FunctionComponent<AppProps> = (props) => {
-  const isDarkModePrefered = useMediaQuery('(prefers-color-scheme: dark)');
-
-  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-  const [paletteType, setPaletteType] = React.useState<PaletteMode>(
-    isDarkModePrefered ? 'dark' : 'light',
-  );
-
-  const theme = React.useMemo(
+  const router = useMemo(
     () =>
-      createTheme({
-        palette: {
-          mode: paletteType,
+      createBrowserRouter([
+        {
+          lazy: () => import("../routes/rootRouteObject").then(m => m.rootRouteObject),
+          errorElement: (
+            <BootstrapLayout>
+              <RootErrorBoundary />
+            </BootstrapLayout>
+          ),
+          children: [
+            {
+              path: "/",
+              element: <AuthorizeComponent />,
+              children: [
+                {
+                  lazy: () =>
+                    import("../routes/dashboardRouteObject").then(m => m.dashboardRouteObject.root),
+                  children: [
+                    {
+                      path: "",
+                      lazy: () =>
+                        import("../routes/dashboardRouteObject").then(
+                          m => m.dashboardRouteObject.stations
+                        ),
+                    },
+                    {
+                      path: "stations",
+                      lazy: () =>
+                        import("../routes/dashboardRouteObject").then(m => ({
+                          Component: m.dashboardRouteObject.stations.Component,
+                          loader: m.dashboardRouteObject.stations.loaderConstructor!(
+                            config.ROAD_WAVE_API_BASE_URL
+                          ),
+                        })),
+                    },
+                    {
+                      path: "formats",
+                      lazy: () =>
+                        import("../routes/dashboardRouteObject").then(
+                          m => m.dashboardRouteObject.formats
+                        ),
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              path: "/account",
+              element: <AuthorizeComponent />,
+              children: [
+                {
+                  index: true,
+                  lazy: () =>
+                    import("../routes/accountRouteObjects").then(
+                      m => m.accountRouteObjects.account
+                    ),
+                },
+              ],
+            },
+            {
+              path: "/about",
+              lazy: () => import("../routes/infoRouteObject").then(m => m.infoRouteObjects.about),
+            },
+            {
+              path: "/documents/:documentName",
+              lazy: () =>
+                import("../routes/infoRouteObject").then(m => m.infoRouteObjects.documents),
+            },
+            {
+              path: "/login",
+              lazy: () =>
+                import("../routes/loginRouteObjects").then(m => m.loginRouteObjects.login),
+              children: [
+                {
+                  path: "submit",
+                  lazy: () =>
+                    import("../routes/loginRouteObjects").then(m => ({
+                      Component: m.loginRouteObjects.loginSubmit.Component,
+                      action: m.loginRouteObjects.loginSubmit.actionConstructor!(
+                        config.USER_API_BASE_URL
+                      ),
+                    })),
+                },
+              ],
+            },
+            {
+              path: "/logout",
+              lazy: () =>
+                import("../routes/accountRouteObjects").then(m => m.accountRouteObjects.logout),
+            },
+            {
+              path: "*",
+              element: <Navigate to={"/"} />,
+            },
+          ],
         },
-      }),
-    [paletteType],
+      ]),
+    [config.USER_API_BASE_URL, config.ROAD_WAVE_API_BASE_URL]
   );
 
-  useEffect(() => {
-    if (props.isConfigLoaded && !props.isDependenciesLoaded) {
-      return props.loadDependencies();
-    }
-    if (props.isInitialized) {
-      return props.completeInit();
-    }
-  });
+  useEffect(() => dispatch({ type: SessionActionType.RESTORE }), [dispatch]);
 
   return (
-    <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <LoadingOverlayContainer />
-        <AlertDialogContainer />
-        <AlertSnackbarContainer />
-        <ConfirmDialogContainer />
-        <Box
-          sx={{
-            display: 'flex',
-            overflow: 'auto',
-          }}
-        >
-          <HeaderPanel
-            isLoggedIn={props.isLoggedIn}
-            isOpen={isMenuOpen}
-            onMenuOpen={() => setIsMenuOpen(true)}
-            isDarkMode={paletteType === 'dark'}
-            onDarkModeToggle={() => setPaletteType(paletteType === 'dark' ? 'light' : 'dark')}
-          />
-          <NavigationMenuContainer isOpen={isMenuOpen} onMenuClose={() => setIsMenuOpen(false)} />
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              flex: `1 1`,
-              minHeight: `100vh`,
-              alignItems: 'stretch',
-              overflow: 'hidden',
-            }}
-          >
-            <Box sx={theme.mixins.toolbar} />
-            <Box
-              sx={{
-                display: 'flex',
-                flex: '1 1 auto',
-                alignItems: 'stretch',
-                paddingTop: theme.spacing(2),
-                paddingBottom: theme.spacing(2),
-                [theme.breakpoints.up('md')]: {
-                  paddingTop: theme.spacing(4),
-                  paddingBottom: theme.spacing(4),
-                },
-              }}
-            >
-              <RouterOutlet defaultRedirect={'/home'} />
-            </Box>
-            <FooterPanel />
-          </Box>
-        </Box>
-      </ThemeProvider>
-    </BrowserRouter>
+    <BootstrapStyles>
+      <RouterProvider
+        router={router}
+        fallbackElement={
+          <BootstrapLayout>
+            <BootstrapContent />
+          </BootstrapLayout>
+        }
+        future={{ v7_startTransition: true }}
+      />
+    </BootstrapStyles>
   );
 };
-
-export default App;

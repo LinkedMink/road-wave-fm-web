@@ -1,8 +1,8 @@
-import { Container, Link, List, ListItem, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { Box } from '@mui/system';
-import React from 'react';
-import { PagePaper } from '../../shared/Style';
+import { Container, Link, List, ListItemButton, Typography } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import { Box } from "@mui/system";
+import { FunctionComponent } from "react";
+import { PagePaper } from "../styled/PagePaper";
 
 const AboutContentBox = styled(Box)(({ theme }) => ({
   marginBottom: theme.spacing(4),
@@ -13,9 +13,9 @@ const AboutContentBox = styled(Box)(({ theme }) => ({
 //   color: theme.palette.mode === 'dark' ? theme.palette.secondary.light : undefined,
 // }))
 
-const AboutPage: React.FunctionComponent = (_props) => {
+export const AboutPage: FunctionComponent = () => {
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="md">
       <PagePaper>
         <AboutContentBox component="section">
           <Typography variant="h3">About</Typography>
@@ -30,16 +30,16 @@ const AboutPage: React.FunctionComponent = (_props) => {
           <Typography variant="h4">Related Projects</Typography>
           <List>
             <Link href="https://github.com/LinkedMink/road_wave_fm_ui">
-              <ListItem button>Road Wave FM - Mobile UI</ListItem>
+              <ListItemButton>Road Wave FM - Mobile UI</ListItemButton>
             </Link>
             <Link href="https://github.com/LinkedMink/road-wave-fm-web">
-              <ListItem button>Road Wave FM - Web App</ListItem>
+              <ListItemButton>Road Wave FM - Web App</ListItemButton>
             </Link>
             <Link href="https://github.com/LinkedMink/road-wave-fm-api">
-              <ListItem button>Road Wave FM - API</ListItem>
+              <ListItemButton>Road Wave FM - API</ListItemButton>
             </Link>
             <Link href="https://github.com/LinkedMink/node-user-service">
-              <ListItem button>Node User Service</ListItem>
+              <ListItemButton>Node User Service</ListItemButton>
             </Link>
           </List>
         </AboutContentBox>
@@ -47,5 +47,3 @@ const AboutPage: React.FunctionComponent = (_props) => {
     </Container>
   );
 };
-
-export default AboutPage;

@@ -1,5 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "extends": "@tsconfig/create-react-app/tsconfig.json",
-  "include": ["src"]
+  "extends": "@tsconfig/node20/tsconfig.json",
+  "compilerOptions": {
+    "sourceMap": true
+  }
 }
