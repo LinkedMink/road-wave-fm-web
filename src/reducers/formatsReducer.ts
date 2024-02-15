@@ -10,6 +10,16 @@ export const FORMATS_STATE_INITIAL: FormatsState = {
   selectedPending: new Set(),
 };
 
+const setFormatsLocalStorage = (state: FormatsState) =>
+  localStorage.setItem(
+    LocalStorageKey.FORMATS_STATE,
+    JSON.stringify({
+      list: state.list,
+      selected: state.selected,
+      lastUpdated: state.lastUpdated,
+    })
+  );
+
 export const formatsReducer: Reducer<FormatsState, FormatsAction> = (
   state: FormatsState,
   action: FormatsAction
@@ -23,14 +33,7 @@ export const formatsReducer: Reducer<FormatsState, FormatsAction> = (
       lastUpdated: Date.now(),
     };
 
-    localStorage.setItem(
-      LocalStorageKey.FORMATS_STATE,
-      JSON.stringify({
-        list: nextState.list,
-        selected: nextState.selected,
-        lastUpdated: nextState.lastUpdated,
-      })
-    );
+    setFormatsLocalStorage(nextState);
 
     return nextState;
   } else if (action.type === FormatsActionType.SELECT) {
@@ -53,6 +56,8 @@ export const formatsReducer: Reducer<FormatsState, FormatsAction> = (
       ...state,
       selected: Array.from(state.selectedPending),
     };
+
+    setFormatsLocalStorage(nextState);
 
     return nextState;
   } else if (action.type === FormatsActionType.SELECT_CANCEL) {

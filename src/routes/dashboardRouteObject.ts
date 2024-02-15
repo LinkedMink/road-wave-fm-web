@@ -7,21 +7,15 @@ import { fetchAuthClient } from "../functions/fetchAuthClient";
 
 const fetchStationsLoader =
   (baseUrl: string): LoaderFunction =>
-  async ({ request }) => {
+  ({ request }) => {
     const url = new URL(request.url);
     if (!url.searchParams.get("lat") || !url.searchParams.get("lng")) {
       return null;
     }
 
-    const response = await fetchAuthClient(new URL("stations" + url.search, baseUrl), {
+    return fetchAuthClient(new URL("stations" + url.search, baseUrl), {
       method: request.method,
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
     });
-
-    return response;
   };
 
 export const dashboardRouteObject: Record<"root" | "formats" | "stations", LazyRouteObject> = {

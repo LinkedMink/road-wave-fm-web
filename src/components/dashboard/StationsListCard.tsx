@@ -1,15 +1,15 @@
 import { Collapse, List, ListItem, ListItemText, ListSubheader } from "@mui/material";
 import { FunctionComponent, useContext, useEffect, useMemo } from "react";
 import { useLoaderData, useNavigation } from "react-router";
+import { AlertActionType } from "../../definitions/alertConstants";
+import { StationsActionType } from "../../definitions/dashboardConstants";
+import { isMessageResponse } from "../../functions/fetchAuthClient";
+import { AlertContext } from "../../providers/AlertProvider";
+import { StationsContext } from "../../providers/StationsProvider";
 import { MessageResponse, StationViewModel } from "../../types/responseModels";
 import { LoadingSpinner } from "../styled/LoadingSpinner";
 import { PagePaper } from "../styled/PagePaper";
 import { StationListItem } from "./StationListItem";
-import { AlertContext } from "../../providers/AlertProvider";
-import { AlertActionType } from "../../definitions/alertConstants";
-import { isMessageResponse } from "../../functions/fetchAuthClient";
-import { StationsContext } from "../../providers/StationsProvider";
-import { StationsActionType } from "../../definitions/dashboardConstants";
 
 export const StationsListCard: FunctionComponent = () => {
   const navigation = useNavigation();
@@ -49,10 +49,14 @@ export const StationsListCard: FunctionComponent = () => {
         position: "relative",
         display: "flex",
         flex: "1 1 auto",
+        flexDirection: "column",
+        alignItems: "stretch",
       }}
     >
       <Collapse
         sx={{
+          flex: "1",
+          display: "flex",
           width: "100%",
           alignItems: "stretch",
         }}
@@ -61,8 +65,7 @@ export const StationsListCard: FunctionComponent = () => {
         <List
           subheader={<ListSubheader>Station List</ListSubheader>}
           sx={{
-            width: "100%",
-            alignItems: "stretch",
+            height: "100%",
             overflow: "auto",
           }}
         >

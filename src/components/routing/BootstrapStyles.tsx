@@ -7,7 +7,7 @@ import { BackdropProvider } from "../../providers/BackdropProvider";
 export const BootstrapStyles: FunctionComponent<HasChildrenProps> = props => {
   return (
     <PaletteModeProvider>
-      <CssBaseline />
+      <CssBaseline enableColorScheme />
       <BackdropProvider>{props.children}</BackdropProvider>
     </PaletteModeProvider>
   );

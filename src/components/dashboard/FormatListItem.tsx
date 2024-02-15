@@ -28,6 +28,7 @@ export const FormatListItem: FunctionComponent<FormatListItemProps> = props => {
   return (
     <ListItem
       dense={true}
+      disablePadding
       onClick={() => props.onFormatSelect(props.model.id)}
     >
       <ListItemButton>

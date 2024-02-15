@@ -51,9 +51,7 @@ export const FormatsListCard: FunctionComponent = () => {
       <List
         subheader={<ListSubheader>Filter by Format</ListSubheader>}
         sx={{
-          flex: "1 1 auto",
-          width: "100%",
-          alignItems: "stretch",
+          flex: "1",
           overflow: "auto",
         }}
       >

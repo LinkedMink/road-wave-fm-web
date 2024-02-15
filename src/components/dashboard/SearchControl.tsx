@@ -126,13 +126,11 @@ export const SearchControl: FunctionComponent<SearchControlProps> = props => {
         <IconButton
           component={NavLink}
           to={"/formats"}
-          color="error"
           sx={{ p: 1.5, ml: 0.5 }}
         >
           <FilterAltIcon />
         </IconButton>
       </Tooltip>
-
       <Divider
         sx={{ height: 28, m: 0.5 }}
         orientation="vertical"
@@ -144,7 +142,7 @@ export const SearchControl: FunctionComponent<SearchControlProps> = props => {
       >
         <IconButton
           sx={{ p: 1.5 }}
-          color="primary"
+          color={userLocation.isTrackingEnabled ? "primary" : "secondary"}
           onClick={
             userLocation.isTrackingEnabled
               ? userLocation.disableTracking

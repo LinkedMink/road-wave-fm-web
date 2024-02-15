@@ -45,7 +45,8 @@ export const StationListItem: FunctionComponent<StationListItemProps> = props =>
   return (
     <ListItem
       dense={true}
-      onClick={_ => stationsDispatch({ type: StationsActionType.SELECT, payload: props.model })}
+      disablePadding
+      onClick={() => stationsDispatch({ type: StationsActionType.SELECT, payload: props.model })}
     >
       <ListItemButton selected={props.model === stationsState.selected}>
         <ListItemAvatar>

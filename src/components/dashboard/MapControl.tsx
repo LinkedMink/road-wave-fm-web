@@ -180,6 +180,7 @@ export const MapControl: FunctionComponent<MapControlProps> = props => {
           position: "absolute",
           height: "100%",
           width: "100%",
+          border: `1px solid ${theme.palette.divider}`,
         }}
       />
       <LoadingSpinner isLoading={mapsApi.maps.loading || mapsApi.marker.loading} />
