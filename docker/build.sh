@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # Usage: build.sh [true]
 
+set -e
+
 IMAGE_NAME="road-wave-fm-web"
 VERSION=$(npm pkg get version | sed 's/"//g')
 
@@ -29,7 +31,10 @@ echo "---------- Build Started: $startTime ----------"
 
 npm run build
 
-docker buildx build ./ \
+PACKAGE_ARCHIVE=$(npm pack | tail -1)
+tar --extract --verbose --file="$PACKAGE_ARCHIVE" --directory="docker"
+
+docker buildx build ./docker/package \
   --file "docker/Dockerfile" \
   --platform "${ARCHITECTURES}" \
   --tag "${DOCKER_REGISTRY}${DOCKER_SCOPE}${IMAGE_NAME}:latest" \
