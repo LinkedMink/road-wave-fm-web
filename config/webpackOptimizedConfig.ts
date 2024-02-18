@@ -19,7 +19,6 @@ export const webpackOptimizedConfig = merge(webpackCommonConfig, {
   plugins: [
     new MiniCssExtractPlugin({
       filename: "static/[name].[contenthash].css",
-      chunkFilename: "static/[id].[contenthash].js",
     }),
     new CompressionWebpackPlugin({
       filename: "[path][base].gz",
@@ -62,7 +61,7 @@ export const webpackOptimizedConfig = merge(webpackCommonConfig, {
   },
   output: {
     filename: "static/[name].[contenthash].js",
-    assetModuleFilename: "static/[name][ext][query]",
+    assetModuleFilename: "static/[name].[contenthash][ext][query]",
     clean: true,
   },
 });

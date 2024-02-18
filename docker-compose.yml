@@ -7,14 +7,23 @@ services:
       context: ./
       dockerfile: ./docker/Dockerfile
     ports:
+      - 80:80
       - 443:443
     volumes:
       - type: bind
         source: ./dist
         target: /usr/share/nginx/html
       - type: bind
+        source: ./docker/nginx.conf
+        target: /etc/nginx/http.d/default.conf
+      - type: bind
         source: ./docker/localhost.secp384r1.crt
         target: /etc/ssl/certs/localhost.crt
       - type: bind
         source: ./docker/localhost.secp384r1.key
         target: /etc/ssl/certs/localhost.key
+
+networks:
+  default:
+    name: road-wave-fm
+    external: true

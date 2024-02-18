@@ -17,4 +17,3 @@ DNS.1 = localhost
 EOF
 
 openssl x509 -req -SHA384 -extfile openssl.cnf -days 365 -in localhost.secp384r1.csr -CA ca.secp384r1.crt -CAkey ca.secp384r1.key -CAcreateserial -out localhost.secp384r1.crt
-
