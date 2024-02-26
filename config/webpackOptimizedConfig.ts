@@ -4,7 +4,7 @@ import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import zlib, { BrotliOptions } from "node:zlib";
 import { RuleSetUseItem, optimize } from "webpack";
 import { merge } from "webpack-merge";
-import { styleRuleSet, webpackCommonConfig } from "./webpackCommonConfig";
+import { styleRuleSet, webpackCommonConfig } from "./webpackCommonConfig.js";
 
 const optimizedStyleRuleSet = {
   ...styleRuleSet,

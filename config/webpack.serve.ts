@@ -1,6 +1,6 @@
 import "webpack-dev-server";
 import { merge } from "webpack-merge";
-import { webpackFastConfig } from "./webpackFastConfig";
+import { webpackFastConfig } from "./webpackFastConfig.js";
 
 export default merge(webpackFastConfig, {
   devtool: "eval-source-map",

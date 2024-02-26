@@ -1,5 +1,4 @@
 import CopyWebpackPlugin from "copy-webpack-plugin";
-import "dotenv/config";
 import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import path from "node:path";
@@ -86,7 +85,7 @@ export const webpackCommonConfig: Configuration = {
     }),
     new NormalModuleReplacementPlugin(
       /src[\\/]environments[\\/]Config\.ts/,
-      `Config.${process.env.ENVIRONMENT_CONFIG ?? "production"}.ts`
+      `Config.${process.env.TARGET_ENV ?? "production"}.ts`
     ),
     new CopyWebpackPlugin({
       patterns: [

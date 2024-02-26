@@ -1,6 +1,6 @@
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 import { merge } from "webpack-merge";
-import { webpackFastConfig } from "./webpackFastConfig";
+import { webpackFastConfig } from "./webpackFastConfig.js";
 
 export default merge(webpackFastConfig, {
   profile: true,

@@ -1,6 +1,6 @@
 import { RuleSetUseItem } from "webpack";
 import { merge } from "webpack-merge";
-import { styleRuleSet, webpackCommonConfig } from "./webpackCommonConfig";
+import { styleRuleSet, webpackCommonConfig } from "./webpackCommonConfig.js";
 
 const fastStyleRuleSet = {
   ...styleRuleSet,

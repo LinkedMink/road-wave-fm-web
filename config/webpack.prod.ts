@@ -1,3 +1,3 @@
-import { webpackOptimizedConfig } from "./webpackOptimizedConfig";
+import { webpackOptimizedConfig } from "./webpackOptimizedConfig.js";
 
 export default webpackOptimizedConfig;
