@@ -1,10 +1,12 @@
-import type { Config } from "jest";
-import path from "node:path";
+// @ts-check
 
 const IGNORE_COVERAGE_FILES = ["index"];
 
-const config: Config = {
-  rootDir: path.resolve(__dirname, "../"),
+/**
+ * @type {import('jest').Config}
+ */
+const config = {
+  rootDir: process.cwd(),
   verbose: true,
   testEnvironment: "jsdom",
   setupFilesAfterEnv: ["<rootDir>/config/jestSetupAfterEnv.ts"],

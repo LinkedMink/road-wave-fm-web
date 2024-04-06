@@ -35,6 +35,12 @@ const config = {
       extends: ["eslint:recommended"],
     },
     {
+      files: ["*.mjs"],
+      parserOptions: {
+        sourceType: "module",
+      },
+    },
+    {
       files: ["src/**/*.js"],
       env: {
         browser: true,
