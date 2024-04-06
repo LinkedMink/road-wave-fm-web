@@ -20,7 +20,13 @@ export const fetchClient = async (input: string | URL, init?: RequestInit) => {
   };
 
   try {
-    return await fetch(input, requestInit);
+    const response = await fetch(input, requestInit);
+
+    if (response.status >= 500) {
+      return { message: GENERIC_REQUEST_ERROR };
+    }
+
+    return response;
   } catch (error) {
     return { message: GENERIC_REQUEST_ERROR };
   }

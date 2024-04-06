@@ -1,4 +1,5 @@
----
+version: '3.2'
+
 services:
   road-wave-fm-web:
     image: linkedmink/road-wave-fm-web
@@ -7,21 +8,28 @@ services:
       context: ./
       dockerfile: ./docker/Dockerfile
     ports:
-      - 80:80
-      - 443:443
+      - "127.0.0.1:80:80/tcp"
+      - "127.0.0.1:443:443/tcp"
     volumes:
       - type: bind
         source: ./dist
         target: /usr/share/nginx/html
+        read_only: true
       - type: bind
         source: ./docker/nginx.conf
         target: /etc/nginx/http.d/default.conf
+        read_only: true
       - type: bind
         source: ./docker/localhost.secp384r1.crt
         target: /etc/ssl/certs/localhost.crt
+        read_only: true
       - type: bind
         source: ./docker/localhost.secp384r1.key
         target: /etc/ssl/certs/localhost.key
+        read_only: true
+    external_links:
+      - node-user-service
+      - road-wave-fm-api
 
 networks:
   default:
