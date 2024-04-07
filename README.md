@@ -2,14 +2,6 @@
 
 ![Build State](https://github.com/LinkedMink/road-wave-fm-web/actions/workflows/build-main.yml/badge.svg)
 
-```powershell
-docker build `
-  --file "docker/Dockerfile" `
-  --tag "linkedmink/road-wave-fm-web:latest" `
-  --progress "plain" `
-  .
-```
-
 ## Notice
 
 Development on this project has stalled in favor of focusing on a mobile app front-end
@@ -38,6 +30,24 @@ The app aims to be a mobile friendly and simple, so that you can hear fresh tune
 ### Deployment
 
 This package creates static files that can be served by any web server. Some tested options:
+
+#### Docker
+
+```powershell
+docker build `
+  --file "docker/Dockerfile" `
+  --tag "linkedmink/road-wave-fm-web:latest" `
+  --progress "plain" `
+  .
+```
+
+```powershell
+docker run `
+  --name "road-wave-fm-web" `
+  --mount "type=bind,source=$(pwd)/docker/localhost.secp384r1.crt,target=/etc/ssl/certs/localhost.crt" `
+  --mount "type=bind,source=$(pwd)/docker/localhost.secp384r1.key,target=/etc/ssl/certs/localhost.key" `
+  linkedmink/road-wave-fm-web:latest
+```
 
 #### Kubernetes Bare Metal
 

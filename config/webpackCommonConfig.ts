@@ -5,6 +5,9 @@ import path from "node:path";
 import postcssPresetEnv from "postcss-preset-env";
 import { Configuration, NormalModuleReplacementPlugin, RuleSetRule } from "webpack";
 
+const environmentConfig = `Config.${process.env.TARGET_ENV ?? "production"}.ts`;
+console.log(`Using target environment config: ${environmentConfig}`);
+
 export const styleRuleSet: RuleSetRule = {
   test: /\.s?css$/i,
   use: [
@@ -83,10 +86,7 @@ export const webpackCommonConfig: Configuration = {
         configFile: path.resolve(__dirname, "../src/tsconfig.json"),
       },
     }),
-    new NormalModuleReplacementPlugin(
-      /src[\\/]environments[\\/]Config\.ts/,
-      `Config.${process.env.TARGET_ENV ?? "production"}.ts`
-    ),
+    new NormalModuleReplacementPlugin(/src[\\/]environments[\\/]Config\.ts/, environmentConfig),
     new CopyWebpackPlugin({
       patterns: [
         { from: path.join(__dirname, "../src/assets"), to: path.join(__dirname, "../dist") },

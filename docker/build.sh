@@ -26,22 +26,10 @@ elif [[ "$DOCKER_SCOPE" != "*/" ]]; then
   DOCKER_SCOPE="${DOCKER_SCOPE}/"
 fi
 
-startTime=$(date +"%s")
-echo "---------- Build Started: $startTime ----------"
-
-npm run build
-
-PACKAGE_ARCHIVE=$(npm pack | tail -1)
-tar --extract --verbose --file="$PACKAGE_ARCHIVE" --directory="docker"
-
-docker buildx build ./docker/package \
+docker buildx build ./ \
   --file "docker/Dockerfile" \
   --platform "${ARCHITECTURES}" \
   --tag "${DOCKER_REGISTRY}${DOCKER_SCOPE}${IMAGE_NAME}:latest" \
   --tag "${DOCKER_REGISTRY}${DOCKER_SCOPE}${IMAGE_NAME}:${VERSION}" \
   --progress "plain" \
   ${DOCKER_BUILD_OPTIONS}
-
-endTime=$(date +"%s")
-elapsed="$((endTime - startTime))"
-echo "---------- Build Finished: ${elapsed} seconds ----------"
