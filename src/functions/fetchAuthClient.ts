@@ -27,7 +27,7 @@ export const fetchClient = async (input: string | URL, init?: RequestInit) => {
     }
 
     return response;
-  } catch (error) {
+  } catch {
     return { message: GENERIC_REQUEST_ERROR };
   }
 };

@@ -1,4 +1,4 @@
-FROM node:20-alpine as build
+FROM node:20-alpine AS build
 
 ARG TARGET_ENV=production
 
@@ -14,7 +14,7 @@ COPY ./ ./
 
 RUN NODE_OPTIONS="--import tsx" npx webpack --config config/webpack.prod.ts
 
-FROM alpine:latest
+FROM alpine:latest AS application
 
 RUN --mount=type=cache,target=/var/cache/apk/ \
     apk add nginx nginx-mod-http-brotli
