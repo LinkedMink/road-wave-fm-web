@@ -1,5 +1,3 @@
-version: '3.2'
-
 services:
   road-wave-fm-web:
     image: linkedmink/road-wave-fm-web
