@@ -1,10 +1,11 @@
 services:
-  road-wave-fm-web:
+  web:
     image: linkedmink/road-wave-fm-web
-    pull_policy: missing
     build:
       context: ./
-      dockerfile: ./docker/Dockerfile
+      target: application
+    profiles:
+      - deploy
     ports:
       - "127.0.0.1:80:80/tcp"
       - "127.0.0.1:443:443/tcp"
@@ -25,11 +26,26 @@ services:
         source: ./docker/localhost.secp384r1.key
         target: /etc/ssl/certs/localhost.key
         read_only: true
-    external_links:
-      - node-user-service
-      - road-wave-fm-api
+    develop:
+      watch:
+        - action: rebuild
+          path: src
+        - action: rebuild
+          path: package-lock.json
 
-networks:
-  default:
-    name: road-wave-fm
-    external: true
+  web-watch:
+    image: linkedmink/road-wave-fm-web:dev
+    build:
+      context: ./
+      target: watch
+    profiles:
+      - dev
+    ports:
+      - "127.0.0.1:8080:8080/tcp"
+    develop:
+      watch:
+        - action: sync
+          path: ./src
+          target: /home/node/app/src
+        - action: rebuild
+          path: package-lock.json
