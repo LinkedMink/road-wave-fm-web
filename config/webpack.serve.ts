@@ -5,7 +5,7 @@ import { webpackFastConfig } from "./webpackFastConfig.js";
 export default merge(webpackFastConfig, {
   devtool: "eval-source-map",
   devServer: {
-    port: 3000,
+    port: 8080,
     historyApiFallback: true,
     hot: true,
     liveReload: false,

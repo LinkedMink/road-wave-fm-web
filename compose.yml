@@ -1,9 +1,18 @@
 services:
   web:
-    image: linkedmink/road-wave-fm-web
+    image: ${DOCKER_REGISTRY-}linkedmink/road-wave-fm-web
     build:
       context: ./
       target: application
+      # cache_from:
+      #   - type=registry,ref=${DOCKER_REGISTRY-}linkedmink/road-wave-fm-web:build-cache
+      # cache_to:
+      #   - type=registry,ref=${DOCKER_REGISTRY-}linkedmink/road-wave-fm-web:build-cache,mode=max
+      # platforms:
+      #   - "linux/amd64"
+      #   - "linux/arm64"
+      tags:
+        - "linkedmink/road-wave-fm-web:${PACKAGE_VERSION:-latest}"
     profiles:
       - deploy
     ports:
@@ -15,15 +24,15 @@ services:
         target: /usr/share/nginx/html
         read_only: true
       - type: bind
-        source: ./docker/nginx.conf
+        source: ./config/nginx.conf
         target: /etc/nginx/http.d/default.conf
         read_only: true
       - type: bind
-        source: ./docker/localhost.secp384r1.crt
+        source: ./config/localhost.secp384r1.crt
         target: /etc/ssl/certs/localhost.crt
         read_only: true
       - type: bind
-        source: ./docker/localhost.secp384r1.key
+        source: ./config/localhost.secp384r1.key
         target: /etc/ssl/certs/localhost.key
         read_only: true
     develop:
@@ -34,10 +43,14 @@ services:
           path: package-lock.json
 
   web-watch:
-    image: linkedmink/road-wave-fm-web:dev
+    image: ${DOCKER_REGISTRY-}linkedmink/road-wave-fm-web:dev
     build:
       context: ./
       target: watch
+      # cache_from:
+      #   - type=registry,ref=${DOCKER_REGISTRY-}linkedmink/road-wave-fm-web:build-cache
+      # cache_to:
+      #   - type=registry,ref=${DOCKER_REGISTRY-}linkedmink/road-wave-fm-web:build-cache,mode=max
     profiles:
       - dev
     ports:

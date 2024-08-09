@@ -23,8 +23,8 @@
 
 *.log
 
-/src/environments/config.*.ts
-!/src/environments/config.production.ts
+/src/environments/Config.*.ts
+!/src/environments/Config.production.ts
 
 *.key
 *.crt

@@ -1,7 +1,7 @@
 ### Setup Dev Environment
 FROM node:22-alpine AS dependencies
 
-USER node
+USER node:node
 WORKDIR /home/node/app
 
 RUN --mount=type=cache,id=npm,target=/home/node/.npm/,uid=1000,gid=1000 \
@@ -38,7 +38,7 @@ RUN --mount=type=cache,target=/var/cache/apk/ \
 
 WORKDIR /usr/share/nginx/html
 
-COPY docker/nginx.conf /etc/nginx/http.d/default.conf
+COPY config/nginx.conf /etc/nginx/http.d/default.conf
 COPY --from=build /home/node/app/dist/ ./
 
 EXPOSE 80/tcp 443/tcp
