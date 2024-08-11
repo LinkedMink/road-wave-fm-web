@@ -13,7 +13,15 @@ const fetchStationsLoader =
       return null;
     }
 
-    return fetchAuthClient(new URL("stations" + url.search, baseUrl), {
+    const input = {
+      longitude: url.searchParams.get("lng"),
+      latitude: url.searchParams.get("lat"),
+      formatIds: url.searchParams.getAll("fmt"),
+    };
+
+    const encodedInput = encodeURIComponent(JSON.stringify(input));
+
+    return fetchAuthClient(new URL("station.byDistance?input=" + encodedInput, baseUrl), {
       method: request.method,
     });
   };

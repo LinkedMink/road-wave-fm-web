@@ -13,6 +13,9 @@ services:
       #   - "linux/arm64"
       tags:
         - "linkedmink/road-wave-fm-web:${PACKAGE_VERSION:-latest}"
+      # TODO Repo independent way to link this for both container and local build
+      additional_contexts:
+        - road-wave-fm-rpc=../road-wave-fm-rpc
     profiles:
       - deploy
     ports:
@@ -42,11 +45,11 @@ services:
         - action: rebuild
           path: package-lock.json
 
-  web-watch:
+  web-dev:
     image: ${DOCKER_REGISTRY-}linkedmink/road-wave-fm-web:dev
     build:
       context: ./
-      target: watch
+      target: dev
       # cache_from:
       #   - type=registry,ref=${DOCKER_REGISTRY-}linkedmink/road-wave-fm-web:build-cache
       # cache_to:
@@ -55,6 +58,15 @@ services:
       - dev
     ports:
       - "127.0.0.1:8080:8080/tcp"
+    environment:
+      PROXY_DATA_API_BASE_URL: "http://rwf-api-dev:58081"
+      PROXY_USER_API_BASE_URL: "http://eiu-api-dev:58080"
+    # TODO Repo independent way to link this for both container and local build
+    volumes:
+      - type: bind
+        source: ../road-wave-fm-rpc/
+        target: /home/node/road-wave-fm-rpc/
+        read_only: true
     develop:
       watch:
         - action: sync

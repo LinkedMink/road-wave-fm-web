@@ -5,6 +5,17 @@ import eslintPluginReact from "eslint-plugin-react";
 import globals from "globals";
 import tsEslint from "typescript-eslint";
 
+/** @type {import("eslint").Linter.RuleEntry} */
+const noUnusedVarsOptions = [
+  "error",
+  {
+    argsIgnorePattern: "^_",
+    varsIgnorePattern: "^_",
+    caughtErrorsIgnorePattern: "^_",
+    destructuredArrayIgnorePattern: "^_",
+  },
+];
+
 export default tsEslint.config(
   {
     files: ["**/*.js", "**/*.cjs", "**/*.mjs"],
@@ -13,7 +24,7 @@ export default tsEslint.config(
       ecmaVersion: 2022,
     },
     rules: {
-      "no-unused-vars": ["error", { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }],
+      "no-unused-vars": noUnusedVarsOptions,
     },
   },
   {
@@ -48,10 +59,7 @@ export default tsEslint.config(
       },
     },
     rules: {
-      "@typescript-eslint/no-unused-vars": [
-        "error",
-        { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
-      ],
+      "@typescript-eslint/no-unused-vars": noUnusedVarsOptions,
       "@typescript-eslint/restrict-template-expressions": [
         "error",
         {

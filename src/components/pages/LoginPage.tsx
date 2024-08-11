@@ -9,7 +9,7 @@ import { AlertProvider } from "../../providers/AlertProvider";
 import { PagePaper } from "../styled/PagePaper";
 
 type FormInput = {
-  email: string;
+  username: string;
   password: string;
 };
 
@@ -39,16 +39,16 @@ export const LoginPage: FunctionComponent = () => {
             <Stack sx={{ marginBottom: 8 }}>
               <TextField
                 variant="outlined"
-                label="Email"
+                label="Username"
                 type="email"
                 autoComplete="email"
                 margin="normal"
                 fullWidth
                 required
-                error={!!errors.email}
-                helperText={errors.email?.message ?? " "}
+                error={!!errors.username}
+                helperText={errors.username?.message ?? " "}
                 autoFocus
-                {...register("email", { required: "Email is required", maxLength: 320 })}
+                {...register("username", { required: "Username is required", maxLength: 320 })}
               />
               <TextField
                 variant="outlined"

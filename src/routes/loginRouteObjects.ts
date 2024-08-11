@@ -10,7 +10,7 @@ const fetchLoginAction =
     const formData = await request.formData();
     const formDataObj = Object.fromEntries(formData.entries());
 
-    return fetchClient(new URL("authenticate", baseUrl), {
+    return fetchClient("/api/user/login", {
       method: request.method,
       body: JSON.stringify(formDataObj),
     });

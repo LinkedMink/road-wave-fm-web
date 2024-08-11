@@ -25,11 +25,11 @@ export const formatsReducer: Reducer<FormatsState, FormatsAction> = (
   action: FormatsAction
 ): FormatsState => {
   if (action.type === FormatsActionType.SAVE) {
-    const formats = action.payload as FormatViewModel[];
-    const list = formats.sort((a, b) => a.name.localeCompare(b.name));
+    // const formats = action.payload as FormatViewModel[];
+    // const list = formats.sort((a, b) => a.name.localeCompare(b.name));
     const nextState = {
       ...state,
-      list,
+      list: action.payload as FormatViewModel[],
       lastUpdated: Date.now(),
     };
 

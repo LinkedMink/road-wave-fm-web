@@ -40,7 +40,7 @@ export const FormatsProvider: FunctionComponent<HasChildrenProps> = props => {
       return;
     }
 
-    const response = await fetchAuthClient(new URL("formats", config.ROAD_WAVE_API_BASE_URL));
+    const response = await fetchAuthClient(new URL("format.list", config.ROAD_WAVE_API_BASE_URL));
     if (isMessageResponse(response) || response.status !== 200) {
       alertDispatch({ type: AlertActionType.WARN, payload: "Failed to update formats list" });
       return;

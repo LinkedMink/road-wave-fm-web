@@ -25,7 +25,7 @@
   "private": true,
   "scripts": {
     "start": "dotenvx run --env TARGET_ENV=local-dev -- webpack serve --open --config config/webpack.serve.ts",
-    "start:optimized": "docker compose up -d && dotenvx run --env TARGET_ENV=local-optimized -- webpack --watch --config config/webpack.prod.ts",
+    "start:optimized": "docker compose up -d && dotenvx run --env TARGET_ENV=local-container -- webpack --watch --config config/webpack.prod.ts",
     "build": "dotenvx run --env TARGET_ENV=production -- webpack --config config/webpack.prod.ts",
     "build:dev": "dotenvx run --env TARGET_ENV=development -- webpack --config config/webpack.dev.ts",
     "build:local": "dotenvx run --env TARGET_ENV=localhost -- webpack --config config/webpack.local.ts",
@@ -47,6 +47,9 @@
     "@fontsource/roboto": "^5.0.8",
     "@mui/icons-material": "^5.10.2",
     "@mui/material": "^5.10.2",
+    "@tanstack/react-query": "^5.51.23",
+    "@trpc/client": "^11.0.0-rc.477",
+    "@trpc/react-query": "^11.0.0-rc.477",
     "jose": "^5.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

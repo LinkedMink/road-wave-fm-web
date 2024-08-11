@@ -1,7 +1,7 @@
 ### Setup Dev Environment
 FROM node:22-alpine AS dependencies
 
-USER node:node
+USER node
 WORKDIR /home/node/app
 
 RUN --mount=type=cache,id=npm,target=/home/node/.npm/,uid=1000,gid=1000 \
@@ -14,12 +14,12 @@ COPY config/webpack* ./config/
 COPY src ./src/
 
 ### Image for Dev Container
-FROM dependencies AS watch
+FROM dependencies AS dev
 
 EXPOSE 8080/tcp
 HEALTHCHECK CMD netstat -an | grep 8080 > /dev/null; if [ 0 != $? ]; then exit 1; fi;
 
-ENV NODE_OPTIONS="--import tsx" TARGET_ENV=local-dev
+ENV NODE_OPTIONS="--import tsx" TARGET_ENV=local-container
 
 CMD [ "npx", "webpack", "serve", "--config", "config/webpack.serve.ts" ]
 
@@ -28,7 +28,9 @@ FROM dependencies AS build
 
 ARG TARGET_ENV=production
 
-RUN NODE_OPTIONS="--import tsx" npx webpack --config config/webpack.prod.ts
+# TODO Repo independent way to link this for both container and local build
+RUN --mount=type=bind,source=road-wave-fm-rpc,target=../road-wave-fm-rpc \
+    NODE_OPTIONS="--import tsx" npx webpack --config config/webpack.prod.ts
 
 ### Image for Deployment
 FROM alpine:latest AS application

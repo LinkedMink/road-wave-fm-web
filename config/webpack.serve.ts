@@ -12,5 +12,17 @@ export default merge(webpackFastConfig, {
     client: {
       progress: true,
     },
+    proxy: [
+      {
+        context: ["/api/data"],
+        target: process.env.PROXY_DATA_API_BASE_URL ?? "http://localhost:58081",
+        pathRewrite: { "^/api/data": "" },
+      },
+      {
+        context: ["/api/user"],
+        target: process.env.PROXY_USER_API_BASE_URL ?? "http://localhost:58080",
+        pathRewrite: { "^/api/user": "" },
+      },
+    ],
   },
 });

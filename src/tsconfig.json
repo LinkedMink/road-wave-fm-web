@@ -9,7 +9,11 @@
     "sourceMap": true,
     "strict": true,
     "allowJs": true,
-    "outDir": "../dist"
+    "outDir": "../dist",
+    // TODO Repo independent way to link this for both container and local build
+    "paths": {
+      "@linkedmink/road-wave-fm-rpc": ["../../road-wave-fm-rpc/src/index.ts"]
+    }
   },
   "include": ["**/*.ts", "**/*.tsx"],
   "exclude": ["**/*.test.ts", "**/*.test.tsx"]
