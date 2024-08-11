@@ -1,3 +1,24 @@
+/**
+ * TODO export/import API
+ */
+export interface ValidationErrorDto {
+  readonly formErrors: string[];
+  readonly fieldErrors: Record<string, string[]>;
+}
+
+export interface RpcErrorResponse {
+  readonly error: {
+    readonly message: string;
+    readonly code: number;
+    readonly data: {
+      readonly code: string;
+      readonly httpStatus: number;
+      readonly stack: string;
+      readonly path: string;
+    };
+  };
+}
+
 export interface MessageResponse {
   readonly message: string;
 }
@@ -22,7 +43,7 @@ export interface AccountModel {
 }
 
 export interface FormatViewModel {
-  readonly id: string;
+  readonly id: number;
   readonly name: string;
 }
 
@@ -34,5 +55,17 @@ export interface StationViewModel {
   readonly format: string;
   readonly location: Coordinates;
   readonly distance?: number;
+  readonly signalStrength?: number;
+}
+
+export interface StationLocationViewModel {
+  readonly id: number;
+  readonly callSign: string;
+  readonly protocol: string;
+  readonly frequency: number;
+  readonly format: string;
+  readonly formatId: number;
+  readonly coordinates: [number, number];
+  readonly distance: number;
   readonly signalStrength?: number;
 }

@@ -21,7 +21,7 @@ export const FormatsListCard: FunctionComponent = () => {
   }, [formatsDispatch, navigate]);
 
   const selectFormat = useCallback(
-    (formatId: string) => {
+    (formatId: number) => {
       formatsDispatch({ type: FormatsActionType.SELECT, payload: formatId });
     },
     [formatsDispatch]

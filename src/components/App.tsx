@@ -1,7 +1,6 @@
 import { FunctionComponent, useContext, useEffect, useMemo } from "react";
 import { Navigate, RouterProvider, createBrowserRouter } from "react-router-dom";
 import { SessionActionType } from "../definitions/sharedConstants";
-import { ConfigContext } from "../environments/ConfigContext";
 import { SessionContext } from "../providers/SessionProvider";
 import { AuthorizeComponent } from "./routing/AuthorizeComponent";
 import { BootstrapContent } from "./routing/BootstrapContent";
@@ -10,7 +9,6 @@ import { BootstrapLayout } from "./routing/BootstrapLayout";
 import { BootstrapStyles } from "./routing/BootstrapStyles";
 
 export const App: FunctionComponent = () => {
-  const config = useContext(ConfigContext);
   const [_, dispatch] = useContext(SessionContext);
 
   const router = useMemo(
@@ -42,12 +40,9 @@ export const App: FunctionComponent = () => {
                     {
                       path: "stations",
                       lazy: () =>
-                        import("../routes/dashboardRouteObject").then(m => ({
-                          Component: m.dashboardRouteObject.stations.Component,
-                          loader: m.dashboardRouteObject.stations.loaderConstructor!(
-                            config.ROAD_WAVE_API_BASE_URL
-                          ),
-                        })),
+                        import("../routes/dashboardRouteObject").then(
+                          m => m.dashboardRouteObject.stations
+                        ),
                     },
                     {
                       path: "formats",
@@ -90,12 +85,9 @@ export const App: FunctionComponent = () => {
                 {
                   path: "submit",
                   lazy: () =>
-                    import("../routes/loginRouteObjects").then(m => ({
-                      Component: m.loginRouteObjects.loginSubmit.Component,
-                      action: m.loginRouteObjects.loginSubmit.actionConstructor!(
-                        config.USER_API_BASE_URL
-                      ),
-                    })),
+                    import("../routes/loginRouteObjects").then(
+                      m => m.loginRouteObjects.loginSubmit
+                    ),
                 },
               ],
             },
@@ -111,7 +103,7 @@ export const App: FunctionComponent = () => {
           ],
         },
       ]),
-    [config.USER_API_BASE_URL, config.ROAD_WAVE_API_BASE_URL]
+    []
   );
 
   useEffect(() => dispatch({ type: SessionActionType.RESTORE }), [dispatch]);

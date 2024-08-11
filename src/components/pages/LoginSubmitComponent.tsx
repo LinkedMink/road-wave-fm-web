@@ -2,26 +2,34 @@ import { FunctionComponent, useContext, useEffect } from "react";
 import { Navigate, useActionData, useNavigation } from "react-router";
 import { AlertActionType } from "../../definitions/alertConstants";
 import { SessionActionType } from "../../definitions/sharedConstants";
-import { isMessageResponse } from "../../functions/fetchAuthClient";
+import {
+  getResponseErrorMessage,
+  isMessageResponse,
+  isValidationErrorResponseDto,
+} from "../../functions/fetchAuthClient";
 import { AlertContext } from "../../providers/AlertProvider";
 import { BackdropContext } from "../../providers/BackdropProvider";
 import { SessionContext } from "../../providers/SessionProvider";
-import { AuthenticateResponse, MessageResponse } from "../../types/responseModels";
+import {
+  AuthenticateResponse,
+  MessageResponse,
+  ValidationErrorDto,
+} from "../../types/responseModels";
 
 export const LoginSubmitComponent: FunctionComponent = () => {
   const navigation = useNavigation();
   const { setBackdrop, clearBackdrop } = useContext(BackdropContext);
   const [session, dispatchSession] = useContext(SessionContext);
   const [_, dispatchAlert] = useContext(AlertContext);
-  const data = useActionData() as MessageResponse | AuthenticateResponse;
+  const data = useActionData() as ValidationErrorDto | MessageResponse | AuthenticateResponse;
 
   useEffect(() => {
     if (!data) {
       return;
     }
 
-    if (isMessageResponse(data)) {
-      dispatchAlert({ type: AlertActionType.ERROR, payload: data.message ?? "Error logging in" });
+    if (isMessageResponse(data) || isValidationErrorResponseDto(data)) {
+      dispatchAlert({ type: AlertActionType.ERROR, payload: getResponseErrorMessage(data) });
       return;
     }
 

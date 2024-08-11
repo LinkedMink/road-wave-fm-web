@@ -37,7 +37,7 @@ export const formatsReducer: Reducer<FormatsState, FormatsAction> = (
 
     return nextState;
   } else if (action.type === FormatsActionType.SELECT) {
-    const formatId = action.payload as string;
+    const formatId = action.payload as number;
     const selectedPending = new Set(state.selectedPending ?? state.selected);
     if (selectedPending.has(formatId)) {
       selectedPending.delete(formatId);

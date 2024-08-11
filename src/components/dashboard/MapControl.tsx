@@ -7,7 +7,7 @@ import { areEqualMapPos } from "../../functions/math";
 import { MapsContext } from "../../providers/MapsProvider";
 import { StationsContext } from "../../providers/StationsProvider";
 import { UserLocationContext } from "../../providers/UserLocationProvider";
-import { StationViewModel } from "../../types/responseModels";
+import { StationLocationViewModel } from "../../types/responseModels";
 import { LoadingSpinner } from "../styled/LoadingSpinner";
 
 // TODO find better way to import raw SVG
@@ -20,7 +20,7 @@ const INITIAL_ZOOM = 4;
 const FOCUS_ZOOM_MIN = 10;
 
 interface MarkersFor {
-  for: StationViewModel[];
+  for: StationLocationViewModel[];
   refs: google.maps.Marker[];
 }
 
@@ -68,9 +68,13 @@ export const MapControl: FunctionComponent<MapControlProps> = props => {
 
     const newBounds = new mapsApi.core.value.LatLngBounds();
     const createdMarkers = stationsState.list.map((s, i) => {
-      newBounds.extend(s.location);
+      const latLng = {
+        lat: s.coordinates[1],
+        lng: s.coordinates[0],
+      };
+      newBounds.extend(latLng);
       const marker = new markerApi.Marker({
-        position: s.location,
+        position: latLng,
         map: mapRef,
         title: s.callSign,
         label: indexToChar(i),
@@ -128,7 +132,10 @@ export const MapControl: FunctionComponent<MapControlProps> = props => {
       return;
     }
 
-    mapRef.panTo(stationsState.selected.location);
+    mapRef.panTo({
+      lat: stationsState.selected.coordinates[1],
+      lng: stationsState.selected.coordinates[0],
+    });
     const zoom = mapRef.getZoom();
     if (zoom && zoom < FOCUS_ZOOM_MIN) {
       mapRef.setZoom(FOCUS_ZOOM_MIN);

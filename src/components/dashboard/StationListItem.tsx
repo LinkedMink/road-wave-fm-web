@@ -16,7 +16,7 @@ import { FunctionComponent, useContext } from "react";
 import { StationsActionType } from "../../definitions/dashboardConstants";
 import { indexToChar } from "../../functions/collection";
 import { StationsContext } from "../../providers/StationsProvider";
-import { StationViewModel } from "../../types/responseModels";
+import { StationLocationViewModel } from "../../types/responseModels";
 
 const iconBySignalStrength = (signal?: number) => {
   if (!signal) {
@@ -36,7 +36,7 @@ const iconBySignalStrength = (signal?: number) => {
 
 export type StationListItemProps = {
   index: number;
-  model: StationViewModel;
+  model: StationLocationViewModel;
 };
 
 export const StationListItem: FunctionComponent<StationListItemProps> = props => {

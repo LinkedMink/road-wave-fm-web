@@ -3,10 +3,18 @@ import { FunctionComponent, useContext, useEffect, useMemo } from "react";
 import { useLoaderData, useNavigation } from "react-router";
 import { AlertActionType } from "../../definitions/alertConstants";
 import { StationsActionType } from "../../definitions/dashboardConstants";
-import { isMessageResponse } from "../../functions/fetchAuthClient";
+import {
+  getResponseErrorMessage,
+  isMessageResponse,
+  isRpcErrorResponse,
+} from "../../functions/fetchAuthClient";
 import { AlertContext } from "../../providers/AlertProvider";
 import { StationsContext } from "../../providers/StationsProvider";
-import { MessageResponse, StationViewModel } from "../../types/responseModels";
+import {
+  MessageResponse,
+  RpcErrorResponse,
+  StationLocationViewModel,
+} from "../../types/responseModels";
 import { LoadingSpinner } from "../styled/LoadingSpinner";
 import { PagePaper } from "../styled/PagePaper";
 import { StationListItem } from "./StationListItem";
@@ -14,20 +22,23 @@ import { StationListItem } from "./StationListItem";
 export const StationsListCard: FunctionComponent = () => {
   const navigation = useNavigation();
   const [_1, alertDispatch] = useContext(AlertContext);
-  const loaderData = useLoaderData() as null | MessageResponse | StationViewModel[];
+  const loaderData = useLoaderData() as
+    | null
+    | MessageResponse
+    | RpcErrorResponse
+    | { result: { data: StationLocationViewModel[] } };
   const [stationsState, stationsDispatch] = useContext(StationsContext);
-
   useEffect(() => {
     if (!loaderData) {
       return;
     }
 
-    if (isMessageResponse(loaderData)) {
-      alertDispatch({ type: AlertActionType.ERROR, payload: loaderData.message });
+    if (isMessageResponse(loaderData) || isRpcErrorResponse(loaderData)) {
+      alertDispatch({ type: AlertActionType.ERROR, payload: getResponseErrorMessage(loaderData) });
       return;
     }
 
-    stationsDispatch({ type: StationsActionType.STORE, payload: loaderData });
+    stationsDispatch({ type: StationsActionType.STORE, payload: loaderData.result.data });
   }, [alertDispatch, stationsDispatch, loaderData]);
 
   const stationsListElements = useMemo(

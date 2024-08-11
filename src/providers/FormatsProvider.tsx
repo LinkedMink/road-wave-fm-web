@@ -6,16 +6,15 @@ import {
   useEffect,
   useReducer,
 } from "react";
+import { useAsync } from "react-use";
+import { AlertActionType } from "../definitions/alertConstants";
+import { FormatsActionType } from "../definitions/dashboardConstants";
+import { fetchAuthClient, isMessageResponse } from "../functions/fetchAuthClient";
 import { FORMATS_STATE_INITIAL, formatsReducer } from "../reducers/formatsReducer";
 import { FormatsAction, FormatsState } from "../types/actionTypes";
 import { HasChildrenProps } from "../types/reactUtilityTypes";
-import { FormatsActionType } from "../definitions/dashboardConstants";
-import { fetchAuthClient, isMessageResponse } from "../functions/fetchAuthClient";
-import { ConfigContext } from "../environments/ConfigContext";
-import { useAsync } from "react-use";
 import { FormatViewModel } from "../types/responseModels";
 import { AlertContext } from "./AlertProvider";
-import { AlertActionType } from "../definitions/alertConstants";
 
 const CACHE_LENGTH_MS = 7 * 24 * 60 * 60 * 1000;
 
@@ -25,7 +24,6 @@ export const FormatsContext = createContext<[FormatsState, Dispatch<FormatsActio
 ]);
 
 export const FormatsProvider: FunctionComponent<HasChildrenProps> = props => {
-  const config = useContext(ConfigContext);
   const [_, alertDispatch] = useContext(AlertContext);
   const reducerState = useReducer(formatsReducer, FORMATS_STATE_INITIAL);
   const [formatsState, formatsDispatch] = reducerState;
@@ -40,15 +38,15 @@ export const FormatsProvider: FunctionComponent<HasChildrenProps> = props => {
       return;
     }
 
-    const response = await fetchAuthClient(new URL("format.list", config.ROAD_WAVE_API_BASE_URL));
+    const response = await fetchAuthClient("/api/data/format.list");
     if (isMessageResponse(response) || response.status !== 200) {
       alertDispatch({ type: AlertActionType.WARN, payload: "Failed to update formats list" });
       return;
     }
 
-    const data = (await response.json()) as FormatViewModel[];
-    formatsDispatch({ type: FormatsActionType.SAVE, payload: data });
-  }, [config.ROAD_WAVE_API_BASE_URL, formatsState.lastUpdated, formatsDispatch]);
+    const body = (await response.json()) as { result: { data: FormatViewModel[] } };
+    formatsDispatch({ type: FormatsActionType.SAVE, payload: body.result.data });
+  }, [formatsState.lastUpdated, formatsDispatch]);
 
   return <FormatsContext.Provider value={reducerState}>{props.children}</FormatsContext.Provider>;
 };
