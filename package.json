@@ -1,6 +1,6 @@
 {
   "name": "@linkedmink/road-wave-fm-web",
-  "version": "1.3.0-0",
+  "version": "2.0.0-0",
   "description": "A web application to communicate with the Road Wave FM data source",
   "homepage": "https://github.com/LinkedMink/road-wave-fm-web#readme",
   "bugs": {
@@ -38,7 +38,7 @@
     "format": "prettier --write src/**/*.ts{,x} config/**/*.ts *.js",
     "preversion": "npm run lint",
     "version": "npm run build && git add .",
-    "postversion": "bash ./config/build.sh",
+    "postversion": "npm run build:docker",
     "prepare": "husky || cd ."
   },
   "dependencies": {
@@ -50,7 +50,6 @@
     "@tanstack/react-query": "^5.51.23",
     "@trpc/client": "^11.0.0-rc.477",
     "@trpc/react-query": "^11.0.0-rc.477",
-    "jose": "^5.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.50.1",

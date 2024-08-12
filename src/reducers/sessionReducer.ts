@@ -1,10 +1,19 @@
-import { decodeJwt, JWTPayload } from "jose";
 import { Reducer } from "react";
 import { LocalStorageKey, SessionActionType } from "../definitions/sharedConstants";
 import { SessionAction, SessionState } from "../types/actionTypes";
 import { setBearerToken } from "../functions/fetchAuthClient";
+import { JwtPayload } from "../types/responseModels";
 
 export const SESSION_STATE_INITIAL: SessionState = {};
+
+function decodeJwt(jwtToken: string) {
+  const [_header, payload, _signature] = jwtToken.split(".");
+  if (!payload) {
+    throw new Error(`Malformed JWT: ${jwtToken}`);
+  }
+
+  return JSON.parse(atob(payload));
+}
 
 export const sessionReducer: Reducer<SessionState, SessionAction> = (
   state: SessionState,
@@ -13,7 +22,7 @@ export const sessionReducer: Reducer<SessionState, SessionAction> = (
   if (action.type === SessionActionType.SAVE) {
     const jwtToken = action.payload as string;
 
-    let decodedToken: JWTPayload;
+    let decodedToken: JwtPayload;
     try {
       decodedToken = decodeJwt(jwtToken);
     } catch (e) {
@@ -65,5 +74,5 @@ export const sessionReducer: Reducer<SessionState, SessionAction> = (
 
 interface SessionTokens {
   readonly jwtToken: string;
-  readonly decodedToken: JWTPayload;
+  readonly decodedToken: JwtPayload;
 }

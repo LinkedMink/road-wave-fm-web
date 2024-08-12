@@ -69,3 +69,13 @@ export interface StationLocationViewModel {
   readonly distance: number;
   readonly signalStrength?: number;
 }
+
+export interface JwtPayload {
+  readonly iss: string;
+  readonly sub: string;
+  readonly aud: string;
+  readonly jti?: string;
+  readonly nbf?: number;
+  readonly exp?: number;
+  readonly iat?: number;
+}
