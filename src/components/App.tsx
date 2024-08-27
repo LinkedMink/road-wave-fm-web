@@ -92,6 +92,22 @@ export const App: FunctionComponent = () => {
               ],
             },
             {
+              path: "/login/ethereum",
+              lazy: () =>
+                import("../routes/loginEthereumRouteObjects").then(
+                  m => m.loginEthereumRouteObjects.init
+                ),
+              children: [
+                {
+                  path: "submit",
+                  lazy: () =>
+                    import("../routes/loginEthereumRouteObjects").then(
+                      m => m.loginEthereumRouteObjects.submit
+                    ),
+                },
+              ],
+            },
+            {
               path: "/logout",
               lazy: () =>
                 import("../routes/accountRouteObjects").then(m => m.accountRouteObjects.logout),

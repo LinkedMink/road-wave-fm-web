@@ -12,7 +12,7 @@ function decodeJwt(jwtToken: string) {
     throw new Error(`Malformed JWT: ${jwtToken}`);
   }
 
-  return JSON.parse(atob(payload));
+  return JSON.parse(atob(payload)) as JwtPayload;
 }
 
 export const sessionReducer: Reducer<SessionState, SessionAction> = (
@@ -22,13 +22,7 @@ export const sessionReducer: Reducer<SessionState, SessionAction> = (
   if (action.type === SessionActionType.SAVE) {
     const jwtToken = action.payload as string;
 
-    let decodedToken: JwtPayload;
-    try {
-      decodedToken = decodeJwt(jwtToken);
-    } catch (e) {
-      console.error(e);
-      return state;
-    }
+    const decodedToken = decodeJwt(jwtToken);
 
     setBearerToken(jwtToken);
     localStorage.setItem(LocalStorageKey.AUTH_TOKEN, JSON.stringify({ jwtToken, decodedToken }));

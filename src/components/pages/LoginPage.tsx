@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { Button, Stack, TextField } from "@mui/material";
+import { Button, Divider, Stack, TextField } from "@mui/material";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import { FunctionComponent } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Form, Outlet, useSubmit } from "react-router-dom";
+import { Form, Link, Outlet, useSubmit } from "react-router-dom";
 import { AlertProvider } from "../../providers/AlertProvider";
 import { PagePaper } from "../styled/PagePaper";
 
@@ -72,11 +72,12 @@ export const LoginPage: FunctionComponent = () => {
                 Sign In
               </Button>
             </Stack>
-            <Stack
-              spacing={2}
-              sx={{ alignItems: "flex-end" }}
-            >
-              {/* <Link
+          </Form>
+          <Stack
+            spacing={2}
+            sx={{ alignItems: "flex-end", width: "100%" }}
+          >
+            {/* <Link
               component={NavLink}
               to={"/password-reset"}
               variant="body2"
@@ -90,9 +91,19 @@ export const LoginPage: FunctionComponent = () => {
             >
               {"Don't have an account? Sign Up"}
             </Link> */}
-              <Typography variant="body2">Registration has been temporarily closed</Typography>
-            </Stack>
-          </Form>
+            <Typography variant="body2">Registration has been temporarily closed</Typography>
+            <Divider flexItem={true} />
+            <Button
+              component={Link}
+              to={"/login/ethereum"}
+              variant="outlined"
+              color="secondary"
+              size="large"
+              fullWidth
+            >
+              Sign in with Ethereum
+            </Button>
+          </Stack>
         </PagePaper>
       </Container>
     </AlertProvider>
