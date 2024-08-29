@@ -8,26 +8,24 @@ import { MapCard } from "./MapCard";
 
 export const MapDashboard: FunctionComponent = () => {
   return (
-    <AlertProvider>
-      <Container
-        maxWidth="xl"
-        sx={theme => ({
-          minHeight: "100%",
-          display: "flex",
-          flexDirection: "column",
-          alignContent: "stretch",
-          [theme.breakpoints.up("md")]: {
-            flexDirection: "row",
-          },
-        })}
-      >
-        <FormatsProvider>
-          <StationsProvider>
-            <MapCard />
-            <Outlet />
-          </StationsProvider>
-        </FormatsProvider>
-      </Container>
-    </AlertProvider>
+    <Container
+      maxWidth="xl"
+      sx={theme => ({
+        minHeight: "100%",
+        display: "flex",
+        flexDirection: "column",
+        alignContent: "stretch",
+        [theme.breakpoints.up("md")]: {
+          flexDirection: "row",
+        },
+      })}
+    >
+      <FormatsProvider>
+        <StationsProvider>
+          <MapCard />
+          <Outlet />
+        </StationsProvider>
+      </FormatsProvider>
+    </Container>
   );
 };

@@ -1,10 +1,15 @@
 import { useSyncExternalStore } from "react";
-import { EIP6963AnnounceProviderEvent, EIP6963ProviderDetail } from "../types/ethereum";
+import {
+  EIP1193ProviderEventType,
+  EIP6963AnnounceProviderEvent,
+  EIP6963ProviderDetail,
+} from "../types/ethereumProvider";
 
 const ethereumWalletProviders = new Map<string, EIP6963ProviderDetail>();
+let ethereumWalletProvidersSnapshot: EIP6963ProviderDetail[] = [];
 
 const ethereumWalletProviderStore = {
-  getSnapshot: () => ethereumWalletProviders,
+  getSnapshot: () => ethereumWalletProvidersSnapshot,
 
   subscribe: (callback: () => void) => {
     function onAnnouncement(event: EIP6963AnnounceProviderEvent) {
@@ -12,7 +17,10 @@ const ethereumWalletProviderStore = {
         return;
       }
 
+      event.detail.provider.on(EIP1193ProviderEventType.Message, event => console.log(event));
+
       ethereumWalletProviders.set(event.detail.info.uuid, event.detail);
+      ethereumWalletProvidersSnapshot = Array.from(ethereumWalletProviders.values());
       callback();
     }
 

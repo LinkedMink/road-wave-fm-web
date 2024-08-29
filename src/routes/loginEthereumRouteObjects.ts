@@ -1,10 +1,13 @@
 import { ActionFunction, LoaderFunction } from "react-router";
+import { LoginSubmitComponent } from "../components/pages/LoginSubmitComponent";
+import { LoginWithEthereumInit } from "../components/pages/LoginWithEthereumInit";
 import { LoginWithEthereumPage } from "../components/pages/LoginWithEthereumPage";
 import { fetchClient } from "../functions/fetchAuthClient";
 import type { LazyRouteObject } from "../types/reactUtilityTypes";
 
 const fetchLoginInitAction: LoaderFunction = async ({ request }) => {
-  return fetchClient("/api/user/login/ethereum", {
+  const url = new URL(request.url);
+  return fetchClient(`/api/user/login/ethereum?${url.searchParams.toString()}`, {
     method: request.method,
   });
 };
@@ -24,11 +27,11 @@ export const loginEthereumRouteObjects: Record<"page" | "init" | "submit", LazyR
     Component: LoginWithEthereumPage,
   },
   init: {
-    Component: LoginWithEthereumPage,
+    Component: LoginWithEthereumInit,
     loader: fetchLoginInitAction,
   },
   submit: {
-    Component: LoginWithEthereumPage,
+    Component: LoginSubmitComponent,
     action: fetchLoginSubmitAction,
   },
 };

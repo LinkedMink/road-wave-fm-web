@@ -5,6 +5,7 @@ import { HasChildrenProps } from "../../types/reactUtilityTypes";
 import { FooterPanel } from "./FooterPanel";
 import { HeaderPanel } from "./HeaderPanel";
 import { NavigationMenu } from "./NavigationMenu";
+import { AlertProvider } from "../../providers/AlertProvider";
 
 export const RootLayout: FunctionComponent<Partial<HasChildrenProps>> = props => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -41,8 +42,10 @@ export const RootLayout: FunctionComponent<Partial<HasChildrenProps>> = props =>
             component={"main"}
             sx={{ flex: "1 1 auto" }}
           >
-            {props.children}
-            <Outlet />
+            <AlertProvider>
+              {props.children}
+              <Outlet />
+            </AlertProvider>
           </Box>
           <FooterPanel />
         </Box>
