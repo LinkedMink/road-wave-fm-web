@@ -1,34 +1,20 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import {
-  Button,
-  Container,
-  Divider,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  ListSubheader,
-  Stack,
-  Typography,
-} from "@mui/material";
-import { BrowserProvider } from "ethers";
-import { FunctionComponent, useCallback, useContext, useMemo, useState } from "react";
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Container, Typography } from "@mui/material";
+import { BrowserProvider } from "ethers/providers";
+import { FunctionComponent, useCallback, useContext, useState } from "react";
+import { Outlet, useNavigate } from "react-router-dom";
 import { useAsync } from "react-use";
 import { AlertActionType } from "../../definitions/alertConstants";
-import { useEthereumWalletProviders } from "../../hooks/useEthereumWalletProviders";
-import { AlertContext, AlertProvider } from "../../providers/AlertProvider";
+import { isEIP1193ProviderError, isEthersUnknownError } from "../../functions/errorTypeCheck";
+import { AlertContext } from "../../providers/AlertProvider";
 import { EthereumLoginProvider } from "../../providers/EthereumLoginProvider";
 import {
   EIP1193ProviderErrorCode,
-  EIP1193ProviderRpcError,
   EIP6963ProviderDetail,
   JsonRpcError,
-  JsonRpcRequestMethod,
-  JsonRpcRequestParams,
 } from "../../types/ethereumProvider";
 import { PagePaper } from "../styled/PagePaper";
+import { EthereumProviderList } from "./EthereumProviderList";
 
 const Messages = {
   WARN_PENDING:
@@ -37,32 +23,12 @@ const Messages = {
     "You've rejected the request to connect your wallet. You must accept to login with Ethereum.",
 } as const;
 
-interface EthersUnknownError<T extends JsonRpcRequestMethod> {
-  code: "UNKNOWN_ERROR";
-  error: {
-    code: JsonRpcError;
-    payload: {
-      method: T;
-      params: JsonRpcRequestParams<T>;
-    };
-  };
-}
-
-function isEIP1193ProviderError(value: unknown): value is EIP1193ProviderRpcError {
-  return !!(value as EIP1193ProviderRpcError).code;
-}
-
-function isEthersUnknownError(value: unknown): value is EthersUnknownError<JsonRpcRequestMethod> {
-  return (value as EthersUnknownError<JsonRpcRequestMethod>)?.code === "UNKNOWN_ERROR";
-}
-
 export const LoginWithEthereumPage: FunctionComponent = () => {
-  const ethereumProviders = useEthereumWalletProviders();
   const [selectedWallet, setSelectedWallet] = useState<EIP6963ProviderDetail | null>(null);
   const [_, dispatchAlert] = useContext(AlertContext);
   const navigate = useNavigate();
 
-  const connectWallet = useCallback(async () => {
+  const getConnectedSigner = useCallback(async () => {
     if (!selectedWallet) {
       return null;
     }
@@ -97,7 +63,7 @@ export const LoginWithEthereumPage: FunctionComponent = () => {
   }, [selectedWallet, dispatchAlert, setSelectedWallet]);
 
   const loginContext = useAsync(async () => {
-    const context = await connectWallet();
+    const context = await getConnectedSigner();
 
     if (context) {
       navigate("/login/ethereum/init");
@@ -105,27 +71,6 @@ export const LoginWithEthereumPage: FunctionComponent = () => {
 
     return context;
   }, [selectedWallet, navigate]);
-
-  const ethereumProvidersElements = useMemo(
-    () =>
-      ethereumProviders.map(p => (
-        <ListItem
-          key={p.info.uuid}
-          disablePadding
-        >
-          <ListItemButton onClick={() => setSelectedWallet(p)}>
-            <ListItemIcon>
-              <img
-                src={p.info.icon}
-                alt={p.info.name}
-              />
-            </ListItemIcon>
-            <ListItemText primary={p.info.name} />
-          </ListItemButton>
-        </ListItem>
-      )),
-    [ethereumProviders]
-  );
 
   return (
     <Container maxWidth="sm">
@@ -137,50 +82,10 @@ export const LoginWithEthereumPage: FunctionComponent = () => {
 
       <PagePaper>
         <Typography variant="h3">Sign in with Ethereum</Typography>
-        <Stack
-          spacing={2}
-          sx={{ marginTop: 2 }}
-        >
-          <List
-            subheader={<ListSubheader>Wallet Providers</ListSubheader>}
-            sx={{
-              flex: "1",
-              overflow: "auto",
-            }}
-          >
-            {ethereumProvidersElements.length > 0 ? (
-              ethereumProvidersElements
-            ) : (
-              <ListItem>
-                <ListItemText primary="No wallet providers found" />
-              </ListItem>
-            )}
-          </List>
-          <Divider flexItem={true} />
-          {ethereumProvidersElements.length <= 0 && (
-            <Button
-              component={Link}
-              to={"https://metamask.io/download/"}
-              target="_blank"
-              variant="outlined"
-              color="secondary"
-              size="large"
-              fullWidth
-            >
-              Get MetaMask
-            </Button>
-          )}
-          <Button
-            component={Link}
-            to={"/login"}
-            variant="outlined"
-            color="secondary"
-            size="large"
-            fullWidth
-          >
-            Sign in with Password
-          </Button>
-        </Stack>
+        <EthereumProviderList
+          selectedWallet={selectedWallet}
+          onSelectedWallet={setSelectedWallet}
+        />
       </PagePaper>
     </Container>
   );

@@ -1,6 +1,5 @@
-import { Container, Link, List, ListItemButton, Typography } from "@mui/material";
+import { Box, Container, Link, List, ListItemButton, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { Box } from "@mui/system";
 import { FunctionComponent } from "react";
 import { PagePaper } from "../styled/PagePaper";
 
@@ -17,7 +16,7 @@ export const AboutPage: FunctionComponent = () => {
   return (
     <Container maxWidth="md">
       <PagePaper>
-        <AboutContentBox component="section">
+        <AboutContentBox>
           <Typography variant="h3">About</Typography>
           <Typography variant="body1">
             Development on this project has stalled in favor of focusing on a mobile app front-end.
@@ -26,7 +25,7 @@ export const AboutPage: FunctionComponent = () => {
             feel free to reach out on our Github page.
           </Typography>
         </AboutContentBox>
-        <AboutContentBox component="section">
+        <AboutContentBox>
           <Typography variant="h4">Related Projects</Typography>
           <List>
             <Link href="https://github.com/LinkedMink/road_wave_fm_ui">

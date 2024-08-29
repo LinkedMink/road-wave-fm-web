@@ -1,14 +1,15 @@
-import { CssBaseline } from "@mui/material";
+import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import { FunctionComponent } from "react";
-import { PaletteModeProvider } from "../../providers/PaletteModeProvider";
-import { HasChildrenProps } from "../../types/reactUtilityTypes";
 import { BackdropProvider } from "../../providers/BackdropProvider";
+import { HasChildrenProps } from "../../types/reactUtilityTypes";
 
 export const BootstrapStyles: FunctionComponent<HasChildrenProps> = props => {
+  const theme = createTheme({ colorSchemes: { dark: true } });
+
   return (
-    <PaletteModeProvider>
+    <ThemeProvider theme={theme}>
       <CssBaseline enableColorScheme />
       <BackdropProvider>{props.children}</BackdropProvider>
-    </PaletteModeProvider>
+    </ThemeProvider>
   );
 };

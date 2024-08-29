@@ -3,7 +3,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { AppBar, IconButton, Toolbar, Tooltip, Typography } from "@mui/material";
 import { FunctionComponent, MouseEventHandler } from "react";
 import { AccountIconButton } from "./AccountIconButton";
-import { PaletteModeIconButton } from "./PaletteModeIconButton";
+import { ColorSchemeIconButton } from "./ColorSchemeIconButton";
 import { NAV_DRAWER_WIDTH_PX } from "./layoutConstants";
 
 export interface HeaderPanelProps {
@@ -76,7 +76,7 @@ export const HeaderPanel: FunctionComponent<HeaderPanelProps> = props => {
             <GitHubIcon />
           </IconButton>
         </Tooltip>
-        <PaletteModeIconButton />
+        <ColorSchemeIconButton />
         <AccountIconButton />
       </Toolbar>
     </AppBar>

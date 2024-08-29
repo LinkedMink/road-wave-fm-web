@@ -23,10 +23,6 @@ services:
       - "127.0.0.1:443:443/tcp"
     volumes:
       - type: bind
-        source: ./dist
-        target: /usr/share/nginx/html
-        read_only: true
-      - type: bind
         source: ./config/nginx.conf
         target: /etc/nginx/http.d/default.conf
         read_only: true
@@ -40,8 +36,9 @@ services:
         read_only: true
     develop:
       watch:
-        - action: rebuild
-          path: src
+        - action: sync
+          path: ./dist
+          target: /usr/share/nginx/html
         - action: rebuild
           path: package-lock.json
 

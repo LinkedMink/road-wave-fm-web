@@ -45,6 +45,9 @@ export const webpackOptimizedConfig = merge(webpackCommonConfig, {
     runtimeChunk: "single",
     splitChunks: {
       chunks: "all",
+      minSize: 16 * 1024,
+      maxAsyncRequests: 20,
+      maxInitialRequests: 20,
       // cacheGroups: {
       //   vendor: {
       //     test: /[\\/]node_modules[\\/]/,

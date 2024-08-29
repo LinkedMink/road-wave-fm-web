@@ -1,6 +1,4 @@
 export const Config = {
-  ROAD_WAVE_API_BASE_URL: "https://localhost/api/data/",
-  USER_API_BASE_URL: "https://localhost/api/user/",
   GOOGLE_MAPS_API_KEY: "",
   GOOGLE_OAUTH_CLIENT_ID: "",
   ENABLE_SERVICE_WORKER: false,

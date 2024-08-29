@@ -26,9 +26,11 @@ export const FooterPanel: FunctionComponent = () => {
         [theme.breakpoints.up("sm")]: {
           flexDirection: "row",
         },
-        "& a": {
-          color: theme.palette.mode === "dark" ? theme.palette.secondary.light : undefined,
-        },
+        ...theme.applyStyles("dark", {
+          "& a": {
+            color: theme.palette.secondary.light,
+          },
+        }),
       })}
     >
       <FooterTypography

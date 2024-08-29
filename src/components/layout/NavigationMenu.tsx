@@ -54,7 +54,7 @@ export const NavigationMenu: FunctionComponent<NavigationMenuProps> = props => {
             display: "flex",
             alignItems: "center",
             justifyContent: "flex-end",
-            padding: "0 8px",
+            padding: theme.spacing(0, 1),
             minHeight: theme.mixins.toolbar.minHeight,
             [smRule]: theme.mixins.toolbar[smRule],
           };

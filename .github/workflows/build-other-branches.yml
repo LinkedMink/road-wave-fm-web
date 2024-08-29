@@ -1,5 +1,5 @@
 ---
-name: Build Pull Requests and Dispatch
+name: Build Other Branches
 
 concurrency:
   group: build-${{ github.ref }}

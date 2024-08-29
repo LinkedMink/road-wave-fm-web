@@ -1,5 +1,5 @@
 ---
-name: Build Tag with Artifacts on Push
+name: Build Tag with Artifacts
 
 concurrency:
   group: build-tag
@@ -9,6 +9,12 @@ on:
   push:
     tags:
       - "v*.*.*"
+  workflow_dispatch:
+    inputs:
+      uploadToTag:
+        type: string
+        required: true
+        description: "Upload built Bundle to Github tag"
 
 jobs:
   build:
@@ -19,7 +25,7 @@ jobs:
     needs: build
     uses: LinkedMink/.github/.github/workflows/publish-artifacts-for-tag.yml@main
     with:
-      uploadToTag: ${{ github.ref_name }}
+      uploadToTag: ${{ github.event.inputs.uploadToTag || github.ref_name }}
       uploadedBuildName: ${{ needs.build.outputs.uploadedBuildName }}
     secrets:
       REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}

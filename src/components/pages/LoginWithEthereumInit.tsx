@@ -12,7 +12,6 @@ export const LoginWithEthereumInit: FunctionComponent = () => {
   const submit = useSubmit();
   const loginContext = useContext(EthereumLoginContext);
   const { nonce, requestId } = useLoaderData() as { nonce: string; requestId: string };
-  const {} = useState();
 
   useAsync(async () => {
     if (!nonce || !requestId) {
@@ -36,5 +35,5 @@ export const LoginWithEthereumInit: FunctionComponent = () => {
     });
   }, [submit, loginContext, nonce]);
 
-  return <></>;
+  return null;
 };

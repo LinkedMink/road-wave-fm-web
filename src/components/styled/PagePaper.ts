@@ -5,9 +5,11 @@ export const PagePaper = styled(Paper)(({ theme }) => ({
   display: "flex",
   overflow: "auto",
   flexDirection: "column",
-  "& a": {
-    color: theme.palette.mode === "dark" ? theme.palette.secondary.light : undefined,
-  },
+  ...theme.applyStyles("dark", {
+    "& a": {
+      color: theme.palette.secondary.light,
+    },
+  }),
   margin: theme.spacing(2, 0),
 
   padding: theme.spacing(2),
