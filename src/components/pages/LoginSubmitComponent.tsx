@@ -1,5 +1,5 @@
 import { FunctionComponent, useContext, useEffect } from "react";
-import { Navigate, useActionData, useNavigation } from "react-router";
+import { Navigate, useActionData } from "react-router";
 import { AlertActionType } from "../../definitions/alertConstants";
 import { SessionActionType } from "../../definitions/sharedConstants";
 import {
@@ -8,7 +8,6 @@ import {
   isValidationErrorResponseDto,
 } from "../../functions/fetchAuthClient";
 import { AlertContext } from "../../providers/AlertProvider";
-import { BackdropContext } from "../../providers/BackdropProvider";
 import { SessionContext } from "../../providers/SessionProvider";
 import {
   AuthenticateResponse,
@@ -17,8 +16,6 @@ import {
 } from "../../types/responseModels";
 
 export const LoginSubmitComponent: FunctionComponent = () => {
-  const navigation = useNavigation();
-  const { setBackdrop, clearBackdrop } = useContext(BackdropContext);
   const [session, dispatchSession] = useContext(SessionContext);
   const [_, dispatchAlert] = useContext(AlertContext);
   const data = useActionData() as ValidationErrorDto | MessageResponse | AuthenticateResponse;
@@ -35,14 +32,6 @@ export const LoginSubmitComponent: FunctionComponent = () => {
 
     dispatchSession({ type: SessionActionType.SAVE, payload: data.token });
   }, [data, dispatchAlert, dispatchSession]);
-
-  useEffect(() => {
-    if (navigation.state === "submitting") {
-      setBackdrop(null);
-    } else {
-      clearBackdrop();
-    }
-  }, [navigation.state, setBackdrop, clearBackdrop]);
 
   if (session.jwtToken) {
     return <Navigate to={"/"} />;

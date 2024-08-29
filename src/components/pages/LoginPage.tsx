@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import { FunctionComponent } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Form, Link, Outlet, useSubmit } from "react-router-dom";
-import { AlertProvider } from "../../providers/AlertProvider";
+import { NavigationBackdrop } from "../styled/NavigationBackdrop";
 import { PagePaper } from "../styled/PagePaper";
 
 type FormInput = {
@@ -26,6 +26,7 @@ export const LoginPage: FunctionComponent = () => {
 
   return (
     <Container maxWidth="sm">
+      <NavigationBackdrop />
       <Outlet />
       <PagePaper>
         <Typography variant="h3">Login</Typography>

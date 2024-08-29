@@ -1,6 +1,5 @@
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import { FunctionComponent } from "react";
-import { BackdropProvider } from "../../providers/BackdropProvider";
 import { HasChildrenProps } from "../../types/reactUtilityTypes";
 
 export const BootstrapStyles: FunctionComponent<HasChildrenProps> = props => {
@@ -9,7 +8,7 @@ export const BootstrapStyles: FunctionComponent<HasChildrenProps> = props => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline enableColorScheme />
-      <BackdropProvider>{props.children}</BackdropProvider>
+      {props.children}
     </ThemeProvider>
   );
 };

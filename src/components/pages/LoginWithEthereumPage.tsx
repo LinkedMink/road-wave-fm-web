@@ -2,7 +2,7 @@
 import { Container, Typography } from "@mui/material";
 import { BrowserProvider } from "ethers/providers";
 import { FunctionComponent, useCallback, useContext, useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate, useNavigation } from "react-router-dom";
 import { useAsync } from "react-use";
 import { AlertActionType } from "../../definitions/alertConstants";
 import { isEIP1193ProviderError, isEthersUnknownError } from "../../functions/errorTypeCheck";
@@ -13,6 +13,7 @@ import {
   EIP6963ProviderDetail,
   JsonRpcError,
 } from "../../types/ethereumProvider";
+import { NavigationBackdrop } from "../styled/NavigationBackdrop";
 import { PagePaper } from "../styled/PagePaper";
 import { EthereumProviderList } from "./EthereumProviderList";
 
@@ -24,6 +25,7 @@ const Messages = {
 } as const;
 
 export const LoginWithEthereumPage: FunctionComponent = () => {
+  const navigation = useNavigation();
   const [selectedWallet, setSelectedWallet] = useState<EIP6963ProviderDetail | null>(null);
   const [_, dispatchAlert] = useContext(AlertContext);
   const navigate = useNavigate();
@@ -74,6 +76,7 @@ export const LoginWithEthereumPage: FunctionComponent = () => {
 
   return (
     <Container maxWidth="sm">
+      <NavigationBackdrop />
       {!loginContext.loading && loginContext.value && (
         <EthereumLoginProvider context={loginContext.value}>
           <Outlet />

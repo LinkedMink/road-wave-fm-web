@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { createBrowserEip4361Message, toEip4361String } from "@linkedmink/eip-4361-parser";
-import { FunctionComponent, useContext, useEffect, useState } from "react";
+import { FunctionComponent, useContext } from "react";
 import { useLoaderData, useSubmit } from "react-router-dom";
-import { EthereumLoginContext } from "../../providers/EthereumLoginProvider";
 import { useAsync } from "react-use";
+import { EthereumLoginContext } from "../../providers/EthereumLoginProvider";
 
 const EIP_4361_STATEMENT =
   "Only accounts with sufficient transaction history will be allowed to sign in with Ethereum.";

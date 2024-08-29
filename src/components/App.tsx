@@ -3,10 +3,10 @@ import { Navigate, RouterProvider, createBrowserRouter } from "react-router-dom"
 import { SessionActionType } from "../definitions/sharedConstants";
 import { SessionContext } from "../providers/SessionProvider";
 import { AuthorizeComponent } from "./routing/AuthorizeComponent";
-import { BootstrapContent } from "./routing/BootstrapContent";
 import { RootErrorBoundary } from "./routing/BootstrapErrorBoundary";
 import { BootstrapLayout } from "./routing/BootstrapLayout";
 import { BootstrapStyles } from "./routing/BootstrapStyles";
+import { LoadingBackdrop } from "./styled/LoadingBackdrop";
 
 export const App: FunctionComponent = () => {
   const [_, dispatch] = useContext(SessionContext);
@@ -137,7 +137,7 @@ export const App: FunctionComponent = () => {
         router={router}
         fallbackElement={
           <BootstrapLayout>
-            <BootstrapContent />
+            <LoadingBackdrop isLoading={true} />
           </BootstrapLayout>
         }
         future={{ v7_startTransition: true }}
