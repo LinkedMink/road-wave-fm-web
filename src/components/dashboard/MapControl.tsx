@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-deprecated */
 import { Box, useTheme } from "@mui/material";
 import { FunctionComponent, useContext, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -33,7 +34,7 @@ export const MapControl: FunctionComponent<MapControlProps> = props => {
   const mapsApi = useContext(MapsContext);
   const [stationsState, stationsDispatch] = useContext(StationsContext);
   const userLocation = useContext(UserLocationContext);
-  const mapElementRef = useRef(null);
+  const mapElementRef = useRef<HTMLDivElement>(null);
   const [userMarker, setUserMarker] = useState<google.maps.Marker>();
   const [markers, setMarkers] = useState<MarkersFor>({ for: [], refs: [] });
   const [mapRef, setMapRef] = useState<google.maps.Map>();
@@ -54,17 +55,13 @@ export const MapControl: FunctionComponent<MapControlProps> = props => {
 
   useEffect(() => {
     const markerApi = mapsApi.marker.value;
-    if (
-      !mapRef ||
-      !mapsApi.core.value ||
-      !markerApi ||
-      !stationsState.list ||
-      stationsState.list === markers.for
-    ) {
+    if (!mapRef || !mapsApi.core.value || !markerApi || stationsState.list === markers.for) {
       return;
     }
 
-    markers.refs.forEach(m => m.setMap(null));
+    markers.refs.forEach(m => {
+      m.setMap(null);
+    });
 
     const newBounds = new mapsApi.core.value.LatLngBounds();
     const createdMarkers = stationsState.list.map((s, i) => {
@@ -79,9 +76,9 @@ export const MapControl: FunctionComponent<MapControlProps> = props => {
         title: s.callSign,
         label: indexToChar(i),
       });
-      marker.addListener("click", () =>
-        stationsDispatch({ type: StationsActionType.SELECT, payload: s })
-      );
+      marker.addListener("click", () => {
+        stationsDispatch({ type: StationsActionType.SELECT, payload: s });
+      });
       return marker;
     });
 

@@ -129,7 +129,9 @@ export const App: FunctionComponent = () => {
     []
   );
 
-  useEffect(() => dispatch({ type: SessionActionType.RESTORE }), [dispatch]);
+  useEffect(() => {
+    dispatch({ type: SessionActionType.RESTORE });
+  }, [dispatch]);
 
   return (
     <BootstrapStyles>

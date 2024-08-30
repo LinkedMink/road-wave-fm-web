@@ -21,10 +21,6 @@ export const LoginSubmitComponent: FunctionComponent = () => {
   const data = useActionData() as ValidationErrorDto | MessageResponse | AuthenticateResponse;
 
   useEffect(() => {
-    if (!data) {
-      return;
-    }
-
     if (isMessageResponse(data) || isValidationErrorResponseDto(data)) {
       dispatchAlert({ type: AlertActionType.ERROR, payload: getResponseErrorMessage(data) });
       return;

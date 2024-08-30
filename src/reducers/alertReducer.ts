@@ -33,14 +33,13 @@ export const alertReducer: Reducer<AlertState, AlertAction> = (
       message: action.payload,
       closeInMs: NON_CRITICAL_ALERT_CLOSE_MS,
     };
-  } else if (action.type === AlertActionType.SUCCESS) {
+  } else {
+    // AlertActionType.SUCCESS
     return {
       ...state,
       severity: AlertSeverity.SUCCESS,
       message: action.payload,
       closeInMs: NON_CRITICAL_ALERT_CLOSE_MS,
     };
-  } else {
-    return state;
   }
 };

@@ -10,7 +10,7 @@ export const FORMATS_STATE_INITIAL: FormatsState = {
   selectedPending: new Set(),
 };
 
-const setFormatsLocalStorage = (state: FormatsState) =>
+const setFormatsLocalStorage = (state: FormatsState) => {
   localStorage.setItem(
     LocalStorageKey.FORMATS_STATE,
     JSON.stringify({
@@ -19,6 +19,7 @@ const setFormatsLocalStorage = (state: FormatsState) =>
       lastUpdated: state.lastUpdated,
     })
   );
+};
 
 export const formatsReducer: Reducer<FormatsState, FormatsAction> = (
   state: FormatsState,
@@ -38,7 +39,7 @@ export const formatsReducer: Reducer<FormatsState, FormatsAction> = (
     return nextState;
   } else if (action.type === FormatsActionType.SELECT) {
     const formatId = action.payload as number;
-    const selectedPending = new Set(state.selectedPending ?? state.selected);
+    const selectedPending = new Set(state.selectedPending);
     if (selectedPending.has(formatId)) {
       selectedPending.delete(formatId);
     } else {
@@ -67,7 +68,8 @@ export const formatsReducer: Reducer<FormatsState, FormatsAction> = (
     };
 
     return nextState;
-  } else if (action.type === FormatsActionType.RESTORE) {
+  } else {
+    // FormatsActionType.RESTORE
     const storedState = localStorage.getItem(LocalStorageKey.FORMATS_STATE);
     if (!storedState) {
       return {
@@ -82,7 +84,5 @@ export const formatsReducer: Reducer<FormatsState, FormatsAction> = (
       ...storedJson,
       selectedPending: new Set(storedJson.selected),
     };
-  } else {
-    return state;
   }
 };

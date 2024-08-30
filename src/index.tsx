@@ -27,9 +27,8 @@ root.render(
 );
 
 if (Config.ENABLE_WEB_VITALS) {
-  void import("web-vitals").then(({ onCLS, onFID, onFCP, onINP, onLCP, onTTFB }) => {
+  void import("web-vitals").then(({ onCLS, onFCP, onINP, onLCP, onTTFB }) => {
     onCLS(console.log);
-    onFID(console.log);
     onFCP(console.log);
     onINP(console.log);
     onLCP(console.log);

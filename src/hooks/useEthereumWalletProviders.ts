@@ -17,7 +17,9 @@ const ethereumWalletProviderStore = {
         return;
       }
 
-      event.detail.provider.on(EIP1193ProviderEventType.Message, event => console.log(event));
+      event.detail.provider.on(EIP1193ProviderEventType.Message, event => {
+        console.log(event);
+      });
 
       ethereumWalletProviders.set(event.detail.info.uuid, event.detail);
       ethereumWalletProvidersSnapshot = Array.from(ethereumWalletProviders.values());
@@ -27,7 +29,9 @@ const ethereumWalletProviderStore = {
     window.addEventListener("eip6963:announceProvider", onAnnouncement);
     window.dispatchEvent(new Event("eip6963:requestProvider"));
 
-    return () => window.removeEventListener("eip6963:announceProvider", onAnnouncement);
+    return () => {
+      window.removeEventListener("eip6963:announceProvider", onAnnouncement);
+    };
   },
 };
 

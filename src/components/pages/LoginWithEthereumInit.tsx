@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
 import { createBrowserEip4361Message, toEip4361String } from "@linkedmink/eip-4361-parser";
 import { FunctionComponent, useContext } from "react";
 import { useLoaderData, useSubmit } from "react-router-dom";

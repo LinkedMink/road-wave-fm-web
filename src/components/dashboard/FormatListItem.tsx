@@ -24,12 +24,14 @@ export type FormatListItemProps = {
 };
 
 export const FormatListItem: FunctionComponent<FormatListItemProps> = props => {
-  const labelId = LABEL_PREFIX + props.model.id;
+  const labelId = LABEL_PREFIX + props.model.id.toString();
   return (
     <ListItem
       dense={true}
       disablePadding
-      onClick={() => props.onFormatSelect(props.model.id)}
+      onClick={() => {
+        props.onFormatSelect(props.model.id);
+      }}
     >
       <ListItemButton>
         <ListItemIcon>

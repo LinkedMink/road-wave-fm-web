@@ -1,5 +1,6 @@
 export enum JsonRpcError {
   ResourceUnavailable = -32002,
+  Unknown,
 }
 
 export type JsonRpcRequestMethod = "eth_requestAccounts";

@@ -43,7 +43,8 @@ export const sessionReducer: Reducer<SessionState, SessionAction> = (
       jwtToken: undefined,
       decodedToken: undefined,
     };
-  } else if (action.type === SessionActionType.RESTORE) {
+  } else {
+    // SessionActionType.RESTORE
     const tokenData = localStorage.getItem(LocalStorageKey.AUTH_TOKEN);
     if (!tokenData) {
       return state;
@@ -61,8 +62,6 @@ export const sessionReducer: Reducer<SessionState, SessionAction> = (
       ...tokenObj,
       isDestroyed: undefined,
     };
-  } else {
-    return state;
   }
 };
 

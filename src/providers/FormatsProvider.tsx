@@ -28,7 +28,9 @@ export const FormatsProvider: FunctionComponent<HasChildrenProps> = props => {
   const reducerState = useReducer(formatsReducer, FORMATS_STATE_INITIAL);
   const [formatsState, formatsDispatch] = reducerState;
 
-  useEffect(() => formatsDispatch({ type: FormatsActionType.RESTORE }), [formatsDispatch]);
+  useEffect(() => {
+    formatsDispatch({ type: FormatsActionType.RESTORE });
+  }, [formatsDispatch]);
 
   useAsync(async () => {
     if (

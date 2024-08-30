@@ -21,8 +21,9 @@ export const LoginPage: FunctionComponent = () => {
     handleSubmit,
   } = useForm<FormInput>();
 
-  const onSubmit: SubmitHandler<FormInput> = (_data, event) =>
+  const onSubmit: SubmitHandler<FormInput> = (_data, event) => {
     submit(event?.target as HTMLFormElement);
+  };
 
   return (
     <Container maxWidth="sm">

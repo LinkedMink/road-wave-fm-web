@@ -51,7 +51,7 @@ export default tsEslint.config(
   },
   {
     files: ["**/*.ts", "**/*.tsx"],
-    extends: [eslint.configs.recommended, ...tsEslint.configs.recommendedTypeChecked],
+    extends: [eslint.configs.recommended, ...tsEslint.configs.strictTypeChecked],
     languageOptions: {
       ecmaVersion: 2022,
       parserOptions: {

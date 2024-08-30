@@ -1,8 +1,7 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
 import { Container, Typography } from "@mui/material";
 import { BrowserProvider } from "ethers/providers";
 import { FunctionComponent, useCallback, useContext, useState } from "react";
-import { Outlet, useNavigate, useNavigation } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { useAsync } from "react-use";
 import { AlertActionType } from "../../definitions/alertConstants";
 import { isEIP1193ProviderError, isEthersUnknownError } from "../../functions/errorTypeCheck";
@@ -25,7 +24,6 @@ const Messages = {
 } as const;
 
 export const LoginWithEthereumPage: FunctionComponent = () => {
-  const navigation = useNavigation();
   const [selectedWallet, setSelectedWallet] = useState<EIP6963ProviderDetail | null>(null);
   const [_, dispatchAlert] = useContext(AlertContext);
   const navigate = useNavigate();
@@ -52,7 +50,10 @@ export const LoginWithEthereumPage: FunctionComponent = () => {
           type: AlertActionType.WARN,
           payload: Messages.WARN_PENDING,
         });
-      } else if (isEIP1193ProviderError(error) && EIP1193ProviderErrorCode.UserRejectedRequest) {
+      } else if (
+        isEIP1193ProviderError(error) &&
+        error.code === EIP1193ProviderErrorCode.UserRejectedRequest
+      ) {
         dispatchAlert({
           type: AlertActionType.WARN,
           payload: Messages.WARN_REJECTED,

@@ -10,7 +10,7 @@ import {
   ListSubheader,
   Stack,
 } from "@mui/material";
-import { FunctionComponent, useMemo, useState } from "react";
+import { FunctionComponent, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useEthereumWalletProviders } from "../../hooks/useEthereumWalletProviders";
 import { EIP6963ProviderDetail } from "../../types/ethereumProvider";
@@ -33,7 +33,9 @@ export const EthereumProviderList: FunctionComponent<EthereumProviderListOwnProp
           <ListItemButton
             selected={props.selectedWallet === p}
             divider={true}
-            onClick={() => props.onSelectedWallet(p)}
+            onClick={() => {
+              props.onSelectedWallet(p);
+            }}
           >
             <ListItemAvatar>
               <Avatar

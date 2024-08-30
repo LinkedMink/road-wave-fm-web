@@ -26,12 +26,11 @@ export const stationsReducer = (state: StationsState, action: StationsAction): S
       ...state,
       hasLastRequestFailed: true,
     };
-  } else if (action.type === StationsActionType.SET_READY) {
+  } else {
+    // StationsActionType.SET_READY
     return {
       ...state,
       hasLastRequestFailed: false,
     };
-  } else {
-    return state;
   }
 };

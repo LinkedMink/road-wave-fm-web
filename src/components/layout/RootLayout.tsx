@@ -14,11 +14,15 @@ export const RootLayout: FunctionComponent<Partial<HasChildrenProps>> = props =>
     <Fragment>
       <HeaderPanel
         isOpen={isMenuOpen}
-        onMenuOpen={() => setIsMenuOpen(true)}
+        onMenuOpen={() => {
+          setIsMenuOpen(true);
+        }}
       />
       <NavigationMenu
         isOpen={isMenuOpen}
-        onMenuClose={() => setIsMenuOpen(false)}
+        onMenuClose={() => {
+          setIsMenuOpen(false);
+        }}
       />
       <Box
         sx={{

@@ -66,10 +66,13 @@ export const getResponseErrorMessage = (
 };
 
 export const isMessageResponse = (checked: unknown): checked is MessageResponse =>
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   typeof (checked as MessageResponse)?.message === "string";
 
 export const isValidationErrorResponseDto = (checked: unknown): checked is ValidationErrorDto =>
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   !!(checked as ValidationErrorDto)?.fieldErrors;
 
 export const isRpcErrorResponse = (checked: unknown): checked is RpcErrorResponse =>
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   !!(checked as RpcErrorResponse)?.error;

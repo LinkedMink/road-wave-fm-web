@@ -43,7 +43,9 @@ export const SearchControl: FunctionComponent<SearchControlProps> = props => {
       lat: searchLocation.lat.toString(),
       lng: searchLocation.lng.toString(),
     });
-    formatsState.selected.forEach(f => searchParams.append("fmt", f.toString()));
+    formatsState.selected.forEach(f => {
+      searchParams.append("fmt", f.toString());
+    });
 
     submit(searchParams, { action: "/stations", method: "get" });
   }, [formatsState.selected, searchLocation, submit]);

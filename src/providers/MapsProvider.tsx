@@ -18,6 +18,7 @@ export const MapsContext = createContext<MapsApi>({} as MapsApi);
 export const MapsProvider: FunctionComponent<HasChildrenProps> = props => {
   const config = useContext(ConfigContext);
 
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!window.google?.maps?.importLibrary) {
     mapsLoaderBootstrap({ key: config.GOOGLE_MAPS_API_KEY });
   }

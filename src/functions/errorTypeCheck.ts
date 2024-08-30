@@ -8,5 +8,6 @@ export function isEIP1193ProviderError(value: unknown): value is EIP1193Provider
 export function isEthersUnknownError(
   value: unknown
 ): value is EthersUnknownError<JsonRpcRequestMethod> {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   return (value as EthersUnknownError<JsonRpcRequestMethod>)?.code === "UNKNOWN_ERROR";
 }
