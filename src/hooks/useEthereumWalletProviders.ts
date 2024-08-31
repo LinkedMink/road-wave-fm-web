@@ -1,6 +1,6 @@
 import { useSyncExternalStore } from "react";
-import {
-  EIP1193ProviderEventType,
+import { EIP1193ProviderEventType } from "../definitions/ethereumConstants";
+import type {
   EIP6963AnnounceProviderEvent,
   EIP6963ProviderDetail,
 } from "../types/ethereumProvider";

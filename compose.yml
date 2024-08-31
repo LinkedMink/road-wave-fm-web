@@ -12,10 +12,11 @@ services:
       #   - "linux/amd64"
       #   - "linux/arm64"
       tags:
-        - "linkedmink/road-wave-fm-web:${PACKAGE_VERSION:-latest}"
+        - "${DOCKER_REGISTRY-}linkedmink/road-wave-fm-web:${PACKAGE_VERSION:-latest}"
       # TODO Repo independent way to link this for both container and local build
       additional_contexts:
         - road-wave-fm-rpc=../road-wave-fm-rpc
+        - homedir=${HOME:-.}
     profiles:
       - deploy
     ports:
@@ -42,6 +43,26 @@ services:
         - action: rebuild
           path: package-lock.json
 
+  web-env-production:
+    extends: web
+    image: ${DOCKER_REGISTRY-}linkedmink/road-wave-fm-web:production
+    build:
+      args:
+        TARGET_ENV: production
+      platforms:
+        - "linux/amd64"
+        - "linux/arm64"
+
+  web-env-development:
+    extends: web
+    image: ${DOCKER_REGISTRY-}linkedmink/road-wave-fm-web:development
+    build:
+      args:
+        TARGET_ENV: development
+      platforms:
+        - "linux/amd64"
+        - "linux/arm64"
+
   web-dev:
     image: ${DOCKER_REGISTRY-}linkedmink/road-wave-fm-web:dev
     build:
@@ -51,6 +72,8 @@ services:
       #   - type=registry,ref=${DOCKER_REGISTRY-}linkedmink/road-wave-fm-web:build-cache
       # cache_to:
       #   - type=registry,ref=${DOCKER_REGISTRY-}linkedmink/road-wave-fm-web:build-cache,mode=max
+      additional_contexts:
+        - homedir=${HOME:-.}
     profiles:
       - dev
     ports:

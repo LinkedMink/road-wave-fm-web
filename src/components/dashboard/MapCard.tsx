@@ -1,8 +1,8 @@
 import { Box } from "@mui/material";
 import { FunctionComponent, useState } from "react";
-import { MapsProvider } from "../../providers/MapsProvider";
-import { UserLocationProvider } from "../../providers/UserLocationProvider";
-import { PagePaper } from "../styled/PagePaper";
+import { MapsProvider } from "./providers/MapsProvider";
+import { UserLocationProvider } from "./providers/UserLocationProvider";
+import { PagePaper } from "../shared/PagePaper";
 import { MapControl } from "./MapControl";
 import { SearchControl } from "./SearchControl";
 

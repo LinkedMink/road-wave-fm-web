@@ -53,10 +53,6 @@ export const webpackCommonConfig: Configuration = {
         type: "asset",
       },
       {
-        test: /\.md$/i,
-        use: [{ loader: "html-loader" }, { loader: "markdown-loader" }],
-      },
-      {
         test: /\.([cm]?ts|tsx)$/,
         exclude: /node_modules/,
         use: [

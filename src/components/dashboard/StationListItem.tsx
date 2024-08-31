@@ -15,8 +15,8 @@ import {
 import { FunctionComponent, useContext } from "react";
 import { StationsActionType } from "../../definitions/dashboardConstants";
 import { indexToChar } from "../../functions/collection";
-import { StationsContext } from "../../providers/StationsProvider";
 import { StationLocationViewModel } from "../../types/responseModels";
+import { StationsContext } from "./providers/StationsProvider";
 
 const iconBySignalStrength = (signal?: number) => {
   if (!signal) {

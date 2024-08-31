@@ -8,16 +8,16 @@ import {
   isMessageResponse,
   isRpcErrorResponse,
 } from "../../functions/fetchAuthClient";
-import { AlertContext } from "../../providers/AlertProvider";
-import { StationsContext } from "../../providers/StationsProvider";
 import {
   MessageResponse,
   RpcErrorResponse,
   StationLocationViewModel,
 } from "../../types/responseModels";
-import { LoadingSpinner } from "../styled/LoadingSpinner";
-import { PagePaper } from "../styled/PagePaper";
+import { AlertContext } from "../shared/AlertProvider";
+import { LoadingSpinner } from "../shared/LoadingSpinner";
+import { PagePaper } from "../shared/PagePaper";
 import { StationListItem } from "./StationListItem";
+import { StationsContext } from "./providers/StationsProvider";
 
 export const StationsListCard: FunctionComponent = () => {
   const navigation = useNavigation();

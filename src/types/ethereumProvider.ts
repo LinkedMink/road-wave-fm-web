@@ -1,7 +1,7 @@
-export enum JsonRpcError {
-  ResourceUnavailable = -32002,
-  Unknown,
-}
+import type {
+  EIP1193ProviderErrorCode,
+  EIP1193ProviderEventType,
+} from "../definitions/ethereumConstants";
 
 export type JsonRpcRequestMethod = "eth_requestAccounts";
 
@@ -19,29 +19,6 @@ export interface EIP6963ProviderInfo {
   uuid: string; // Globally unique ID to differentiate between provider sessions for the lifetime of the page
   name: string; // Human-readable name of the wallet
   icon: string; // URL to the wallet's icon
-}
-
-export enum EIP1193ProviderErrorCode {
-  /**
-   * The user rejected the request.
-   */
-  UserRejectedRequest = 4001,
-  /**
-   * The requested method and/or account has not been authorized by the user.
-   */
-  Unauthorized = 4100,
-  /**
-   * The Provider does not support the requested method.
-   */
-  UnsupportedMethod = 4200,
-  /**
-   * The Provider is disconnected from all chains.
-   */
-  Disconnected = 4900,
-  /**
-   * The Provider is not connected to the requested chain.
-   */
-  ChainDisconnected = 4901,
 }
 
 export interface EIP1193ProviderRpcError extends Error {
@@ -64,14 +41,6 @@ export interface EIP1193EthSubscriptionProviderMessage extends EIP1193ProviderMe
     readonly subscription: string;
     readonly result: unknown;
   };
-}
-
-export enum EIP1193ProviderEventType {
-  Message = "message",
-  Connect = "connect",
-  Disconnect = "disconnect",
-  ChainChanged = "chainChanged",
-  AccountsChanged = "accountsChanged",
 }
 
 export type EIP1193ProviderEvent<T extends EIP1193ProviderEventType> =

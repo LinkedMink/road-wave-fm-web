@@ -1,6 +1,6 @@
 import { Checkbox, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import { FunctionComponent, useContext } from "react";
-import { FormatsContext } from "../../providers/FormatsProvider";
+import { FormatsContext } from "./providers/FormatsProvider";
 import { FormatViewModel } from "../../types/responseModels";
 
 const LABEL_PREFIX = "format-";

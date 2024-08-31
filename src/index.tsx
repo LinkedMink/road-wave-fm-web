@@ -8,7 +8,7 @@ import { createRoot } from "react-dom/client";
 import { Config } from "./environments/Config";
 import { App } from "./components/App";
 import { ConfigContext } from "./environments/ConfigContext";
-import { SessionProvider } from "./providers/SessionProvider";
+import { SessionProvider } from "./components/shared/SessionProvider";
 
 const rootElement = document.getElementById("root");
 if (!rootElement) {

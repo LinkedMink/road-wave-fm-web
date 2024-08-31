@@ -7,6 +7,7 @@ WORKDIR /home/node/app
 RUN --mount=type=cache,id=npm,target=/home/node/.npm/,uid=1000,gid=1000 \
     --mount=type=bind,source=package.json,target=package.json \
     --mount=type=bind,source=package-lock.json,target=package-lock.json \
+    --mount=from=homedir,source=.npmrc,target=.npmrc \
     npm ci --loglevel info
 
 COPY .browserslistrc tsconfig.json ./
@@ -19,7 +20,7 @@ FROM dependencies AS dev
 EXPOSE 8080/tcp
 HEALTHCHECK CMD netstat -an | grep 8080 > /dev/null; if [ 0 != $? ]; then exit 1; fi;
 
-ENV NODE_OPTIONS="--import tsx" TARGET_ENV=local-container
+ENV NODE_OPTIONS="--import tsx" TARGET_ENV=local
 
 CMD [ "npx", "webpack", "serve", "--config", "config/webpack.serve.ts" ]
 

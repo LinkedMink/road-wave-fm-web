@@ -5,11 +5,11 @@ import { useSearchParams } from "react-router-dom";
 import { StationsActionType } from "../../definitions/dashboardConstants";
 import { indexToChar } from "../../functions/collection";
 import { areEqualMapPos } from "../../functions/math";
-import { MapsContext } from "../../providers/MapsProvider";
-import { StationsContext } from "../../providers/StationsProvider";
-import { UserLocationContext } from "../../providers/UserLocationProvider";
 import { StationLocationViewModel } from "../../types/responseModels";
-import { LoadingSpinner } from "../styled/LoadingSpinner";
+import { LoadingSpinner } from "../shared/LoadingSpinner";
+import { MapsContext } from "./providers/MapsProvider";
+import { StationsContext } from "./providers/StationsProvider";
+import { UserLocationContext } from "./providers/UserLocationProvider";
 
 // TODO find better way to import raw SVG
 // import PersonPinCircleIcon from '@mui/icons-material/PersonPinCircle';
