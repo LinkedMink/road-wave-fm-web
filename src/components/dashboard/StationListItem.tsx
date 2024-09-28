@@ -4,14 +4,7 @@ import SignalWifi2BarIcon from "@mui/icons-material/SignalWifi2Bar";
 import SignalWifi3BarIcon from "@mui/icons-material/SignalWifi3Bar";
 import SignalWifi4BarIcon from "@mui/icons-material/SignalWifi4Bar";
 import SignalWifiOffIcon from "@mui/icons-material/SignalWifiOff";
-import {
-  Avatar,
-  ListItem,
-  ListItemAvatar,
-  ListItemButton,
-  ListItemSecondaryAction,
-  ListItemText,
-} from "@mui/material";
+import { Avatar, ListItem, ListItemAvatar, ListItemButton, ListItemText } from "@mui/material";
 import { FunctionComponent, useContext } from "react";
 import { StationsActionType } from "../../definitions/dashboardConstants";
 import { indexToChar } from "../../functions/collection";
@@ -49,6 +42,7 @@ export const StationListItem: FunctionComponent<StationListItemProps> = props =>
       onClick={() => {
         stationsDispatch({ type: StationsActionType.SELECT, payload: props.model });
       }}
+      secondaryAction={iconBySignalStrength(props.model.signalStrength)}
     >
       <ListItemButton selected={props.model === stationsState.selected}>
         <ListItemAvatar>
@@ -67,9 +61,6 @@ export const StationListItem: FunctionComponent<StationListItemProps> = props =>
             props.model.distance ? `, ${(props.model.distance / 1000).toFixed(1)} km` : ""
           }`}
         />
-        <ListItemSecondaryAction>
-          {iconBySignalStrength(props.model.signalStrength)}
-        </ListItemSecondaryAction>
       </ListItemButton>
     </ListItem>
   );

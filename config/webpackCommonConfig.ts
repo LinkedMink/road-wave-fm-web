@@ -50,7 +50,7 @@ export const webpackCommonConfig: Configuration = {
       },
       {
         test: /\.(eot|otf|ttf|woff|woff2)$/i,
-        type: "asset",
+        type: "asset/resource",
       },
       {
         test: /\.([cm]?ts|tsx)$/,

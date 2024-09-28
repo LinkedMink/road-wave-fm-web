@@ -29,9 +29,7 @@ FROM dependencies AS build
 
 ARG TARGET_ENV=production
 
-# TODO Repo independent way to link this for both container and local build
-RUN --mount=from=road-wave-fm-rpc,target=../road-wave-fm-rpc \
-    NODE_OPTIONS="--import tsx" npx webpack --config config/webpack.prod.ts
+RUN NODE_OPTIONS="--import tsx" npx webpack --config config/webpack.prod.ts
 
 ### Image for Deployment
 FROM alpine:latest AS application

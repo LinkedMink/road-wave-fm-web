@@ -1,11 +1,13 @@
 // @ts-check
-
+/**
+ * @typedef {import("eslint").Linter.RuleEntry} RuleEntry
+ */
 import eslint from "@eslint/js";
 import eslintPluginReact from "eslint-plugin-react";
 import globals from "globals";
 import tsEslint from "typescript-eslint";
 
-/** @type {import("eslint").Linter.RuleEntry} */
+/** @type {RuleEntry} */
 const noUnusedVarsOptions = [
   "error",
   {
@@ -15,6 +17,21 @@ const noUnusedVarsOptions = [
     destructuredArrayIgnorePattern: "^_",
   },
 ];
+
+/** @type {Record<string, RuleEntry>} */
+const tsRules = {
+  "@typescript-eslint/no-unused-vars": noUnusedVarsOptions,
+  "@typescript-eslint/restrict-template-expressions": [
+    "error",
+    {
+      allowNumber: true,
+      allowBoolean: true,
+      allowAny: false,
+      allowNullish: true,
+      allowRegExp: false,
+    },
+  ],
+};
 
 export default tsEslint.config(
   {
@@ -53,34 +70,25 @@ export default tsEslint.config(
     files: ["**/*.ts", "**/*.tsx"],
     extends: [eslint.configs.recommended, ...tsEslint.configs.strictTypeChecked],
     languageOptions: {
-      ecmaVersion: 2022,
       parserOptions: {
-        project: ["tsconfig.json"],
+        projectService: true,
       },
     },
-    rules: {
-      "@typescript-eslint/no-unused-vars": noUnusedVarsOptions,
-      "@typescript-eslint/restrict-template-expressions": [
-        "error",
-        {
-          allowNumber: true,
-          allowBoolean: true,
-          allowAny: false,
-          allowNullish: true,
-          allowRegExp: false,
-        },
-      ],
-    },
+    rules: tsRules,
   },
   {
     files: ["src/**/*.ts", "src/**/*.tsx"],
-    extends: [eslintPluginReact.configs.flat.recommended],
+    extends: [
+      eslint.configs.recommended,
+      ...tsEslint.configs.strictTypeChecked,
+      eslintPluginReact.configs.flat.recommended,
+    ],
     plugins: {
       react: eslintPluginReact,
     },
     languageOptions: {
       parserOptions: {
-        project: ["src/tsconfig.json"],
+        projectService: true,
         ecmaFeatures: {
           jsx: true,
         },
@@ -95,6 +103,7 @@ export default tsEslint.config(
       },
     },
     rules: {
+      ...tsRules,
       "react/prop-types": "off",
       "react/react-in-jsx-scope": "off",
     },

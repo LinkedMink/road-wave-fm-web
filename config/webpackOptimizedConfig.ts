@@ -35,7 +35,7 @@ export const webpackOptimizedConfig = merge(webpackCommonConfig, {
     new CompressionWebpackPlugin({
       filename: "[path][base].gz",
       algorithm: "gzip",
-      minRatio: 1,
+      minRatio: 0.9,
       compressionOptions: {
         windowBits: zlib.constants.Z_MAX_WINDOWBITS,
         level: zlib.constants.Z_MAX_LEVEL,
@@ -52,7 +52,7 @@ export const webpackOptimizedConfig = merge(webpackCommonConfig, {
           // [zlib.constants.BROTLI_PARAM_LGBLOCK]: zlib.constants.BROTLI_MAX_INPUT_BLOCK_BITS
         },
       },
-      minRatio: 1,
+      minRatio: 0.9,
     }),
     // new CompressionWebpackPlugin({
     //   test: /\.(css|html|js|json|map|svg|txt)$/i,

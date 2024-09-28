@@ -1,4 +1,4 @@
-import { Container, Typography } from "@mui/material";
+import { Container } from "@mui/material";
 import { FunctionComponent } from "react";
 import { Outlet } from "react-router-dom";
 import { PagePaper } from "../shared/PagePaper";
