@@ -1,4 +1,4 @@
-import { MessageResponse } from "../types/responseModels";
+import { MessageResponse, RpcErrorResponse, ValidationErrorDto } from "../types/responseModels";
 
 const GENERIC_REQUEST_ERROR = "Service not available, please try again later.";
 const COMMON_HEADERS: HeadersInit = {
@@ -48,5 +48,31 @@ export const fetchAuthClient = async (input: string | URL, init?: RequestInit) =
   });
 };
 
+export const getResponseErrorMessage = (
+  response: MessageResponse | ValidationErrorDto | RpcErrorResponse
+) => {
+  if (isMessageResponse(response)) {
+    return response.message;
+  }
+
+  if (isValidationErrorResponseDto(response)) {
+    return [
+      ...response.formErrors,
+      ...Object.entries(response.fieldErrors).map(error => error.join(": ")),
+    ].join("\n");
+  }
+
+  return response.error.message;
+};
+
 export const isMessageResponse = (checked: unknown): checked is MessageResponse =>
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   typeof (checked as MessageResponse)?.message === "string";
+
+export const isValidationErrorResponseDto = (checked: unknown): checked is ValidationErrorDto =>
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  !!(checked as ValidationErrorDto)?.fieldErrors;
+
+export const isRpcErrorResponse = (checked: unknown): checked is RpcErrorResponse =>
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  !!(checked as RpcErrorResponse)?.error;

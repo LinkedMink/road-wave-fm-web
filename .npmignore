@@ -1,5 +1,5 @@
 *
 !dist/**
-!docker/nginx.conf
+!config/nginx.conf
 !LICENSE.md
 !package.json

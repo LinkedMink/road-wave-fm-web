@@ -1,14 +1,15 @@
+/* eslint-disable @typescript-eslint/no-deprecated */
 import { Box, useTheme } from "@mui/material";
 import { FunctionComponent, useContext, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { StationsActionType } from "../../definitions/dashboardConstants";
 import { indexToChar } from "../../functions/collection";
 import { areEqualMapPos } from "../../functions/math";
-import { MapsContext } from "../../providers/MapsProvider";
-import { StationsContext } from "../../providers/StationsProvider";
-import { UserLocationContext } from "../../providers/UserLocationProvider";
-import { StationViewModel } from "../../types/responseModels";
-import { LoadingSpinner } from "../styled/LoadingSpinner";
+import { StationLocationViewModel } from "../../types/responseModels";
+import { LoadingSpinner } from "../shared/LoadingSpinner";
+import { MapsContext } from "./providers/MapsProvider";
+import { StationsContext } from "./providers/StationsProvider";
+import { UserLocationContext } from "./providers/UserLocationProvider";
 
 // TODO find better way to import raw SVG
 // import PersonPinCircleIcon from '@mui/icons-material/PersonPinCircle';
@@ -20,7 +21,7 @@ const INITIAL_ZOOM = 4;
 const FOCUS_ZOOM_MIN = 10;
 
 interface MarkersFor {
-  for: StationViewModel[];
+  for: StationLocationViewModel[];
   refs: google.maps.Marker[];
 }
 
@@ -33,7 +34,7 @@ export const MapControl: FunctionComponent<MapControlProps> = props => {
   const mapsApi = useContext(MapsContext);
   const [stationsState, stationsDispatch] = useContext(StationsContext);
   const userLocation = useContext(UserLocationContext);
-  const mapElementRef = useRef(null);
+  const mapElementRef = useRef<HTMLDivElement>(null);
   const [userMarker, setUserMarker] = useState<google.maps.Marker>();
   const [markers, setMarkers] = useState<MarkersFor>({ for: [], refs: [] });
   const [mapRef, setMapRef] = useState<google.maps.Map>();
@@ -54,30 +55,30 @@ export const MapControl: FunctionComponent<MapControlProps> = props => {
 
   useEffect(() => {
     const markerApi = mapsApi.marker.value;
-    if (
-      !mapRef ||
-      !mapsApi.core.value ||
-      !markerApi ||
-      !stationsState.list ||
-      stationsState.list === markers.for
-    ) {
+    if (!mapRef || !mapsApi.core.value || !markerApi || stationsState.list === markers.for) {
       return;
     }
 
-    markers.refs.forEach(m => m.setMap(null));
+    markers.refs.forEach(m => {
+      m.setMap(null);
+    });
 
     const newBounds = new mapsApi.core.value.LatLngBounds();
     const createdMarkers = stationsState.list.map((s, i) => {
-      newBounds.extend(s.location);
+      const latLng = {
+        lat: s.coordinates[1],
+        lng: s.coordinates[0],
+      };
+      newBounds.extend(latLng);
       const marker = new markerApi.Marker({
-        position: s.location,
+        position: latLng,
         map: mapRef,
         title: s.callSign,
         label: indexToChar(i),
       });
-      marker.addListener("click", () =>
-        stationsDispatch({ type: StationsActionType.SELECT, payload: s })
-      );
+      marker.addListener("click", () => {
+        stationsDispatch({ type: StationsActionType.SELECT, payload: s });
+      });
       return marker;
     });
 
@@ -128,7 +129,10 @@ export const MapControl: FunctionComponent<MapControlProps> = props => {
       return;
     }
 
-    mapRef.panTo(stationsState.selected.location);
+    mapRef.panTo({
+      lat: stationsState.selected.coordinates[1],
+      lng: stationsState.selected.coordinates[0],
+    });
     const zoom = mapRef.getZoom();
     if (zoom && zoom < FOCUS_ZOOM_MIN) {
       mapRef.setZoom(FOCUS_ZOOM_MIN);

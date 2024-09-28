@@ -1,10 +1,19 @@
-import { decodeJwt, JWTPayload } from "jose";
 import { Reducer } from "react";
 import { LocalStorageKey, SessionActionType } from "../definitions/sharedConstants";
 import { SessionAction, SessionState } from "../types/actionTypes";
 import { setBearerToken } from "../functions/fetchAuthClient";
+import { JwtPayload } from "../types/responseModels";
 
 export const SESSION_STATE_INITIAL: SessionState = {};
+
+function decodeJwt(jwtToken: string) {
+  const [_header, payload, _signature] = jwtToken.split(".");
+  if (!payload) {
+    throw new Error(`Malformed JWT: ${jwtToken}`);
+  }
+
+  return JSON.parse(atob(payload)) as JwtPayload;
+}
 
 export const sessionReducer: Reducer<SessionState, SessionAction> = (
   state: SessionState,
@@ -13,13 +22,7 @@ export const sessionReducer: Reducer<SessionState, SessionAction> = (
   if (action.type === SessionActionType.SAVE) {
     const jwtToken = action.payload as string;
 
-    let decodedToken: JWTPayload;
-    try {
-      decodedToken = decodeJwt(jwtToken);
-    } catch (e) {
-      console.error(e);
-      return state;
-    }
+    const decodedToken = decodeJwt(jwtToken);
 
     setBearerToken(jwtToken);
     localStorage.setItem(LocalStorageKey.AUTH_TOKEN, JSON.stringify({ jwtToken, decodedToken }));
@@ -40,7 +43,8 @@ export const sessionReducer: Reducer<SessionState, SessionAction> = (
       jwtToken: undefined,
       decodedToken: undefined,
     };
-  } else if (action.type === SessionActionType.RESTORE) {
+  } else {
+    // SessionActionType.RESTORE
     const tokenData = localStorage.getItem(LocalStorageKey.AUTH_TOKEN);
     if (!tokenData) {
       return state;
@@ -58,12 +62,10 @@ export const sessionReducer: Reducer<SessionState, SessionAction> = (
       ...tokenObj,
       isDestroyed: undefined,
     };
-  } else {
-    return state;
   }
 };
 
 interface SessionTokens {
   readonly jwtToken: string;
-  readonly decodedToken: JWTPayload;
+  readonly decodedToken: JwtPayload;
 }

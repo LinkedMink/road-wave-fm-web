@@ -1,6 +1,6 @@
 import { StationsActionType } from "../definitions/dashboardConstants";
 import { StationsAction, StationsState } from "../types/actionTypes";
-import { StationViewModel } from "../types/responseModels";
+import { StationLocationViewModel } from "../types/responseModels";
 
 export const STATIONS_STATE_INITIAL: StationsState = {
   list: [],
@@ -9,7 +9,7 @@ export const STATIONS_STATE_INITIAL: StationsState = {
 
 export const stationsReducer = (state: StationsState, action: StationsAction): StationsState => {
   if (action.type === StationsActionType.STORE) {
-    const list = action.payload as StationViewModel[];
+    const list = action.payload as StationLocationViewModel[];
     return {
       ...state,
       list,
@@ -19,19 +19,18 @@ export const stationsReducer = (state: StationsState, action: StationsAction): S
   } else if (action.type === StationsActionType.SELECT) {
     return {
       ...state,
-      selected: action.payload as StationViewModel,
+      selected: action.payload as StationLocationViewModel,
     };
   } else if (action.type === StationsActionType.SET_FAILED) {
     return {
       ...state,
       hasLastRequestFailed: true,
     };
-  } else if (action.type === StationsActionType.SET_READY) {
+  } else {
+    // StationsActionType.SET_READY
     return {
       ...state,
       hasLastRequestFailed: false,
     };
-  } else {
-    return state;
   }
 };

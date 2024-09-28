@@ -10,7 +10,7 @@ export const FORMATS_STATE_INITIAL: FormatsState = {
   selectedPending: new Set(),
 };
 
-const setFormatsLocalStorage = (state: FormatsState) =>
+const setFormatsLocalStorage = (state: FormatsState) => {
   localStorage.setItem(
     LocalStorageKey.FORMATS_STATE,
     JSON.stringify({
@@ -19,17 +19,18 @@ const setFormatsLocalStorage = (state: FormatsState) =>
       lastUpdated: state.lastUpdated,
     })
   );
+};
 
 export const formatsReducer: Reducer<FormatsState, FormatsAction> = (
   state: FormatsState,
   action: FormatsAction
 ): FormatsState => {
   if (action.type === FormatsActionType.SAVE) {
-    const formats = action.payload as FormatViewModel[];
-    const list = formats.sort((a, b) => a.name.localeCompare(b.name));
+    // const formats = action.payload as FormatViewModel[];
+    // const list = formats.sort((a, b) => a.name.localeCompare(b.name));
     const nextState = {
       ...state,
-      list,
+      list: action.payload as FormatViewModel[],
       lastUpdated: Date.now(),
     };
 
@@ -37,8 +38,8 @@ export const formatsReducer: Reducer<FormatsState, FormatsAction> = (
 
     return nextState;
   } else if (action.type === FormatsActionType.SELECT) {
-    const formatId = action.payload as string;
-    const selectedPending = new Set(state.selectedPending ?? state.selected);
+    const formatId = action.payload as number;
+    const selectedPending = new Set(state.selectedPending);
     if (selectedPending.has(formatId)) {
       selectedPending.delete(formatId);
     } else {
@@ -67,7 +68,8 @@ export const formatsReducer: Reducer<FormatsState, FormatsAction> = (
     };
 
     return nextState;
-  } else if (action.type === FormatsActionType.RESTORE) {
+  } else {
+    // FormatsActionType.RESTORE
     const storedState = localStorage.getItem(LocalStorageKey.FORMATS_STATE);
     if (!storedState) {
       return {
@@ -82,7 +84,5 @@ export const formatsReducer: Reducer<FormatsState, FormatsAction> = (
       ...storedJson,
       selectedPending: new Set(storedJson.selected),
     };
-  } else {
-    return state;
   }
 };

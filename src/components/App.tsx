@@ -1,23 +1,21 @@
 import { FunctionComponent, useContext, useEffect, useMemo } from "react";
 import { Navigate, RouterProvider, createBrowserRouter } from "react-router-dom";
 import { SessionActionType } from "../definitions/sharedConstants";
-import { ConfigContext } from "../environments/ConfigContext";
-import { SessionContext } from "../providers/SessionProvider";
-import { AuthorizeComponent } from "./routing/AuthorizeComponent";
-import { BootstrapContent } from "./routing/BootstrapContent";
-import { RootErrorBoundary } from "./routing/BootstrapErrorBoundary";
-import { BootstrapLayout } from "./routing/BootstrapLayout";
-import { BootstrapStyles } from "./routing/BootstrapStyles";
+import { SessionContext } from "./shared/SessionProvider";
+import { AuthorizeComponent } from "./bootstrap/AuthorizeComponent";
+import { BootstrapLayout } from "./bootstrap/BootstrapLayout";
+import { BootstrapStyles } from "./bootstrap/BootstrapStyles";
+import { RootErrorBoundary } from "./bootstrap/RootErrorBoundary";
+import { LoadingBackdrop } from "./shared/LoadingBackdrop";
 
 export const App: FunctionComponent = () => {
-  const config = useContext(ConfigContext);
   const [_, dispatch] = useContext(SessionContext);
 
   const router = useMemo(
     () =>
       createBrowserRouter([
         {
-          lazy: () => import("../routes/rootRouteObject").then(m => m.rootRouteObject),
+          lazy: () => import("./root/rootRouteObject").then(m => m.rootRouteObject),
           errorElement: (
             <BootstrapLayout>
               <RootErrorBoundary />
@@ -30,29 +28,28 @@ export const App: FunctionComponent = () => {
               children: [
                 {
                   lazy: () =>
-                    import("../routes/dashboardRouteObject").then(m => m.dashboardRouteObject.root),
+                    import("./dashboard/dashboardRouteObject").then(
+                      m => m.dashboardRouteObject.root
+                    ),
                   children: [
                     {
                       path: "",
                       lazy: () =>
-                        import("../routes/dashboardRouteObject").then(
+                        import("./dashboard/dashboardRouteObject").then(
                           m => m.dashboardRouteObject.stations
                         ),
                     },
                     {
                       path: "stations",
                       lazy: () =>
-                        import("../routes/dashboardRouteObject").then(m => ({
-                          Component: m.dashboardRouteObject.stations.Component,
-                          loader: m.dashboardRouteObject.stations.loaderConstructor!(
-                            config.ROAD_WAVE_API_BASE_URL
-                          ),
-                        })),
+                        import("./dashboard/dashboardRouteObject").then(
+                          m => m.dashboardRouteObject.stations
+                        ),
                     },
                     {
                       path: "formats",
                       lazy: () =>
-                        import("../routes/dashboardRouteObject").then(
+                        import("./dashboard/dashboardRouteObject").then(
                           m => m.dashboardRouteObject.formats
                         ),
                     },
@@ -67,7 +64,7 @@ export const App: FunctionComponent = () => {
                 {
                   index: true,
                   lazy: () =>
-                    import("../routes/accountRouteObjects").then(
+                    import("./account/accountRouteObjects").then(
                       m => m.accountRouteObjects.account
                     ),
                 },
@@ -75,34 +72,62 @@ export const App: FunctionComponent = () => {
             },
             {
               path: "/about",
-              lazy: () => import("../routes/infoRouteObject").then(m => m.infoRouteObjects.about),
+              lazy: () => import("./info/infoRouteObject").then(m => m.infoRouteObjects.about),
             },
             {
-              path: "/documents/:documentName",
-              lazy: () =>
-                import("../routes/infoRouteObject").then(m => m.infoRouteObjects.documents),
+              path: "/documents",
+              lazy: () => import("./info/infoRouteObject").then(m => m.infoRouteObjects.documents),
+              children: [
+                {
+                  path: "license",
+                  lazy: () =>
+                    import("./info/infoRouteObject").then(m => m.infoRouteObjects.license),
+                },
+                {
+                  path: "privacy-policy",
+                  lazy: () =>
+                    import("./info/infoRouteObject").then(m => m.infoRouteObjects.privacyPolicy),
+                },
+              ],
             },
             {
               path: "/login",
-              lazy: () =>
-                import("../routes/loginRouteObjects").then(m => m.loginRouteObjects.login),
+              lazy: () => import("./login/loginRouteObjects").then(m => m.loginRouteObjects.login),
               children: [
                 {
                   path: "submit",
                   lazy: () =>
-                    import("../routes/loginRouteObjects").then(m => ({
-                      Component: m.loginRouteObjects.loginSubmit.Component,
-                      action: m.loginRouteObjects.loginSubmit.actionConstructor!(
-                        config.USER_API_BASE_URL
-                      ),
-                    })),
+                    import("./login/loginRouteObjects").then(m => m.loginRouteObjects.loginSubmit),
+                },
+              ],
+            },
+            {
+              path: "/login/ethereum",
+              lazy: () =>
+                import("./login/ethereum/loginEthereumRouteObjects").then(
+                  m => m.loginEthereumRouteObjects.page
+                ),
+              children: [
+                {
+                  path: "init",
+                  lazy: () =>
+                    import("./login/ethereum/loginEthereumRouteObjects").then(
+                      m => m.loginEthereumRouteObjects.init
+                    ),
+                },
+                {
+                  path: "submit",
+                  lazy: () =>
+                    import("./login/ethereum/loginEthereumRouteObjects").then(
+                      m => m.loginEthereumRouteObjects.submit
+                    ),
                 },
               ],
             },
             {
               path: "/logout",
               lazy: () =>
-                import("../routes/accountRouteObjects").then(m => m.accountRouteObjects.logout),
+                import("./account/accountRouteObjects").then(m => m.accountRouteObjects.logout),
             },
             {
               path: "*",
@@ -111,10 +136,12 @@ export const App: FunctionComponent = () => {
           ],
         },
       ]),
-    [config.USER_API_BASE_URL, config.ROAD_WAVE_API_BASE_URL]
+    []
   );
 
-  useEffect(() => dispatch({ type: SessionActionType.RESTORE }), [dispatch]);
+  useEffect(() => {
+    dispatch({ type: SessionActionType.RESTORE });
+  }, [dispatch]);
 
   return (
     <BootstrapStyles>
@@ -122,7 +149,7 @@ export const App: FunctionComponent = () => {
         router={router}
         fallbackElement={
           <BootstrapLayout>
-            <BootstrapContent />
+            <LoadingBackdrop isLoading={true} />
           </BootstrapLayout>
         }
         future={{ v7_startTransition: true }}

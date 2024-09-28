@@ -1,11 +1,11 @@
 import { Checkbox, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import { FunctionComponent, useContext } from "react";
-import { FormatsContext } from "../../providers/FormatsProvider";
+import { FormatsContext } from "./providers/FormatsProvider";
 import { FormatViewModel } from "../../types/responseModels";
 
 const LABEL_PREFIX = "format-";
 
-const FormatCheckbox: FunctionComponent<{ id: string; labelId: string }> = props => {
+const FormatCheckbox: FunctionComponent<{ id: number; labelId: string }> = props => {
   const [formatsState] = useContext(FormatsContext);
   return (
     <Checkbox
@@ -20,16 +20,18 @@ const FormatCheckbox: FunctionComponent<{ id: string; labelId: string }> = props
 
 export type FormatListItemProps = {
   model: FormatViewModel;
-  onFormatSelect: (formatId: string) => void;
+  onFormatSelect: (formatId: number) => void;
 };
 
 export const FormatListItem: FunctionComponent<FormatListItemProps> = props => {
-  const labelId = LABEL_PREFIX + props.model.id;
+  const labelId = LABEL_PREFIX + props.model.id.toString();
   return (
     <ListItem
       dense={true}
       disablePadding
-      onClick={() => props.onFormatSelect(props.model.id)}
+      onClick={() => {
+        props.onFormatSelect(props.model.id);
+      }}
     >
       <ListItemButton>
         <ListItemIcon>

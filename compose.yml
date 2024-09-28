@@ -1,9 +1,21 @@
 services:
   web:
-    image: linkedmink/road-wave-fm-web
+    image: ${DOCKER_REGISTRY-}linkedmink/road-wave-fm-web
     build:
       context: ./
       target: application
+      # cache_from:
+      #   - type=registry,ref=${DOCKER_REGISTRY-}linkedmink/road-wave-fm-web:build-cache
+      # cache_to:
+      #   - type=registry,ref=${DOCKER_REGISTRY-}linkedmink/road-wave-fm-web:build-cache,mode=max
+      # platforms:
+      #   - "linux/amd64"
+      #   - "linux/arm64"
+      tags:
+        - "${DOCKER_REGISTRY-}linkedmink/road-wave-fm-web:${PACKAGE_VERSION:-latest}"
+      # TODO Repo independent way to link this for both container and local build
+      additional_contexts:
+        - homedir=${HOME:-.}
     profiles:
       - deploy
     ports:
@@ -11,37 +23,63 @@ services:
       - "127.0.0.1:443:443/tcp"
     volumes:
       - type: bind
-        source: ./dist
-        target: /usr/share/nginx/html
-        read_only: true
-      - type: bind
-        source: ./docker/nginx.conf
+        source: ./config/nginx.conf
         target: /etc/nginx/http.d/default.conf
         read_only: true
       - type: bind
-        source: ./docker/localhost.secp384r1.crt
+        source: ./config/localhost.secp384r1.crt
         target: /etc/ssl/certs/localhost.crt
         read_only: true
       - type: bind
-        source: ./docker/localhost.secp384r1.key
+        source: ./config/localhost.secp384r1.key
         target: /etc/ssl/certs/localhost.key
         read_only: true
     develop:
       watch:
-        - action: rebuild
-          path: src
+        - action: sync
+          path: ./dist
+          target: /usr/share/nginx/html
         - action: rebuild
           path: package-lock.json
 
-  web-watch:
-    image: linkedmink/road-wave-fm-web:dev
+  web-env-production:
+    extends: web
+    image: ${DOCKER_REGISTRY-}linkedmink/road-wave-fm-web:production
+    build:
+      args:
+        TARGET_ENV: production
+      platforms:
+        - "linux/amd64"
+        - "linux/arm64"
+
+  web-env-development:
+    extends: web
+    image: ${DOCKER_REGISTRY-}linkedmink/road-wave-fm-web:development
+    build:
+      args:
+        TARGET_ENV: development
+      platforms:
+        - "linux/amd64"
+        - "linux/arm64"
+
+  web-dev:
+    image: ${DOCKER_REGISTRY-}linkedmink/road-wave-fm-web:dev
     build:
       context: ./
-      target: watch
+      target: dev
+      # cache_from:
+      #   - type=registry,ref=${DOCKER_REGISTRY-}linkedmink/road-wave-fm-web:build-cache
+      # cache_to:
+      #   - type=registry,ref=${DOCKER_REGISTRY-}linkedmink/road-wave-fm-web:build-cache,mode=max
+      additional_contexts:
+        - homedir=${HOME:-.}
     profiles:
       - dev
     ports:
       - "127.0.0.1:8080:8080/tcp"
+    environment:
+      PROXY_DATA_API_BASE_URL: "http://rwf-api-dev:58081"
+      PROXY_USER_API_BASE_URL: "http://eiu-api-dev:58080"
     develop:
       watch:
         - action: sync

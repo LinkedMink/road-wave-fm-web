@@ -1,9 +1,8 @@
-import type { JWTPayload } from "jose";
 import type { AlertActionType, AlertSeverity } from "../definitions/alertConstants";
 import type { FormatsActionType, StationsActionType } from "../definitions/dashboardConstants";
 import type { SessionActionType } from "../definitions/sharedConstants";
 import type { StationRequest } from "./requestModels";
-import type { FormatViewModel, StationViewModel } from "./responseModels";
+import type { FormatViewModel, JwtPayload, StationLocationViewModel } from "./responseModels";
 
 export interface ReducerAction<T extends string> {
   readonly type: T;
@@ -26,27 +25,27 @@ export interface SessionAction extends ReducerAction<SessionActionType> {
 export interface SessionState {
   readonly isDestroyed?: boolean;
   readonly jwtToken?: string;
-  readonly decodedToken?: JWTPayload;
+  readonly decodedToken?: JwtPayload;
 }
 
 export interface FormatsAction extends ReducerAction<FormatsActionType> {
-  readonly payload?: FormatViewModel[] | string;
+  readonly payload?: FormatViewModel[] | number;
 }
 
 export interface FormatsState {
   readonly list: FormatViewModel[];
   readonly lastUpdated?: number;
-  readonly selected: string[];
-  readonly selectedPending: Set<string>;
+  readonly selected: number[];
+  readonly selectedPending: Set<number>;
 }
 
 export interface StationsState {
-  readonly list: StationViewModel[];
-  readonly selected?: StationViewModel;
+  readonly list: StationLocationViewModel[];
+  readonly selected?: StationLocationViewModel;
   readonly lastRequest?: StationRequest;
   readonly hasLastRequestFailed: boolean;
 }
 
 export interface StationsAction extends ReducerAction<StationsActionType> {
-  readonly payload: StationViewModel[] | StationViewModel | null;
+  readonly payload: StationLocationViewModel[] | StationLocationViewModel | null;
 }

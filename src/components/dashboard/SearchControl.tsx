@@ -15,10 +15,10 @@ import {
 import { FunctionComponent, useContext, useEffect, useRef, useState } from "react";
 import { NavLink, useSubmit } from "react-router-dom";
 import { getEarthDistance } from "../../functions/math";
-import { FormatsContext } from "../../providers/FormatsProvider";
-import { MapsContext } from "../../providers/MapsProvider";
-import { UserLocationContext } from "../../providers/UserLocationProvider";
 import { Coordinates } from "../../types/responseModels";
+import { FormatsContext } from "./providers/FormatsProvider";
+import { MapsContext } from "./providers/MapsProvider";
+import { UserLocationContext } from "./providers/UserLocationProvider";
 
 const UPDATE_DISTANCE_KM = 10;
 
@@ -43,7 +43,9 @@ export const SearchControl: FunctionComponent<SearchControlProps> = props => {
       lat: searchLocation.lat.toString(),
       lng: searchLocation.lng.toString(),
     });
-    formatsState.selected.forEach(f => searchParams.append("fmt", f));
+    formatsState.selected.forEach(f => {
+      searchParams.append("fmt", f.toString());
+    });
 
     submit(searchParams, { action: "/stations", method: "get" });
   }, [formatsState.selected, searchLocation, submit]);

@@ -1,6 +1,6 @@
 # Road Wave FM for Web
 
-![Build State](https://github.com/LinkedMink/road-wave-fm-web/actions/workflows/build-main.yml/badge.svg)
+[![Build State](https://github.com/LinkedMink/road-wave-fm-web/actions/workflows/build-main.yml/badge.svg)](https://github.com/LinkedMink/road-wave-fm-web/actions/workflows/build-main.yml)
 
 ## Notice
 
@@ -44,8 +44,8 @@ docker build `
 ```powershell
 docker run `
   --name "road-wave-fm-web" `
-  --mount "type=bind,source=$(pwd)/docker/localhost.secp384r1.crt,target=/etc/ssl/certs/localhost.crt" `
-  --mount "type=bind,source=$(pwd)/docker/localhost.secp384r1.key,target=/etc/ssl/certs/localhost.key" `
+  --mount "type=bind,source=$(pwd)/config/localhost.secp384r1.crt,target=/etc/ssl/certs/localhost.crt" `
+  --mount "type=bind,source=$(pwd)/config/localhost.secp384r1.key,target=/etc/ssl/certs/localhost.key" `
   linkedmink/road-wave-fm-web:latest
 ```
 

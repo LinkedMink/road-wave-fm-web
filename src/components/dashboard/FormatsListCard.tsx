@@ -2,8 +2,8 @@ import { Box, Button, List, ListItem, ListItemText, ListSubheader } from "@mui/m
 import { FunctionComponent, useCallback, useContext, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { FormatsActionType } from "../../definitions/dashboardConstants";
-import { FormatsContext } from "../../providers/FormatsProvider";
-import { PagePaper } from "../styled/PagePaper";
+import { FormatsContext } from "./providers/FormatsProvider";
+import { PagePaper } from "../shared/PagePaper";
 import { FormatListItem } from "./FormatListItem";
 
 export const FormatsListCard: FunctionComponent = () => {
@@ -21,7 +21,7 @@ export const FormatsListCard: FunctionComponent = () => {
   }, [formatsDispatch, navigate]);
 
   const selectFormat = useCallback(
-    (formatId: string) => {
+    (formatId: number) => {
       formatsDispatch({ type: FormatsActionType.SELECT, payload: formatId });
     },
     [formatsDispatch]
