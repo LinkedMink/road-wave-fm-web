@@ -13,7 +13,7 @@ import {
   Tooltip,
 } from "@mui/material";
 import { FunctionComponent, useContext, useEffect, useRef, useState } from "react";
-import { NavLink, useSubmit } from "react-router-dom";
+import { NavLink, useSubmit } from "react-router";
 import { getEarthDistance } from "../../functions/math";
 import { Coordinates } from "../../types/responseModels";
 import { FormatsContext } from "./providers/FormatsProvider";
@@ -26,12 +26,12 @@ export interface SearchControlProps {
   map?: google.maps.Map;
 }
 
-export const SearchControl: FunctionComponent<SearchControlProps> = props => {
+export const SearchControl: FunctionComponent<SearchControlProps> = (props) => {
   const submit = useSubmit();
   const mapsApi = useContext(MapsContext);
   const userLocation = useContext(UserLocationContext);
   const [formatsState] = useContext(FormatsContext);
-  const inputRef = useRef<HTMLInputElement>();
+  const inputRef = useRef<HTMLInputElement | undefined>(undefined);
   const [searchLocation, setSearchLocation] = useState<Coordinates>();
 
   useEffect(() => {
@@ -43,11 +43,11 @@ export const SearchControl: FunctionComponent<SearchControlProps> = props => {
       lat: searchLocation.lat.toString(),
       lng: searchLocation.lng.toString(),
     });
-    formatsState.selected.forEach(f => {
+    formatsState.selected.forEach((f) => {
       searchParams.append("fmt", f.toString());
     });
 
-    submit(searchParams, { action: "/stations", method: "get" });
+    void submit(searchParams, { action: "/stations", method: "get" });
   }, [formatsState.selected, searchLocation, submit]);
 
   useEffect(() => {
@@ -125,18 +125,11 @@ export const SearchControl: FunctionComponent<SearchControlProps> = props => {
         </FormControl>
       </Tooltip>
       <Tooltip title="Filter by format">
-        <IconButton
-          component={NavLink}
-          to={"/formats"}
-          sx={{ p: 1.5, ml: 0.5 }}
-        >
+        <IconButton component={NavLink} to={"/formats"} sx={{ p: 1.5, ml: 0.5 }}>
           <FilterAltIcon />
         </IconButton>
       </Tooltip>
-      <Divider
-        sx={{ height: 28, m: 0.5 }}
-        orientation="vertical"
-      />
+      <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
       <Tooltip
         title={
           userLocation.isTrackingEnabled ? "Disable location tracking" : "Enable location tracking"

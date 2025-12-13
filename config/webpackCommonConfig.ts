@@ -3,12 +3,29 @@ import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import path from "node:path";
 import postcssPresetEnv from "postcss-preset-env";
-import { Configuration, NormalModuleReplacementPlugin, RuleSetRule } from "webpack";
+import type * as tsLoader from "ts-loader";
+import type { Simplify, TsConfigJson } from "type-fest";
+import { Configuration, NormalModuleReplacementPlugin, RuleSetRule, RuleSetUseItem } from "webpack";
+
+type TsLoaderOptions = Simplify<
+  Omit<Partial<tsLoader.Options>, "compilerOptions"> & {
+    compilerOptions?: TsConfigJson["compilerOptions"];
+  }
+>;
+type RuleSetRuleUseList = Omit<RuleSetRule, "use"> & { use: Exclude<RuleSetUseItem, string>[] };
+type RuleSetRuleUseTsLoader = Omit<RuleSetRule, "use"> & {
+  use: [
+    {
+      loader: "ts-loader";
+      options: TsLoaderOptions;
+    },
+  ];
+};
 
 const environmentConfig = `Config.${process.env.TARGET_ENV ?? "production"}.ts`;
 console.log(`Using target environment config: ${environmentConfig}`);
 
-export const styleRuleSet: RuleSetRule = {
+export const styleRuleSet: RuleSetRuleUseList = {
   test: /\.s?css$/i,
   use: [
     { loader: "css-loader" },
@@ -18,6 +35,19 @@ export const styleRuleSet: RuleSetRule = {
         postcssOptions: {
           plugins: [postcssPresetEnv({})],
         },
+      },
+    },
+  ],
+};
+
+export const tsRuleSet: RuleSetRuleUseTsLoader = {
+  test: /\.([cm]?ts|tsx)$/,
+  exclude: /node_modules/,
+  use: [
+    {
+      loader: "ts-loader",
+      options: {
+        configFile: path.resolve(__dirname, "../src/tsconfig.json"),
       },
     },
   ],
@@ -37,6 +67,12 @@ export const webpackCommonConfig: Configuration = {
       ".cjs": [".cjs", ".cts"],
       ".mjs": [".mjs", ".mts"],
     },
+    alias: {
+      "@adraffy/ens-normalize": path.resolve(
+        __dirname,
+        "../node_modules/@adraffy/ens-normalize/dist/index.cjs",
+      ),
+    },
   },
   /**
    * @see https://webpack.js.org/configuration/devtool/
@@ -51,16 +87,6 @@ export const webpackCommonConfig: Configuration = {
       {
         test: /\.(eot|otf|ttf|woff|woff2)$/i,
         type: "asset/resource",
-      },
-      {
-        test: /\.([cm]?ts|tsx)$/,
-        exclude: /node_modules/,
-        use: [
-          {
-            loader: "ts-loader",
-            // options: { configFile: path.resolve(__dirname, "../src/tsconfig.json") },
-          },
-        ],
       },
     ],
   },

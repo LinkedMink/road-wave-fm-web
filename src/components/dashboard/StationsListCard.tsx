@@ -22,11 +22,9 @@ import { StationsContext } from "./providers/StationsProvider";
 export const StationsListCard: FunctionComponent = () => {
   const navigation = useNavigation();
   const [_1, alertDispatch] = useContext(AlertContext);
-  const loaderData = useLoaderData() as
-    | null
-    | MessageResponse
-    | RpcErrorResponse
-    | { result: { data: StationLocationViewModel[] } };
+  const loaderData = useLoaderData<
+    null | MessageResponse | RpcErrorResponse | { result: { data: StationLocationViewModel[] } }
+  >();
   const [stationsState, stationsDispatch] = useContext(StationsContext);
   useEffect(() => {
     if (!loaderData) {
@@ -44,13 +42,9 @@ export const StationsListCard: FunctionComponent = () => {
   const stationsListElements = useMemo(
     () =>
       stationsState.list.map((station, index) => (
-        <StationListItem
-          key={station.id}
-          model={station}
-          index={index}
-        />
+        <StationListItem key={station.id} model={station} index={index} />
       )),
-    [stationsState.list]
+    [stationsState.list],
   );
 
   const isLoading = navigation.state === "loading";
@@ -89,10 +83,7 @@ export const StationsListCard: FunctionComponent = () => {
           )}
         </List>
       </Collapse>
-      <LoadingSpinner
-        isLoading={isLoading}
-        message="Refreshing..."
-      />
+      <LoadingSpinner isLoading={isLoading} message="Refreshing..." />
     </PagePaper>
   );
 };

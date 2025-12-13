@@ -12,10 +12,10 @@ const config = {
   setupFilesAfterEnv: ["<rootDir>/config/jestSetupAfterEnv.ts"],
   moduleFileExtensions: ["js", "jsx", "mjs", "cjs", "json", "ts", "tsx", "mts", "cts"],
   moduleNameMapper: {
-    "\\.(jpg|jpeg|png|gif|webp|svg)$/": "<rootDir>/__mocks__/fileMock.js",
-    "\\.(eot|otf|ttf|woff|woff2)$/": "<rootDir>/__mocks__/fileMock.js",
-    "\\.(txt|md)$/": "<rootDir>/__mocks__/fileMock.js",
-    "\\.(css|scss)$": "<rootDir>/__mocks__/styleMock.js",
+    "\\.(jpg|jpeg|png|gif|webp|svg)$/": "<rootDir>/config/mocks/fileMock.js",
+    "\\.(eot|otf|ttf|woff|woff2)$/": "<rootDir>/config/mocks/fileMock.js",
+    "\\.(txt|md)$/": "<rootDir>/config/mocks/fileMock.js",
+    "\\.(css|scss)$": "<rootDir>/config/mocks/styleMock.js",
   },
   testMatch: ["**/src/**/*.test.ts{x,}"],
 

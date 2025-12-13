@@ -5,7 +5,7 @@ import { FormatViewModel } from "../../types/responseModels";
 
 const LABEL_PREFIX = "format-";
 
-const FormatCheckbox: FunctionComponent<{ id: number; labelId: string }> = props => {
+const FormatCheckbox: FunctionComponent<{ id: number; labelId: string }> = (props) => {
   const [formatsState] = useContext(FormatsContext);
   return (
     <Checkbox
@@ -13,7 +13,9 @@ const FormatCheckbox: FunctionComponent<{ id: number; labelId: string }> = props
       checked={formatsState.selectedPending.has(props.id)}
       tabIndex={-1}
       disableRipple
-      inputProps={{ "aria-labelledby": props.labelId }}
+      slotProps={{
+        input: { "aria-labelledby": props.labelId },
+      }}
     />
   );
 };
@@ -23,7 +25,7 @@ export type FormatListItemProps = {
   onFormatSelect: (formatId: number) => void;
 };
 
-export const FormatListItem: FunctionComponent<FormatListItemProps> = props => {
+export const FormatListItem: FunctionComponent<FormatListItemProps> = (props) => {
   const labelId = LABEL_PREFIX + props.model.id.toString();
   return (
     <ListItem
@@ -35,15 +37,9 @@ export const FormatListItem: FunctionComponent<FormatListItemProps> = props => {
     >
       <ListItemButton>
         <ListItemIcon>
-          <FormatCheckbox
-            id={props.model.id}
-            labelId={labelId}
-          />
+          <FormatCheckbox id={props.model.id} labelId={labelId} />
         </ListItemIcon>
-        <ListItemText
-          id={labelId}
-          primary={props.model.name}
-        />
+        <ListItemText id={labelId} primary={props.model.name} />
       </ListItemButton>
     </ListItem>
   );

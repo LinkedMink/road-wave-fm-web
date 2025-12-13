@@ -1,7 +1,7 @@
 import { Container, Typography } from "@mui/material";
 import { BrowserProvider } from "ethers/providers";
 import { FunctionComponent, useCallback, useContext, useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router";
 import { useAsync } from "react-use";
 import { AlertActionType } from "../../../definitions/alertConstants";
 import { EIP1193ProviderErrorCode, JsonRpcError } from "../../../definitions/ethereumConstants";
@@ -66,7 +66,7 @@ export const LoginWithEthereumPage: FunctionComponent = () => {
     const context = await getConnectedSigner();
 
     if (context) {
-      navigate("/login/ethereum/init");
+      await navigate("/login/ethereum/init");
     }
 
     return context;

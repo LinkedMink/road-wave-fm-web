@@ -1,7 +1,7 @@
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { IconButton, Tooltip } from "@mui/material";
 import { FunctionComponent, useContext } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink } from "react-router";
 import { SessionContext } from "../shared/SessionProvider";
 
 export const AccountIconButton: FunctionComponent = () => {
@@ -13,7 +13,7 @@ export const AccountIconButton: FunctionComponent = () => {
         aria-label="Manage your account"
         component={NavLink}
         to={"/account"}
-        sx={theme => ({
+        sx={(theme) => ({
           color: theme.palette.common.white,
         })}
       >
@@ -26,7 +26,7 @@ export const AccountIconButton: FunctionComponent = () => {
         aria-label="Login to your account"
         component={NavLink}
         to={"/login"}
-        sx={theme => ({
+        sx={(theme) => ({
           color: theme.palette.common.white,
         })}
       >

@@ -1,16 +1,21 @@
-import { RuleSetUseItem } from "webpack";
 import { merge } from "webpack-merge";
-import { styleRuleSet, webpackCommonConfig } from "./webpackCommonConfig.js";
+import { styleRuleSet, tsRuleSet, webpackCommonConfig } from "./webpackCommonConfig.js";
 
-const fastStyleRuleSet = {
-  ...styleRuleSet,
-  use: [{ loader: "style-loader" }, ...(styleRuleSet.use as RuleSetUseItem[])],
+const tsRuleSetDev = structuredClone(tsRuleSet);
+tsRuleSetDev.use[0].options.compilerOptions = {
+  jsx: "react-jsxdev",
 };
 
 export const webpackFastConfig = merge(webpackCommonConfig, {
   mode: "development",
   module: {
-    rules: [fastStyleRuleSet],
+    rules: [
+      {
+        ...styleRuleSet,
+        use: [{ loader: "style-loader" }, ...styleRuleSet.use],
+      },
+      tsRuleSetDev,
+    ],
   },
   output: {
     filename: "static/[name].js",

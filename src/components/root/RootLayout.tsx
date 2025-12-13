@@ -1,13 +1,13 @@
 import { Box } from "@mui/material";
 import { Fragment, FunctionComponent, useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet } from "react-router";
 import { HasChildrenProps } from "../../types/reactUtilityTypes";
 import { FooterPanel } from "./FooterPanel";
 import { HeaderPanel } from "./HeaderPanel";
 import { NavigationMenu } from "./NavigationMenu";
 import { AlertProvider } from "../shared/AlertProvider";
 
-export const RootLayout: FunctionComponent<Partial<HasChildrenProps>> = props => {
+export const RootLayout: FunctionComponent<Partial<HasChildrenProps>> = (props) => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
   return (
@@ -33,7 +33,7 @@ export const RootLayout: FunctionComponent<Partial<HasChildrenProps>> = props =>
           overflow: "hidden",
         }}
       >
-        <Box sx={theme => theme.mixins.toolbar} />
+        <Box sx={(theme) => theme.mixins.toolbar} />
         <Box
           sx={{
             display: "flex",
@@ -42,10 +42,7 @@ export const RootLayout: FunctionComponent<Partial<HasChildrenProps>> = props =>
             flex: "1 1 auto",
           }}
         >
-          <Box
-            component={"main"}
-            sx={{ flex: "1 1 auto" }}
-          >
+          <Box component={"main"} sx={{ flex: "1 1 auto" }}>
             <AlertProvider>
               {props.children}
               <Outlet />

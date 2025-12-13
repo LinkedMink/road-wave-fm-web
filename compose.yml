@@ -1,18 +1,15 @@
 services:
   web:
-    image: ${DOCKER_REGISTRY-}linkedmink/road-wave-fm-web
+    image: ${DOCKER_REGISTRY:-docker.io}/linkedmink/road-wave-fm-web
     build:
       context: ./
       target: application
       # cache_from:
-      #   - type=registry,ref=${DOCKER_REGISTRY-}linkedmink/road-wave-fm-web:build-cache
+      #   - type=registry,ref=${DOCKER_REGISTRY:-docker.io}/linkedmink/road-wave-fm-web:build-cache
       # cache_to:
-      #   - type=registry,ref=${DOCKER_REGISTRY-}linkedmink/road-wave-fm-web:build-cache,mode=max
-      # platforms:
-      #   - "linux/amd64"
-      #   - "linux/arm64"
+      #   - type=registry,ref=${DOCKER_REGISTRY:-docker.io}/linkedmink/road-wave-fm-web:build-cache,mode=max
       tags:
-        - "${DOCKER_REGISTRY-}linkedmink/road-wave-fm-web:${PACKAGE_VERSION:-latest}"
+        - "${DOCKER_REGISTRY:-docker.io}/linkedmink/road-wave-fm-web:${PACKAGE_VERSION_ROAD_WAVE_FM_WEB:-latest}"
       # TODO Repo independent way to link this for both container and local build
       additional_contexts:
         - homedir=${HOME:-.}
@@ -44,7 +41,7 @@ services:
 
   web-env-production:
     extends: web
-    image: ${DOCKER_REGISTRY-}linkedmink/road-wave-fm-web:production
+    image: ${DOCKER_REGISTRY:-docker.io}/linkedmink/road-wave-fm-web:production
     build:
       args:
         TARGET_ENV: production
@@ -54,7 +51,7 @@ services:
 
   web-env-development:
     extends: web
-    image: ${DOCKER_REGISTRY-}linkedmink/road-wave-fm-web:development
+    image: ${DOCKER_REGISTRY:-docker.io}/linkedmink/road-wave-fm-web:development
     build:
       args:
         TARGET_ENV: development
@@ -63,14 +60,14 @@ services:
         - "linux/arm64"
 
   web-dev:
-    image: ${DOCKER_REGISTRY-}linkedmink/road-wave-fm-web:dev
+    image: ${DOCKER_REGISTRY:-docker.io}/linkedmink/road-wave-fm-web:dev
     build:
       context: ./
       target: dev
       # cache_from:
-      #   - type=registry,ref=${DOCKER_REGISTRY-}linkedmink/road-wave-fm-web:build-cache
+      #   - type=registry,ref=${DOCKER_REGISTRY:-docker.io}/linkedmink/road-wave-fm-web:build-cache
       # cache_to:
-      #   - type=registry,ref=${DOCKER_REGISTRY-}linkedmink/road-wave-fm-web:build-cache,mode=max
+      #   - type=registry,ref=${DOCKER_REGISTRY:-docker.io}/linkedmink/road-wave-fm-web:build-cache,mode=max
       additional_contexts:
         - homedir=${HOME:-.}
     profiles:

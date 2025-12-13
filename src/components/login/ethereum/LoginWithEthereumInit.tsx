@@ -1,6 +1,6 @@
 import { createBrowserEip4361Message, toEip4361String } from "@linkedmink/eip-4361-parser";
 import { FunctionComponent, useContext } from "react";
-import { useLoaderData, useSubmit } from "react-router-dom";
+import { useLoaderData, useSubmit } from "react-router";
 import { useAsync } from "react-use";
 import { EthereumLoginContext } from "./EthereumLoginProvider";
 
@@ -10,7 +10,7 @@ const EIP_4361_STATEMENT =
 export const LoginWithEthereumInit: FunctionComponent = () => {
   const submit = useSubmit();
   const loginContext = useContext(EthereumLoginContext);
-  const { nonce, requestId } = useLoaderData() as { nonce: string; requestId: string };
+  const { nonce, requestId } = useLoaderData<{ nonce: string; requestId: string }>();
 
   useAsync(async () => {
     if (!nonce || !requestId) {
@@ -28,7 +28,7 @@ export const LoginWithEthereumInit: FunctionComponent = () => {
 
     const body = { message, signature };
 
-    submit(body, {
+    await submit(body, {
       action: "/login/ethereum/submit",
       method: "POST",
     });

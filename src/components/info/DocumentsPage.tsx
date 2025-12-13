@@ -1,6 +1,6 @@
 import { Container } from "@mui/material";
 import { FunctionComponent } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet } from "react-router";
 import { PagePaper } from "../shared/PagePaper";
 
 export const DocumentsPage: FunctionComponent = () => {

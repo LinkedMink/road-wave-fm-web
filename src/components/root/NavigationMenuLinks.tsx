@@ -12,7 +12,7 @@ import {
   Tooltip,
 } from "@mui/material";
 import { Fragment, FunctionComponent, useContext } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation } from "react-router";
 import { SessionContext } from "../shared/SessionProvider";
 
 export const NavigationMenuLinks: FunctionComponent = () => {

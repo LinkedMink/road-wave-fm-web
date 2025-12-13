@@ -18,11 +18,9 @@ import {
 export const LoginSubmitComponent: FunctionComponent = () => {
   const [session, dispatchSession] = useContext(SessionContext);
   const [_, dispatchAlert] = useContext(AlertContext);
-  const data = useActionData() as
-    | ValidationErrorDto
-    | MessageResponse
-    | AuthenticateResponse
-    | undefined;
+  const data = useActionData<
+    ValidationErrorDto | MessageResponse | AuthenticateResponse | undefined
+  >();
 
   if (!data || session.jwtToken) {
     return <Navigate to={"/"} />;

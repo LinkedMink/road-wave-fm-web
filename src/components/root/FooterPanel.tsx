@@ -1,7 +1,7 @@
 import { Box, Link, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { FunctionComponent } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink } from "react-router";
 
 const FooterTypography = styled(Typography)(({ theme }) => ({
   padding: theme.spacing(0, 2),
@@ -19,7 +19,7 @@ export const FooterPanel: FunctionComponent = () => {
   return (
     <Box
       component={"footer"}
-      sx={theme => ({
+      sx={(theme) => ({
         display: "flex",
         flexDirection: "column",
         padding: theme.spacing(2, 0),
@@ -34,18 +34,12 @@ export const FooterPanel: FunctionComponent = () => {
       })}
     >
       <FooterTypography color="textSecondary">
-        <Link
-          component={NavLink}
-          to={"/documents/privacy-policy"}
-        >
+        <Link component={NavLink} to={"/documents/privacy-policy"}>
           Privacy Policy
         </Link>
       </FooterTypography>
       <FooterTypography color="textSecondary">
-        <Link
-          component={NavLink}
-          to={"/documents/license"}
-        >
+        <Link component={NavLink} to={"/documents/license"}>
           License
         </Link>
       </FooterTypography>

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-deprecated */
 import { Box, useTheme } from "@mui/material";
 import { FunctionComponent, useContext, useEffect, useRef, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router";
 import { StationsActionType } from "../../definitions/dashboardConstants";
 import { indexToChar } from "../../functions/collection";
 import { areEqualMapPos } from "../../functions/math";
@@ -29,7 +29,7 @@ export interface MapControlProps {
   onMapInitialized: (map: google.maps.Map) => void;
 }
 
-export const MapControl: FunctionComponent<MapControlProps> = props => {
+export const MapControl: FunctionComponent<MapControlProps> = (props) => {
   const theme = useTheme();
   const mapsApi = useContext(MapsContext);
   const [stationsState, stationsDispatch] = useContext(StationsContext);
@@ -59,7 +59,7 @@ export const MapControl: FunctionComponent<MapControlProps> = props => {
       return;
     }
 
-    markers.refs.forEach(m => {
+    markers.refs.forEach((m) => {
       m.setMap(null);
     });
 
@@ -155,7 +155,7 @@ export const MapControl: FunctionComponent<MapControlProps> = props => {
         position: userLocation.coordinates,
         map: mapRef,
         title: `Your Location: ${userLocation.coordinates.lat.toFixed(
-          5
+          5,
         )}, ${userLocation.coordinates.lng.toFixed(5)}`,
         clickable: false,
         icon: {

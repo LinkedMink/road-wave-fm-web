@@ -1,5 +1,5 @@
 import { FunctionComponent, useDeferredValue } from "react";
-import { useNavigation } from "react-router-dom";
+import { useNavigation } from "react-router";
 import { LoadingBackdrop } from "./LoadingBackdrop";
 
 export const NavigationBackdrop: FunctionComponent = () => {

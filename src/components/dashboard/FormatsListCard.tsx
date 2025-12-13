@@ -1,6 +1,6 @@
 import { Box, Button, List, ListItem, ListItemText, ListSubheader } from "@mui/material";
 import { FunctionComponent, useCallback, useContext, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { FormatsActionType } from "../../definitions/dashboardConstants";
 import { FormatsContext } from "./providers/FormatsProvider";
 import { PagePaper } from "../shared/PagePaper";
@@ -12,31 +12,27 @@ export const FormatsListCard: FunctionComponent = () => {
 
   const confirmSelect = useCallback(() => {
     formatsDispatch({ type: FormatsActionType.SELECT_CONFIRM });
-    navigate(-1);
+    void navigate(-1);
   }, [formatsDispatch, navigate]);
 
   const cancelSelect = useCallback(() => {
     formatsDispatch({ type: FormatsActionType.SELECT_CANCEL });
-    navigate(-1);
+    void navigate(-1);
   }, [formatsDispatch, navigate]);
 
   const selectFormat = useCallback(
     (formatId: number) => {
       formatsDispatch({ type: FormatsActionType.SELECT, payload: formatId });
     },
-    [formatsDispatch]
+    [formatsDispatch],
   );
 
   const formatsListElements = useMemo(
     () =>
-      formatsState.list.map(f => (
-        <FormatListItem
-          key={f.id}
-          model={f}
-          onFormatSelect={selectFormat}
-        />
+      formatsState.list.map((f) => (
+        <FormatListItem key={f.id} model={f} onFormatSelect={selectFormat} />
       )),
-    [formatsState.list, selectFormat]
+    [formatsState.list, selectFormat],
   );
 
   return (
@@ -64,18 +60,10 @@ export const FormatsListCard: FunctionComponent = () => {
         )}
       </List>
       <Box sx={{ mt: 2, display: "flex" }}>
-        <Button
-          variant="outlined"
-          onClick={cancelSelect}
-          sx={{ mr: 2, flex: "1" }}
-        >
+        <Button variant="outlined" onClick={cancelSelect} sx={{ mr: 2, flex: "1" }}>
           Cancel
         </Button>
-        <Button
-          variant="contained"
-          onClick={confirmSelect}
-          sx={{ flex: "1" }}
-        >
+        <Button variant="contained" onClick={confirmSelect} sx={{ flex: "1" }}>
           Filter
         </Button>
       </Box>

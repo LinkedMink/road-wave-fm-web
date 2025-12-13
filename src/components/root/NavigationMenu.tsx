@@ -9,46 +9,48 @@ export interface NavigationMenuProps {
   onMenuClose: MouseEventHandler<HTMLButtonElement>;
 }
 
-export const NavigationMenu: FunctionComponent<NavigationMenuProps> = props => {
+export const NavigationMenu: FunctionComponent<NavigationMenuProps> = (props) => {
   return (
     <Drawer
       variant="permanent"
       open={props.isOpen}
-      PaperProps={{
-        component: "nav",
-        sx: theme => {
-          const closedStyles = !props.isOpen
-            ? {
-                overflowX: "hidden",
-                transition: theme.transitions.create("width", {
-                  easing: theme.transitions.easing.sharp,
-                  duration: theme.transitions.duration.leavingScreen,
-                }),
-                // width: theme.spacing(7),
-                width: 0,
-                [theme.breakpoints.up("sm")]: {
-                  width: theme.spacing(7),
-                },
-                [theme.breakpoints.up("md")]: {
-                  width: theme.spacing(8),
-                },
-              }
-            : undefined;
-          return {
-            position: "relative",
-            whiteSpace: "nowrap",
-            width: NAV_DRAWER_WIDTH_PX,
-            transition: theme.transitions.create("width", {
-              easing: theme.transitions.easing.sharp,
-              duration: theme.transitions.duration.enteringScreen,
-            }),
-            ...closedStyles,
-          };
+      slotProps={{
+        paper: {
+          component: "nav",
+          sx: (theme) => {
+            const closedStyles = !props.isOpen
+              ? {
+                  overflowX: "hidden",
+                  transition: theme.transitions.create("width", {
+                    easing: theme.transitions.easing.sharp,
+                    duration: theme.transitions.duration.leavingScreen,
+                  }),
+                  // width: theme.spacing(7),
+                  width: 0,
+                  [theme.breakpoints.up("sm")]: {
+                    width: theme.spacing(7),
+                  },
+                  [theme.breakpoints.up("md")]: {
+                    width: theme.spacing(8),
+                  },
+                }
+              : undefined;
+            return {
+              position: "relative",
+              whiteSpace: "nowrap",
+              width: NAV_DRAWER_WIDTH_PX,
+              transition: theme.transitions.create("width", {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.enteringScreen,
+              }),
+              ...closedStyles,
+            };
+          },
         },
       }}
     >
       <Box
-        sx={theme => {
+        sx={(theme) => {
           const smRule = theme.breakpoints.up("sm");
           return {
             display: "flex",

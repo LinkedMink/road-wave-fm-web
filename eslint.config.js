@@ -81,9 +81,11 @@ export default tsEslint.config(
     extends: [
       eslint.configs.recommended,
       ...tsEslint.configs.strictTypeChecked,
+      // @ts-ignore
       eslintPluginReact.configs.flat.recommended,
     ],
     plugins: {
+      // @ts-ignore
       react: eslintPluginReact,
     },
     languageOptions: {
@@ -107,5 +109,5 @@ export default tsEslint.config(
       "react/prop-types": "off",
       "react/react-in-jsx-scope": "off",
     },
-  }
+  },
 );

@@ -2,14 +2,9 @@ import CompressionWebpackPlugin from "compression-webpack-plugin";
 import CssMinimizerWebpackPlugin from "css-minimizer-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import zlib, { BrotliOptions } from "node:zlib";
-import { RuleSetUseItem, optimize } from "webpack";
+import { optimize } from "webpack";
 import { merge } from "webpack-merge";
-import { styleRuleSet, webpackCommonConfig } from "./webpackCommonConfig.js";
-
-const optimizedStyleRuleSet = {
-  ...styleRuleSet,
-  use: [{ loader: MiniCssExtractPlugin.loader }, ...(styleRuleSet.use as RuleSetUseItem[])],
-};
+import { styleRuleSet, tsRuleSet, webpackCommonConfig } from "./webpackCommonConfig.js";
 
 // type BrotliCompressionOpts = ConstructorParameters<typeof CompressionWebpackPlugin<BrotliOptions>>[0]
 // const brotliCompressionOptions: BrotliCompressionOpts = {
@@ -26,7 +21,13 @@ const optimizedStyleRuleSet = {
 export const webpackOptimizedConfig = merge(webpackCommonConfig, {
   mode: "production",
   module: {
-    rules: [optimizedStyleRuleSet],
+    rules: [
+      {
+        ...styleRuleSet,
+        use: [{ loader: MiniCssExtractPlugin.loader }, ...styleRuleSet.use],
+      },
+      tsRuleSet,
+    ],
   },
   plugins: [
     new MiniCssExtractPlugin({

@@ -8,7 +8,8 @@ export const SessionContext = createContext<[SessionState, Dispatch<SessionActio
   () => {},
 ] as [SessionState, Dispatch<SessionAction>]);
 
-export const SessionProvider: FunctionComponent<HasChildrenProps> = props => {
+// TODO restore session before any router loader can run
+export const SessionProvider: FunctionComponent<HasChildrenProps> = (props) => {
   const reducerState = useReducer(sessionReducer, SESSION_STATE_INITIAL);
 
   return <SessionContext.Provider value={reducerState}>{props.children}</SessionContext.Provider>;

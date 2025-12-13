@@ -11,11 +11,16 @@ export const setBearerToken = (newBearerToken: null | string = null) =>
   (bearerToken = newBearerToken);
 
 export const fetchClient = async (input: string | URL, init?: RequestInit) => {
+  const initHeaders = init?.headers
+    ? Array.isArray(init.headers) || init.headers instanceof Headers
+      ? Object.fromEntries(init.headers)
+      : init.headers
+    : undefined;
   const requestInit: RequestInit = {
     ...init,
     headers: {
       ...COMMON_HEADERS,
-      ...init?.headers,
+      ...initHeaders,
     },
   };
 
@@ -35,21 +40,26 @@ export const fetchClient = async (input: string | URL, init?: RequestInit) => {
 export const fetchAuthClient = async (input: string | URL, init?: RequestInit) => {
   if (!bearerToken) {
     throw new Error(
-      `Attempted to make authenticated request without bearer token: ${input.toString()}`
+      `Attempted to make authenticated request without bearer token: ${input.toString()}`,
     );
   }
 
+  const initHeaders = init?.headers
+    ? Array.isArray(init.headers) || init.headers instanceof Headers
+      ? Object.fromEntries(init.headers)
+      : init.headers
+    : undefined;
   return fetchClient(input, {
     ...init,
     headers: {
-      ...init?.headers,
+      ...initHeaders,
       Authorization: `Bearer ${bearerToken}`,
     },
   });
 };
 
 export const getResponseErrorMessage = (
-  response: MessageResponse | ValidationErrorDto | RpcErrorResponse
+  response: MessageResponse | ValidationErrorDto | RpcErrorResponse,
 ) => {
   if (isMessageResponse(response)) {
     return response.message;
@@ -58,7 +68,7 @@ export const getResponseErrorMessage = (
   if (isValidationErrorResponseDto(response)) {
     return [
       ...response.formErrors,
-      ...Object.entries(response.fieldErrors).map(error => error.join(": ")),
+      ...Object.entries(response.fieldErrors).map((error) => error.join(": ")),
     ].join("\n");
   }
 

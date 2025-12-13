@@ -11,7 +11,7 @@ import {
   Stack,
 } from "@mui/material";
 import { FunctionComponent, useMemo } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { useEthereumWalletProviders } from "../../../hooks/useEthereumWalletProviders";
 import { EIP6963ProviderDetail } from "../../../types/ethereumProvider";
 
@@ -20,16 +20,13 @@ export interface EthereumProviderListOwnProps {
   onSelectedWallet: (wallet: EIP6963ProviderDetail) => void;
 }
 
-export const EthereumProviderList: FunctionComponent<EthereumProviderListOwnProps> = props => {
+export const EthereumProviderList: FunctionComponent<EthereumProviderListOwnProps> = (props) => {
   const ethereumProviders = useEthereumWalletProviders();
 
   const ethereumProvidersElements = useMemo(
     () =>
-      ethereumProviders.map(p => (
-        <ListItem
-          key={p.info.uuid}
-          disablePadding
-        >
+      ethereumProviders.map((p) => (
+        <ListItem key={p.info.uuid} disablePadding>
           <ListItemButton
             selected={props.selectedWallet === p}
             divider={true}
@@ -38,23 +35,17 @@ export const EthereumProviderList: FunctionComponent<EthereumProviderListOwnProp
             }}
           >
             <ListItemAvatar>
-              <Avatar
-                alt={p.info.name}
-                src={p.info.icon}
-              />
+              <Avatar alt={p.info.name} src={p.info.icon} />
             </ListItemAvatar>
             <ListItemText primary={p.info.name} />
           </ListItemButton>
         </ListItem>
       )),
-    [ethereumProviders]
+    [ethereumProviders],
   );
 
   return (
-    <Stack
-      spacing={2}
-      sx={{ marginTop: 2 }}
-    >
+    <Stack spacing={2} sx={{ marginTop: 2 }}>
       <List
         subheader={<ListSubheader>Wallet Providers</ListSubheader>}
         sx={{
