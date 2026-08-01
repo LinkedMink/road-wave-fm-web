@@ -3,7 +3,6 @@
  * @typedef {import("eslint").Linter.RuleEntry} RuleEntry
  */
 import eslint from "@eslint/js";
-import eslintPluginReact from "eslint-plugin-react";
 import globals from "globals";
 import tsEslint from "typescript-eslint";
 
@@ -78,16 +77,7 @@ export default tsEslint.config(
   },
   {
     files: ["src/**/*.ts", "src/**/*.tsx"],
-    extends: [
-      eslint.configs.recommended,
-      ...tsEslint.configs.strictTypeChecked,
-      // @ts-ignore
-      eslintPluginReact.configs.flat.recommended,
-    ],
-    plugins: {
-      // @ts-ignore
-      react: eslintPluginReact,
-    },
+    extends: [eslint.configs.recommended, ...tsEslint.configs.strictTypeChecked],
     languageOptions: {
       parserOptions: {
         projectService: true,
@@ -99,15 +89,8 @@ export default tsEslint.config(
         ...globals.browser,
       },
     },
-    settings: {
-      react: {
-        version: "detect",
-      },
-    },
     rules: {
       ...tsRules,
-      "react/prop-types": "off",
-      "react/react-in-jsx-scope": "off",
     },
   },
 );

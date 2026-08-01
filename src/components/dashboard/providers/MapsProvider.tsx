@@ -15,7 +15,7 @@ export type MapsApi = {
 
 export const MapsContext = createContext<MapsApi>({} as MapsApi);
 
-export const MapsProvider: FunctionComponent<HasChildrenProps> = props => {
+export const MapsProvider: FunctionComponent<HasChildrenProps> = (props) => {
   const config = useContext(ConfigContext);
 
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -31,22 +31,10 @@ export const MapsProvider: FunctionComponent<HasChildrenProps> = props => {
   //   [config.GOOGLE_MAPS_API_KEY]
   // );
 
-  const core = useAsync(
-    () => google.maps.importLibrary("core") as Promise<google.maps.CoreLibrary>,
-    []
-  );
-  const maps = useAsync(
-    () => google.maps.importLibrary("maps") as Promise<google.maps.MapsLibrary>,
-    []
-  );
-  const marker = useAsync(
-    () => google.maps.importLibrary("marker") as Promise<google.maps.MarkerLibrary>,
-    []
-  );
-  const places = useAsync(
-    () => google.maps.importLibrary("places") as Promise<google.maps.PlacesLibrary>,
-    []
-  );
+  const core = useAsync(() => google.maps.importLibrary("core"), []);
+  const maps = useAsync(() => google.maps.importLibrary("maps"), []);
+  const marker = useAsync(() => google.maps.importLibrary("marker"), []);
+  const places = useAsync(() => google.maps.importLibrary("places"), []);
 
   return (
     <MapsContext.Provider value={{ core, maps, marker, places }}>

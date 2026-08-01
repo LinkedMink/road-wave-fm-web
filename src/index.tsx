@@ -1,7 +1,4 @@
-import "@fontsource/roboto/300.css";
-import "@fontsource/roboto/400.css";
-import "@fontsource/roboto/500.css";
-import "@fontsource/roboto/700.css";
+import "@fontsource/roboto";
 
 import React from "react";
 import { createRoot } from "react-dom/client";
@@ -23,7 +20,7 @@ root.render(
         <App />
       </SessionProvider>
     </ConfigContext.Provider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );
 
 if (Config.ENABLE_WEB_VITALS) {

@@ -20,10 +20,10 @@ const CACHE_LENGTH_MS = 7 * 24 * 60 * 60 * 1000;
 
 export const FormatsContext = createContext<[FormatsState, Dispatch<FormatsAction>]>([
   FORMATS_STATE_INITIAL,
-  (() => {}) as Dispatch<FormatsAction>,
+  () => {},
 ]);
 
-export const FormatsProvider: FunctionComponent<HasChildrenProps> = props => {
+export const FormatsProvider: FunctionComponent<HasChildrenProps> = (props) => {
   const [_, alertDispatch] = useContext(AlertContext);
   const reducerState = useReducer(formatsReducer, FORMATS_STATE_INITIAL);
   const [formatsState, formatsDispatch] = reducerState;
