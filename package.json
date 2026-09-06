@@ -1,6 +1,6 @@
 {
   "name": "@linkedmink/road-wave-fm-web",
-  "version": "2.1.0-1",
+  "version": "2.1.0-2",
   "description": "A web application to communicate with the Road Wave FM data source",
   "homepage": "https://github.com/LinkedMink/road-wave-fm-web#readme",
   "bugs": {
@@ -59,10 +59,10 @@
     "web-vitals": "^6.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.29.7",
-    "@babel/preset-env": "^7.29.7",
-    "@babel/preset-react": "^7.29.7",
-    "@babel/preset-typescript": "^7.29.7",
+    "@babel/core": "^8.0.0",
+    "@babel/preset-env": "^8.0.0",
+    "@babel/preset-react": "^8.0.0",
+    "@babel/preset-typescript": "^8.0.0",
     "@dotenvx/dotenvx": "^2.18.1",
     "@eslint/js": "^10.0.1",
     "@testing-library/dom": "^10.1.0",
@@ -108,7 +108,7 @@
     "webpack-merge": "^6.0.1"
   },
   "allowScripts": {
-    "esbuild@0.28.1": true,
+    "esbuild@0.28.2": true,
     "unrs-resolver@1.12.2": true
   }
 }

@@ -93,4 +93,20 @@ export default tsEslint.config(
       ...tsRules,
     },
   },
+  {
+    // Test files are excluded from src/tsconfig.json (the build project), so the
+    // project service would route them to the root tsconfig (nodenext resolution,
+    // where extensionless imports fail). Route them to a dedicated project that
+    // extends the src config and adds the jest global types.
+    files: ["src/**/*.test.ts", "src/**/*.test.tsx"],
+    languageOptions: {
+      parserOptions: {
+        projectService: false,
+        project: "./src/tsconfig.test.json",
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+  },
 );

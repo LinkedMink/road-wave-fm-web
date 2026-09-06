@@ -4,7 +4,7 @@
 
 Road Wave FM for Web is a mobile-friendly React web application that provides a front-end interface to query data about terrestrial radio stations across the United States and Canada. Key features include location-based station discovery (with GPS tracking for road trips), Google Places autocomplete search, format filtering, and session persistence.
 
-**Version:** 2.0.1-2
+**Version:** 2.1.0-2
 **Package:** `@linkedmink/road-wave-fm-web`
 **Author:** Harlan Sang
 
@@ -88,9 +88,9 @@ Multi-stage Dockerfile: `dependencies` → `dev` (webpack-serve on :8080) / `bui
 - **Environment configs:** Target env selected at build time via `TARGET_ENV` env var; Webpack's `NormalModuleReplacementPlugin` swaps `Config.ts` → `Config.{env}.ts`
 - **State pattern:** Global session state via `useReducer` + `Context`. Reducers are pure functions handling typed actions (`SessionActionType.SAVE/DESTROY/RESTORE`, etc.)
 - **JWT auth client:** `fetchAuthClient.ts` manages bearer token injection; token persisted to `localStorage` with expiry check
-- **Testing:** Jest tests co-located alongside source as `*.test.ts(x)` files; file/SVG mocks in `config/mocks/`
+- **Testing:** Jest tests co-located alongside source as `*.test.ts(x)` files; file/SVG mocks in `config/mocks/`. Test files are excluded from `src/tsconfig.json` (the build project) and type-aware linting routes them to `src/tsconfig.test.json` via a `parserOptions.project` override in `eslint.config.js`
 - **Git hooks:** Husky + lint-staged auto-prettifies all staged files (JS, TS, CSS, SCSS, JSON, HTML, Markdown)
-- **TypeScript:** Extends `@tsconfig/node24`; strict type checking via ForkTsCheckerWebpackPlugin; ESM extension aliasing configured. TS6 requires explicit `rootDir` in both root and `src/tsconfig.json`, and `"types": ["google.maps"]` to resolve global namespace types under node16 resolution
+- **TypeScript:** Extends `@tsconfig/node24`; strict type checking via ForkTsCheckerWebpackPlugin; ESM extension aliasing configured. TS6 requires explicit `rootDir` in both root and `src/tsconfig.json`, and `"types": ["google.maps"]` to resolve global namespace types under node16 resolution. TS6 no longer auto-includes `@types` packages — they only enter a program via explicit module imports or an explicit `types` compiler option (hence `"types": ["jest"]` in `src/tsconfig.test.json`)
 - **CSS imports:** Side-effect CSS imports (e.g., `@fontsource/roboto/*.css`) require module declarations in `src/declarations.d.ts`; triple-slash `/// <reference types="@types/google.maps" />` directive also included there
 
 ## Dependency Update Rules
